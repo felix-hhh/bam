@@ -1,0 +1,10 @@
+.vscode/
+.idea/
+.DS_Store/
+node_modules/
+build/
+gradle/
+
+package-lock.json
+gradlew
+gradlew.bat

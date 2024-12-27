@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'kcommon-cloud'
+include 'system-core'
+include 'common-core'
+include 'app'
+

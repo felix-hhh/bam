@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    url: jdbc:mysql://10.0.1.8:3306/project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: ydjy@123456
+    # see https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  data:
+    redis:
+      host: 10.0.1.11
+      port: 6379
+      database: 2
+ktools:
+  threads: 5
+  open-urls:
+    - /error
+    - /v2/**
+    - /**/**swagger**/**
+    - /admin/**
+    - /api/**
+  print-stack-trace: true
+  token-header-key: user-token
+  jwt-secret: 72d504c9-5d29-4e50-bae4-95352c8019b5
+  admin-token-expire-seconds: 86400
+  app-token-expire-seconds: 2592001
+  allow-front-access: true
+  request-param:
+    - language
+  lang-req-key: language
+  admin-name: admin
+  admin-pwd: C7122A1349C22CB3C009DA3613D242AB
+  data-security-aes-key: XbtGQQViz2Z2aYSa
+
+mybatis-plus:
+  mapper-locations: classpath*:/mappers/**/*.xml
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+    map-underscore-to-camel-case: true
+
+kelaker:
+  kcommon:
+    user:
+      wx-min-app-id: wx6697bbbe87185f6c
+      wx-min-app-secret: a68ffadd9ac4962aa69771730dda740a
+      max-token: 1
+      username-prefix: wx
+logging:
+  level:
+    root: info
+    com.kelaker: debug
+minio:
+  url: http://81.71.95.33:9000
+  access:
+    name: 8ry4ItjCuVeIpLRQfjML
+    secret: gYj9kCpjHTwN7VlxZdZAax9Ydk8UdpEVofpk4CDp
+  bucket:
+    images:
+      name: images
+    files:
+      name: upload

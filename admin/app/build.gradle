@@ -1,0 +1,11 @@
+plugins {
+    id 'org.springframework.boot'
+}
+version '1.0.0'
+
+dependencies {
+    api project(":system-core")
+    api 'mysql:mysql-connector-java:8.0.33'
+    api 'org.mybatis:mybatis-spring:3.0.4'
+    api 'org.springframework.boot:spring-boot-starter-validation'
+}
