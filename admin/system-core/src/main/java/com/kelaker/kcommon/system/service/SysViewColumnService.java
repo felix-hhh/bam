@@ -40,7 +40,10 @@ public class SysViewColumnService extends BaseService<SysViewColumnDao, SysViewC
      * @param viewId 视图ID
      */
     public List<SysViewColumnVo> getViewColumnByViewId(Long viewId) {
-        List<SysViewColumn> sysViewColumns = super.lambdaQuery().eq(SysViewColumn::getViewId, viewId).list();
+        List<SysViewColumn> sysViewColumns = super.lambdaQuery()
+                .eq(SysViewColumn::getViewId, viewId)
+                .orderByAsc(SysViewColumn::getColumnOrder)
+                .list();
         return mapListToTarget(sysViewColumns, this::convertToVo);
     }
 

@@ -41,6 +41,11 @@ public class SysViewColumn extends Model<SysViewColumn> {
     private String columnLabel;
 
     /**
+     * 字段排序
+     */
+    private Integer columnOrder;
+
+    /**
      * 是否必填
      */
     private Boolean ruleRequired;
