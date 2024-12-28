@@ -2,21 +2,41 @@
 
 import { onMounted, reactive, ref } from "vue";
 import useAxios from "@/api";
-import { FormColumn, PageResult, TableColumn, TableOptButton, ViewColumnConfig, ViewConfig } from "#/conponent.ts";
+import {
+  FormColumn,
+  PageResult,
+  SearchItem,
+  TableColumn,
+  TableOptButton,
+  ViewColumnConfig,
+  ViewConfig,
+} from "#/conponent.ts";
 import { ElMessage, ElMessageBox, Sort } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
 import { booleanFormat, datetimeFormat } from "@/utils/util";
 import { MD5 } from "crypto-js";
+import { useRouter } from "vue-router";
+import Base64 from "crypto-js/enc-base64";
+import Utf8 from "crypto-js/enc-utf8";
 
+const router = useRouter();
 const { sendPut, sendGet, sendPost } = useAxios();
 //页面配置
 const displayControl = reactive({
   loading: false,
   addDialog: false,
   isEdit: false,
-
 });
-const viewConfig = ref<ViewConfig>();
+
+const searchItem = ref<SearchItem[]>([
+  {
+    label: "关键字",
+    key: "keyword",
+    value: "",
+  },
+]);
+
+const viewConfig = ref<ViewConfig>({});
 const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
@@ -26,7 +46,6 @@ const addFormRef = ref();
 const addFormData = ref({});
 const addFormItems = ref<FormColumn[]>([]);
 const addFormRules = ref({});
-const searchItem = ref();
 const searchData = reactive({
   limit: 20,
   page: 1,
@@ -37,15 +56,15 @@ const sort: Sort = { prop: "createDatetime", order: "descending" };
 
 /**
  * 取回页面配置
- * @param viewId 页面ID
  */
-const getViewConfig = (viewId: number) => {
-  sendGet<ViewConfig>(`/system/manage/view/${viewId}`)
+const getViewConfig = () => {
+  const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
+  sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
     .then(req => {
       viewConfig.value = req;
     })
     .then(() => {
-      initView(viewId);
+      initView(viewConfig.value.id);
     });
 };
 
@@ -122,8 +141,6 @@ const initViewColumns = () => {
 
     gridColumn.push(optLine);
   }
-
-
 };
 
 /**
@@ -136,7 +153,7 @@ const initForm = () => {
       addFormItems.value?.push({
         label: column.columnLabel,
         prop: column.columnName,
-        type: column.columnType,
+        type: column.dataType,
         addHandle: column.addHandle,
         editHandle: column.editHandle,
       });
@@ -287,7 +304,7 @@ const getViewData = () => {
 
 
 onMounted(() => {
-  getViewConfig(2);
+  getViewConfig();
 });
 </script>
 
@@ -305,7 +322,6 @@ onMounted(() => {
     :page="true"
   />
 
-  {{params}}1
   <el-drawer
     v-model="displayControl.addDialog"
     :title="displayControl.isEdit ? '编辑' : '添加'+'管理员'"
