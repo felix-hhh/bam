@@ -80,6 +80,16 @@ const showChangePwdDialog = () => {
   displayControl.changePwdDialog = true;
 };
 
+/**
+ * 按钮点击
+ */
+const menuClick = path => {
+  console.log("menuClick", e);
+  router.push({
+    path: path,
+  });
+};
+
 onMounted(() => {
   // getAllAction();
   getMenuList();
@@ -195,7 +205,7 @@ onMounted(() => {
           :default-openeds="[router.currentRoute.value.matched[0].path]"
           :collapse="isCollapse"
           :unique-opened="true"
-          :router="true"
+          @select="menuClick"
         >
           <template v-for="menu in menuList" :key="menu.id">
             <el-menu-item

@@ -305,6 +305,7 @@ onMounted(() => {
     :page="true"
   />
 
+  {{params}}1
   <el-drawer
     v-model="displayControl.addDialog"
     :title="displayControl.isEdit ? '编辑' : '添加'+'管理员'"
