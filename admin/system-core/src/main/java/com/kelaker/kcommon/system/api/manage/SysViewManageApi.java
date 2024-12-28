@@ -50,7 +50,7 @@ public class SysViewManageApi extends BaseApi {
      *
      * @param path 页面路径
      */
-    @GetMapping("/{path}")
+    @GetMapping("/path/{path}")
     public SysViewVo getSysViewByPath(@PathVariable("path") String path) {
         return this.sysViewService.getSystemViewByPath(path);
     }
