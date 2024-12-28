@@ -36,8 +36,9 @@ export interface ViewColumnConfig {
   addHandle: boolean;
   columnLabel: string;
   columnName: string;
-  columnType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "radio";
+  dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "radio";
   editHandle: boolean;
+  dataSource?: string;
   id: number;
   ruleRegular: string;
   ruleRequired: boolean;
@@ -53,6 +54,7 @@ export interface ViewColumnConfig {
  * 页面配置
  */
 export interface ViewConfig {
+  id: number;
   /**
    * 页面名称
    */
@@ -99,7 +101,7 @@ export interface TableColumn {
   width?: number;
   prop?: string;
   fixed?: "left" | "right" | boolean;
-  type?: "handle";
+  type?: "handle" | "image";
   format?: (row: any, column: any, cellValue: any, index?: number) => VNode | string;
   handles?: TableColumnHandle[];
   showOverflowTooltip?: boolean;
@@ -143,4 +145,13 @@ export interface FormColumn {
   type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "radio";
   addHandle: boolean;
   editHandle: boolean;
+}
+
+/**
+ * 查询ITEM
+ */
+export interface SearchItem {
+  label: string;
+  key: string;
+  value: string;
 }

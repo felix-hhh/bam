@@ -131,7 +131,6 @@ const stringToBuff = str => {
 
 onMounted(() => {
   const ruls = typeof props.gridData;
-  console.log(ruls);
 });
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChatLineRound, Bell, Expand, Fold, FullScreen, HomeFilled } from "@element-plus/icons-vue";
 import { RouteRecordRaw, useRouter } from "vue-router";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import useStore from "@/stores";
 import useAxios from "@/api";
 import { SysMenu, TokenInfo } from "#/entity.ts";
@@ -31,10 +31,6 @@ const logout = () => {
   sendPut("/system/manage/admin/info/logout").then(() => {
     router.push("/");
   });
-};
-
-const menuSelectHandle = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
 };
 
 /**
@@ -84,7 +80,7 @@ const showChangePwdDialog = () => {
  * 按钮点击
  */
 const menuClick = path => {
-  console.log("menuClick", e);
+  console.log(path);
   router.push({
     path: path,
   });
@@ -205,11 +201,10 @@ onMounted(() => {
           :default-openeds="[router.currentRoute.value.matched[0].path]"
           :collapse="isCollapse"
           :unique-opened="true"
-          @select="menuClick"
+          :router="router"
         >
           <template v-for="menu in menuList" :key="menu.id">
             <el-menu-item
-              @select="menuSelectHandle"
               v-if="
                 menu.children !== undefined &&
                 menu.children.length === 1 &&
@@ -234,7 +229,6 @@ onMounted(() => {
               </template>
               <template v-for="subMenu in menu.children" :key="subMenu.name">
                 <el-menu-item
-                  @select="menuSelectHandle"
                   :index="menu.path + subMenu.path"
                 >
                   {{ subMenu.name }}
