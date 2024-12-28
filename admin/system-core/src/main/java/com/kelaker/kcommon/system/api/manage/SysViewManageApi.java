@@ -44,5 +44,15 @@ public class SysViewManageApi extends BaseApi {
     public SysViewVo getSysView(@PathVariable("id") Long id) {
         return this.sysViewService.getSystemViewById(id);
     }
+
+    /**
+     * 根据页面路径查找页面配置
+     *
+     * @param path 页面路径
+     */
+    @GetMapping("/{path}")
+    public SysViewVo getSysViewByPath(@PathVariable("path") String path) {
+        return this.sysViewService.getSystemViewByPath(path);
+    }
 }
 
