@@ -1,6 +1,8 @@
 package com.kelaker.kcommon.system.api.manage;
 
 
+import com.kelaker.ktools.common.populator.ConvertUtils;
+import com.kelaker.ktools.common.utils.StringUtil;
 import com.kelaker.ktools.web.base.api.BaseApi;
 
 
@@ -9,9 +11,13 @@ import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.kcommon.system.vo.SysViewVo;
 import com.kelaker.kcommon.system.dto.SysViewSearchDto;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import com.kelaker.kcommon.system.entity.SysView;
 import com.kelaker.kcommon.system.service.SysViewService;
+
+import java.util.Base64;
+
 
 /**
  * 系统页面(SysView)表控制层
@@ -52,7 +58,8 @@ public class SysViewManageApi extends BaseApi {
      */
     @GetMapping("/path/{path}")
     public SysViewVo getSysViewByPath(@PathVariable("path") String path) {
-        return this.sysViewService.getSystemViewByPath(path);
+        String pathStr = new String(Base64.getDecoder().decode(path));
+        return this.sysViewService.getSystemViewByPath(pathStr);
     }
 }
 

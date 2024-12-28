@@ -31,11 +31,6 @@ public class SysViewColumn extends Model<SysViewColumn> {
     private String columnName;
 
     /**
-     * 列类型
-     */
-    private String columnType;
-
-    /**
      * 显示名字
      */
     private String columnLabel;

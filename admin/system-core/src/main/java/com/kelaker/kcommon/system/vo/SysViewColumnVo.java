@@ -27,11 +27,6 @@ public class SysViewColumnVo {
     private String columnName;
 
     /**
-     * 列类型
-     */
-    private String columnType;
-
-    /**
      * 显示名字
      */
     private String columnLabel;
