@@ -5,6 +5,8 @@ import com.kelaker.kcommon.system.dao.SysViewDao;
 import com.kelaker.kcommon.system.vo.SysViewVo;
 import com.kelaker.kcommon.system.dto.SysViewSearchDto;
 import com.kelaker.kcommon.system.dto.SysViewDto;
+import com.kelaker.ktools.common.exception.BusinessException;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,24 @@ public class SysViewService extends BaseService<SysViewDao, SysView> {
      * @param dto 对象
      */
     public void addSysView(SysViewDto dto) {
-        SysView sysView = super.objectConvert(dto, SysView.class);
+        SysView sysView = super.lambdaQuery().eq(SysView::getPath, dto.getPath()).one();
+        if(ValidateUtil.isNotBlank(sysView)) {
+            throw new BusinessException("页面配置中路径已存在");
+        }
+        sysView = super.objectConvert(dto, SysView.class);
         super.save(sysView);
+    }
+
+    /**
+     * 通过页面路径查询页面配置
+     *
+     * @param path 页面路径
+     */
+    public SysViewVo getSystemViewByPath(String path) {
+        SysView sysView = super.lambdaQuery()
+                .eq(SysView::getPath, path)
+                .one();
+        return convertToVo(sysView);
     }
 
     /**

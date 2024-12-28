@@ -26,6 +26,11 @@ public class SysView extends Model<SysView> {
     private String name;
 
     /**
+     * 页面路径
+     */
+    private String path;
+
+    /**
      * 页面小注
      */
     private String tips;
