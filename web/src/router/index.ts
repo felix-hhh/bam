@@ -30,6 +30,21 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: "/system1",
+    name: "system1",
+    component: MainFrame,
+    children: [
+      {
+        path: "/menu",
+        name: "menu",
+        meta: {
+          title: "菜单",
+        },
+        component: () => import("@/views/IndexView.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

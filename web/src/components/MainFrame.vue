@@ -59,6 +59,8 @@ const initMenu = async () => {
       });
     });
   });
+
+  console.log(router.options.routes);
 };
 
 const getComponent = (componentName?: "MainFrame" | "TableView") => {

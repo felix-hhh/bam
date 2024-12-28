@@ -324,20 +324,25 @@ onMounted(() => {
 
   <el-drawer
     v-model="displayControl.addDialog"
-    :title="displayControl.isEdit ? '编辑' : '添加'+'管理员'"
+    :title="(displayControl.isEdit ? '编辑' : '添加') + viewConfig.name"
     direction="rtl"
     :before-close="hideDialog"
     size="400"
   >
     <el-form label-width="80" ref="addFormRef" :model="addFormData" :rules="addFormRules" label-position="top">
       <el-space fill>
-        <el-alert v-if="!displayControl.isEdit" type="info" show-icon :closable="false">
-          <p>"用户名"为6-20位字母开头，且只能包含字母数字下划线</p>
+        <el-alert v-if="viewConfig.tips" type="info" show-icon :closable="false">
+          <p>{{ viewConfig.tips }}</p>
         </el-alert>
         <template v-for="item in addFormItems">
           <el-form-item v-if="(item.addHandle && !displayControl.isEdit) || (item.editHandle && displayControl.isEdit)"
                         :label="item.label" :prop="item.prop">
-            <el-input :type="item.type" v-model="addFormData[item.prop]" />
+            <template v-if="item.type==='switch'">
+              <el-switch v-model="addFormData[item.prop]" />
+            </template>
+            <template v-else>
+              <el-input :type="item.type" v-model="addFormData[item.prop]" />
+            </template>
           </el-form-item>
         </template>
       </el-space>

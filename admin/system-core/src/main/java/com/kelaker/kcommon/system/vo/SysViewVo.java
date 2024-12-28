@@ -29,7 +29,7 @@ public class SysViewVo {
     /**
      * 是否分页请求
      */
-    private Integer pageQuery;
+    private Boolean pageQuery;
 
     /**
      * 初始化请求数据

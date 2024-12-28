@@ -34,7 +34,7 @@ public class SysViewDto {
     /**
      * 是否分页请求
      */
-    private Integer pageQuery;
+    private Boolean pageQuery;
 
     /**
      * 初始化请求数据
@@ -49,7 +49,7 @@ public class SysViewDto {
     /**
      * 添加功能
      */
-    private Integer optAdd;
+    private Boolean optAdd;
 
     /**
      * 添加地址
@@ -69,7 +69,7 @@ public class SysViewDto {
     /**
      * 编辑功能
      */
-    private Integer optEdit;
+    private Boolean optEdit;
 
     /**
      * 编辑url
@@ -89,7 +89,7 @@ public class SysViewDto {
     /**
      * 删除功能
      */
-    private Integer optDelete;
+    private Boolean optDelete;
 
     /**
      * 删除地址
@@ -104,7 +104,7 @@ public class SysViewDto {
     /**
      * 按钮显示方式（O_S_R_OPT 操作区, O_S_R_LINE 行）
      */
-    private Integer optDeleteShowRegion;
+    private String optDeleteShowRegion;
 
     /**
      * 备注
