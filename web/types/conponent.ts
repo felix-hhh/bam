@@ -36,7 +36,7 @@ export interface ViewColumnConfig {
   addHandle: boolean;
   columnLabel: string;
   columnName: string;
-  dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch";
+  dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select";
   editHandle: boolean;
   dataSource?: string;
   id: number;
@@ -142,9 +142,11 @@ export interface TableSearch {
 export interface FormColumn {
   label: string;
   prop: string;
-  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch";
+  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select";
   addHandle: boolean;
   editHandle: boolean;
+  dataSource?: string;
+  selectData?: object[];
 }
 
 /**

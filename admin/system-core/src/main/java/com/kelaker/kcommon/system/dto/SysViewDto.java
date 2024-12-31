@@ -14,7 +14,7 @@ public class SysViewDto {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 页面名字
@@ -39,7 +39,7 @@ public class SysViewDto {
     /**
      * 初始化请求数据
      */
-    private Integer initData;
+    private Boolean initData;
 
     /**
      * 初始化数据请求地址

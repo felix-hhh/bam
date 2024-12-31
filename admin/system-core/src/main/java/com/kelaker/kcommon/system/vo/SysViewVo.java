@@ -22,6 +22,11 @@ public class SysViewVo {
     private String name;
 
     /**
+     * 页面地址
+     */
+    private String path;
+
+    /**
      * 页面小注
      */
     private String tips;

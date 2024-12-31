@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ChatLineRound, Bell, Expand, Fold, FullScreen, HomeFilled } from "@element-plus/icons-vue";
 import { RouteRecordRaw, useRouter } from "vue-router";
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import useStore from "@/stores";
 import useAxios from "@/api";
 import { SysMenu, TokenInfo } from "#/entity.ts";
-import IndexView from "@/views/IndexView.vue";
 import MainFrame from "@/components/MainFrame.vue";
 import TableView from "@/views/TableView.vue";
 
@@ -59,8 +58,6 @@ const initMenu = async () => {
       });
     });
   });
-
-  console.log(router.options.routes);
 };
 
 const getComponent = (componentName?: "MainFrame" | "TableView") => {
@@ -78,20 +75,10 @@ const showChangePwdDialog = () => {
   displayControl.changePwdDialog = true;
 };
 
-/**
- * 按钮点击
- */
-const menuClick = path => {
-  console.log(path);
-  router.push({
-    path: path,
-  });
-};
 
 onMounted(() => {
-  // getAllAction();
   getMenuList();
-  getUsername();
+  //getUsername();
 });
 </script>
 
@@ -203,7 +190,7 @@ onMounted(() => {
           :default-openeds="[router.currentRoute.value.matched[0].path]"
           :collapse="isCollapse"
           :unique-opened="true"
-          :router="router"
+          :router="true"
         >
           <template v-for="menu in menuList" :key="menu.id">
             <el-menu-item

@@ -57,9 +57,9 @@ const sort: Sort = { prop: "createDatetime", order: "descending" };
 /**
  * 取回页面配置
  */
-const getViewConfig = () => {
+const getViewConfig =  () => {
   const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
-  sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
+   sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
     .then(req => {
       viewConfig.value = req;
     })
@@ -88,6 +88,7 @@ const getViewColumnConfig = (viewId: number) => {
  * 初始化视图表头
  */
 const initViewColumns = () => {
+  console.log(viewColumnConfig.value);
   if (viewColumnConfig.value) {
     viewColumnConfig.value.map(viewColumn => {
       if (viewColumn.showColumn) {
@@ -140,6 +141,7 @@ const initViewColumns = () => {
     }
 
     gridColumn.push(optLine);
+    console.log(gridColumn);
   }
 };
 
@@ -150,13 +152,20 @@ const initForm = () => {
   if (viewConfig.value?.optAdd) {
     viewColumnConfig.value?.map(column => {
       //表格数据
-      addFormItems.value?.push({
+      const itemData = {
         label: column.columnLabel,
         prop: column.columnName,
         type: column.dataType,
         addHandle: column.addHandle,
         editHandle: column.editHandle,
-      });
+        dataSource: column.dataSource,
+      };
+
+      if (column.dataSource != null) {
+        itemData["selectData"] = getSelectData(column.dataSource);
+      }
+
+      addFormItems.value?.push(itemData);
 
       //表格规则
       if (column.ruleRequired) {
@@ -166,6 +175,7 @@ const initForm = () => {
         };
       }
     });
+
   }
 };
 
@@ -203,7 +213,7 @@ const initOptButton = () => {
     const config = viewConfig.value;
     if (config.optAdd && (config.optAddShowRegion === "S_V_R_OPT" || config.optAddShowRegion === "S_V_R_BOTH")) {
       const optButton: TableOptButton = {
-        label: config.optAddLabel,
+        label: config.optAddLabel || "添加",
         selectHandler: false,
         type: "primary",
         handle: showAddDialog,
@@ -211,6 +221,17 @@ const initOptButton = () => {
       optButtons.value.push(optButton);
     }
   }
+};
+
+/**
+ * 根据字典分组代码取回下拉列表的值
+ * @param dictGroupCode
+ */
+const getSelectData = async (dictGroupCode: string) => {
+  await sendGet(`/system/manage/dict/list/${dictGroupCode}`)
+    .then(res => {
+      return res;
+    });
 };
 
 /**
@@ -339,6 +360,16 @@ onMounted(() => {
                         :label="item.label" :prop="item.prop">
             <template v-if="item.type==='switch'">
               <el-switch v-model="addFormData[item.prop]" />
+            </template>
+            <template v-else-if="item.type==='select'">
+              <el-select v-model="value" placeholder="Select">
+                <el-option
+                  v-for="select in item.selectData"
+                  :key="select.dictCode"
+                  :label="select.dictValue"
+                  :value="select.dictCode"
+                />
+              </el-select>
             </template>
             <template v-else>
               <el-input :type="item.type" v-model="addFormData[item.prop]" />

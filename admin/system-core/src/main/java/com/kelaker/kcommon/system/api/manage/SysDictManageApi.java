@@ -81,7 +81,7 @@ public class SysDictManageApi {
      * @param groupCode 分组代码
      */
     @GetMapping("/list/{groupCode}")
-    public List<SysDictVo> getListByGroupCode(@PathVariable String groupCode) {
+    public List<SysDictVo> getListByGroupCode(@PathVariable("groupCode") String groupCode) {
         return sysDictService.listDict(groupCode);
     }
 
