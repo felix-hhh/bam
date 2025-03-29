@@ -1,0 +1,96 @@
+/* pages/report/index.wxss */
+.record_list {
+
+  &_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    height: 30px;
+    border-bottom: 1px solid #ebedf0;
+
+    &_orderno {
+      color: #116BB4;
+      flex: 1;
+    }
+
+    &_status {}
+  }
+
+  &_doctor {
+    display: flex;
+
+    &_info {
+      padding-left: 10px;
+
+      &_name {
+        font-size: 16px;
+      }
+
+      &_hospital {}
+    }
+  }
+
+  &_detail {
+    margin-top: 10px;
+    display: flex;
+
+    &_patient {
+      flex: 1;
+      flex-direction: column;
+      gap: 5px;
+      display: flex;
+    }
+
+    &_tips {
+      display: flex;
+      align-items: flex-end;
+
+      &_link {
+        color: #116BB4;
+      }
+    }
+  }
+}
+
+.report_list {
+  &_patient {
+    &_header {
+      padding: 0 12px;
+      background-color: rgb(17, 107, 180, 0.1);
+      border-radius: 8px;
+      height: 40px;
+      align-items: center;
+      gap: 10px;
+      display: flex;
+      margin: -10px -10px 0;
+
+      &_icon {
+        background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+      }
+
+      &_name {}
+
+      &_relation {
+        border: 4rpx solid rgb(69, 170, 66, 0.8);
+        padding: 1px;
+        border-radius: 5px;
+        font-size: 12px;
+        margin-right: auto;
+      }
+    }
+
+    &_info{
+      padding: 10px 0;
+      display: flex;
+      gap: 5px;
+      flex-direction: column;
+      border-bottom: 1px solid #ebedf0;
+    }
+  }
+}

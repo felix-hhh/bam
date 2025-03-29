@@ -1,0 +1,78 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+
+page{
+  background-color: #F8F8F8;
+  font-size: 14px;
+}
+
+.panel {
+  border-radius: 8px;
+  background-color: #FFF;
+  margin: 10px 16px;
+  padding: 12px;
+   border: 1px solid #ebedf0;
+   border-width: 1px 0;
+  box-sizing: border-box;
+
+  &_header {
+    &_title {
+      color: #4F4F4F;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    margin-bottom: 5px;
+  }
+}
+
+
+.user_list {
+
+  &_body {
+    flex-direction: column;
+    gap: 5px;
+    display: flex;
+
+    &_item {
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      background-color: rgb(17, 107, 180, 0.1);
+      height: 40px;
+      gap: 10px;
+      border-radius: 8px;
+
+      &_header {
+        background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+      }
+
+      &_relation {
+        border: 4rpx solid rgb(69, 170, 66, 0.8);
+        padding: 1px;
+        border-radius: 5px;
+        font-size: 12px;
+        margin-right: auto;
+
+      }
+    }
+
+    .add_btn {
+      justify-content: center;
+    }
+  }
+}

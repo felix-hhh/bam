@@ -1,0 +1,92 @@
+<!--pages/my/index.wxml-->
+<view>
+  <view class="login" wx:if="{{loginState}}">
+    <view class="header" >
+      <view class="user_panel">
+        <view class="user_panel_icon">
+          <view class="user_panel_icon_border">
+            <view class="user_panel_icon_image">
+            <van-image width="68px" height="68px" fit="contain" src="/images/default.png" />
+            </view>
+          </view>
+        </view>
+        <view class="user_panel_info">
+          <view class="user_panel_info_name">
+            <text>kld1234</text>
+          </view>
+          <view class="user_panel_info_phone">
+            <text>绑定手机号：13800138000</text>
+          </view>
+        </view>
+        <!-- <van-icon class="opt_btn" size="20px" name="/images/xiaoxi.png" info="1" /> -->
+        <van-icon bind:click="gotoSetting" class="user_panel_opt" size="20px" class-prefix="icon" name="setting" />
+      </view>
+    </view>
+    <view class="user_list panel">
+      <view class="panel_header">
+        <view class="panel_header_title">常用就诊人</view>
+      </view>
+      <view class="user_list_body">
+        <view class="user_list_body_item">
+          <view class="user_list_body_item_header">
+            <van-image width="24px" height="24px" fit="contain" src="/images/nanren.png" />
+          </view>
+          <view class="user_list_body_item_name">张三</view>
+          <view class="user_list_body_item_relation">本人</view>
+          <view class="user_list_body_item_icon man">
+            <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.png" />
+          </view>
+        </view>
+        <view class="user_list_body_item">
+          <view class="user_list_body_item_header">
+            <van-image width="24px" height="24px" fit="contain" src="/images/nvren.png" />
+            </view>
+          <view class="user_list_body_item_name">张三</view>
+          <view class="user_list_body_item_relation">本人</view>
+          <view class="user_list_body_item_icon women">
+            <van-image width="20px" height="20px" fit="contain" src="/images/nvrenicon.svg" />
+          </view>
+        </view>
+        <view class="user_list_body_item add_btn">
+          <van-icon name="plus" />
+          <text>添加</text>
+        </view>
+      </view>
+    </view>
+    <view class="tools_list panel">
+      <view class="panel_header">
+        <view class="panel_header_title">工具</view>
+      </view>
+      <view class="tools_list_body">
+        <view class="tools_list_body_item">
+          <view class="tools_list_body_item_icon">
+            <van-image width="32px" height="32px" fit="contain" src="/images/record.png" />
+          </view>
+          <view class="tools_list_body_item_label">
+            记录
+          </view>
+        </view>
+        <view class="tools_list_body_item">
+          <view class="tools_list_body_item_icon">
+            <van-image width="32px" height="32px" fit="contain" src="/images/report.png" />
+          </view>
+          <view class="tools_list_body_item_label">
+            报告
+          </view>
+        </view>
+        <view class="tools_list_body_item">
+          <view class="tools_list_body_item_icon">
+            <van-image width="32px" height="32px" fit="contain" src="/images/video.png" />
+          </view>
+          <view class="tools_list_body_item_label">
+            视频
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="notice_card">
+      <van-notice-bar left-icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" background="#F5EDED" custom-class="notice_bar" />
+    </view> -->
+
+  </view>
+</view>

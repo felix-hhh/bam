@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/report/index",
+    "pages/my/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "康力得运动健康平台",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/home/index"
+      },
+      {
+        "pagePath": "pages/report/index"
+      },
+      {
+        "pagePath": "pages/my/index"
+      }
+    ]
+  }
+}
