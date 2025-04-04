@@ -7,4 +7,7 @@ rootProject.name = 'kcommon-cloud'
 include 'system-core'
 include 'common-core'
 include 'app'
+include 'tools-core'
+include 'user'
+include 'user-core'
 

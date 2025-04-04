@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.0.4:13306/project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.0.3:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
 #    url: jdbc:mysql://localhost:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
@@ -33,6 +33,12 @@ ktools:
   admin-name: admin
   admin-pwd: C7122A1349C22CB3C009DA3613D242AB
   data-security-aes-key: XbtGQQViz2Z2aYSa
+
+bam:
+  tools:
+    wxMicAppId: wx2ecd3a0ec2002c20
+    wxMicSecret: 78fa51300dbc3a242df06a0a3f661865
+
 
 mybatis-plus:
   mapper-locations: classpath*:/mappers/**/*.xml

@@ -62,5 +62,11 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+
+  gotoAddPatient() {
+    wx.navigateTo({
+      url: '/pages/my/patient'
+    });
   }
 })

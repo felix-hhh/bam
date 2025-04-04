@@ -18,8 +18,9 @@
             <text>绑定手机号：13800138000</text>
           </view>
         </view>
-        <!-- <van-icon class="opt_btn" size="20px" name="/images/xiaoxi.png" info="1" /> -->
-        <van-icon bind:click="gotoSetting" class="user_panel_opt" size="20px" class-prefix="icon" name="setting" />
+        <view>
+        <van-image width="24px" height="24px" fit="contain" src="/images/setting.svg" />
+        </view>
       </view>
     </view>
     <view class="user_list panel">
@@ -34,7 +35,7 @@
           <view class="user_list_body_item_name">张三</view>
           <view class="user_list_body_item_relation">本人</view>
           <view class="user_list_body_item_icon man">
-            <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.png" />
+            <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.svg" />
           </view>
         </view>
         <view class="user_list_body_item">
@@ -47,7 +48,7 @@
             <van-image width="20px" height="20px" fit="contain" src="/images/nvrenicon.svg" />
           </view>
         </view>
-        <view class="user_list_body_item add_btn">
+        <view class="user_list_body_item add_btn" bind:tap="gotoAddPatient">
           <van-icon name="plus" />
           <text>添加</text>
         </view>
@@ -60,7 +61,7 @@
       <view class="tools_list_body">
         <view class="tools_list_body_item">
           <view class="tools_list_body_item_icon">
-            <van-image width="32px" height="32px" fit="contain" src="/images/record.png" />
+            <image src="/images/record.svg"/>
           </view>
           <view class="tools_list_body_item_label">
             记录
@@ -68,7 +69,7 @@
         </view>
         <view class="tools_list_body_item">
           <view class="tools_list_body_item_icon">
-            <van-image width="32px" height="32px" fit="contain" src="/images/report.png" />
+            <image src="/images/report.svg" />
           </view>
           <view class="tools_list_body_item_label">
             报告
@@ -76,7 +77,7 @@
         </view>
         <view class="tools_list_body_item">
           <view class="tools_list_body_item_icon">
-            <van-image width="32px" height="32px" fit="contain" src="/images/video.png" />
+          <image src="/images/video.svg" />
           </view>
           <view class="tools_list_body_item_label">
             视频

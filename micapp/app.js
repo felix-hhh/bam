@@ -1,19 +1,26 @@
 // app.js
 App({
-  onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    onLaunch() {
+      this.checkUserLogin();
+    },
+    globalData: {
+      userLogin:false,
+      userToken: null
+    },
+    /**
+     * 检查用户登录
+     */
+    checkUserLogin() {
+      const userToken = wx.getStorageSync('userToken');
+      console.log("===" + userToken);
+      if (!userToken) {
+        wx.navigateTo({
+          url: '/pages/my/login',
+        })
+      } else {
+        this.globalData.userLogin = true;
+        this.globalData.userToken = userToken;
       }
-    })
-  },
-  globalData: {
-    userInfo: null
+    }
   }
-})
+)

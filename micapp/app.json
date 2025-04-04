@@ -2,7 +2,9 @@
   "pages": [
     "pages/home/index",
     "pages/report/index",
-    "pages/my/index"
+    "pages/my/index",
+    "pages/my/patient",
+    "pages/my/login"
   ],
   "window": {
     "navigationBarTextStyle": "black",

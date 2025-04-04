@@ -13,7 +13,7 @@
         <view class="user_list_body_item_name">张三</view>
         <view class="user_list_body_item_relation">本人</view>
         <view class="user_list_body_item_icon man">
-          <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.png" />
+          <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.svg" />
         </view>
       </view>
       <view class="user_list_body_item">
@@ -26,7 +26,7 @@
           <van-image width="20px" height="20px" fit="contain" src="/images/nvrenicon.svg" />
         </view>
       </view>
-      <view class="user_list_body_item add_btn">
+      <view class="user_list_body_item add_btn" bindtap="gotoAddPatient">
         <van-icon name="plus" />
         <text>添加</text>
       </view>

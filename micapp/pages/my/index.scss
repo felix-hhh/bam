@@ -1,9 +1,7 @@
 /* pages/my/index.wxss */
 .header {
   background: linear-gradient(rgb(17, 107, 180, 1), rgb(69, 170, 66, 0)) ;
-  height: 120px;
-  align-items: center;
-  display: flex;
+  padding: 30px 0;
 }
 
 .user_panel {
@@ -11,6 +9,7 @@
   gap: 20rpx;
   height: 130rpx;
   align-items: center;
+  justify-content: space-between;
   padding: 20rpx 40rpx 40rpx;
 
   &_info {
@@ -126,6 +125,10 @@
 
       &_icon {
         text-align: center;
+        image{
+          width: 32px;
+          height: 32px;
+        }
       }
 
       &_label {
