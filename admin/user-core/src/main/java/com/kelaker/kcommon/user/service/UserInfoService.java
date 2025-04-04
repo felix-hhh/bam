@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 /**
  * 用户信息表(UserInfo)表服务接口
  *
- * @author makejava
+ * @author felix huang
  * @since 2021-12-10 10:59:47
  */
 @Service
@@ -90,13 +90,15 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
             userInfo.setStatus(UserInfo.Status.ENABLE);
 
             userInfo.setLastLoginDatetime(DateUtil.getCurrentDate());
-            userInfo.setUsername(this.userConfigProperties.getUsernamePrefix() + StringUtil.getCurrentDate("yyyyMMddmmss"));
+            userInfo.setUsername(
+                    this.userConfigProperties.getUsernamePrefix() + StringUtil.getCurrentDate("yyyyMMddmmss"));
             super.save(userInfo);
 
             this.pushUserRegisterEvent(null, null, userInfo.getId());
 
-            //初始化用户拓展资料
-            this.userInfoExtendsService.initUserInfoExtends(userInfo.getId(), UserInfoExtends.UserRole.ROBOT, dto.getGender());
+            // 初始化用户拓展资料
+            this.userInfoExtendsService.initUserInfoExtends(userInfo.getId(), UserInfoExtends.UserRole.ROBOT,
+                    dto.getGender());
         }
     }
 
@@ -143,7 +145,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                 return this.buildToken(userInfo, true, deviceInfo, loginType);
             }
             case SMS -> {
-                //短信验证码登录
+                // 短信验证码登录
                 String phone = userLoginDto.getPhone();
                 this.validateSmsAuthCode(smsAuthCode, phone);
                 OtherLoginUserInfoDto loginDto = new OtherLoginUserInfoDto();
@@ -219,25 +221,27 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      *
      * @param phone 手机号码
      */
-    /*public String sendLoginSms(String phone) {
-        AuthCodeVo smsAuthCode = this.cacheManager.getSmsAuthCode(phone);
-        if (ValidateUtil.isNotBlank(smsAuthCode)) {
-            Date createDatetime = smsAuthCode.getCreateDatetime();
-            Date afterDate = DateUtil.timeAdd(createDatetime, 1L, TimeUnit.MINUTES);
-            if (afterDate.after(DateUtil.getCurrentDate())) {
-                throw new BusinessException("发送短信过于频繁", 61006);
-            }
-        }
-        String authCode = StringUtil.getRandomNumberString(6);
-        log.debug(">>>>>>>>>> 短信验证码：{}", authCode);
-
-        SmsAuthCodeDto dto = new SmsAuthCodeDto();
-        dto.setPhone(phone);
-        dto.setSmsCode(authCode);
-        this.toolsFeignClient.sendSmsAuth(dto);
-        this.cacheManager.cacheSmsAuthCode(phone, authCode);
-        return authCode;
-    }*/
+    /*
+     * public String sendLoginSms(String phone) {
+     * AuthCodeVo smsAuthCode = this.cacheManager.getSmsAuthCode(phone);
+     * if (ValidateUtil.isNotBlank(smsAuthCode)) {
+     * Date createDatetime = smsAuthCode.getCreateDatetime();
+     * Date afterDate = DateUtil.timeAdd(createDatetime, 1L, TimeUnit.MINUTES);
+     * if (afterDate.after(DateUtil.getCurrentDate())) {
+     * throw new BusinessException("发送短信过于频繁", 61006);
+     * }
+     * }
+     * String authCode = StringUtil.getRandomNumberString(6);
+     * log.debug(">>>>>>>>>> 短信验证码：{}", authCode);
+     * 
+     * SmsAuthCodeDto dto = new SmsAuthCodeDto();
+     * dto.setPhone(phone);
+     * dto.setSmsCode(authCode);
+     * this.toolsFeignClient.sendSmsAuth(dto);
+     * this.cacheManager.cacheSmsAuthCode(phone, authCode);
+     * return authCode;
+     * }
+     */
 
     /**
      * 验证原手机号码验证码
@@ -322,11 +326,11 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
 
         UserInfo userInfo = this.getCurrentUserInfo();
 
-        //如果未绑定手机号，不能修改密码
+        // 如果未绑定手机号，不能修改密码
         if (ValidateUtil.isBlank(userInfo.getPhone())) {
             throw new BusinessException("未绑定手机号不能设置密码");
         }
-        //如果用户包含密码，抛出异常
+        // 如果用户包含密码，抛出异常
         if (ValidateUtil.isNotBlank(userInfo.getPasswd())) {
             throw new BusinessException("用户密码不成重复设置", 61002);
         }
@@ -374,7 +378,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * @param searchDto 查询DTO
      */
     public IPage<UserInfoAllVo> queryUserInfoByPage(RequestPage<UserInfoSearchDto> searchDto) {
-        //TODO 需要根据产品需求修正查询条件
+        // TODO 需要根据产品需求修正查询条件
         UserInfoSearchDto data = searchDto.getData();
 
         String phone = data.getPhone();
@@ -386,12 +390,15 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                 .eq(ValidateUtil.isNotBlank(data.getId()), UserInfo::getId, data.getId())
                 .like(ValidateUtil.isNotBlank(data.getNickname()), UserInfo::getNickname, data.getNickname())
                 .like(ValidateUtil.isNotBlank(data.getUsername()), UserInfo::getUsername, data.getUsername())
-                .ge(ValidateUtil.isNotBlank(data.getStartCreateDatetime()), UserInfo::getCreateDatetime, data.getStartCreateDatetime())
-                .le(ValidateUtil.isNotBlank(data.getEndCreateDatetime()), UserInfo::getCreateDatetime, data.getEndCreateDatetime());
+                .ge(ValidateUtil.isNotBlank(data.getStartCreateDatetime()), UserInfo::getCreateDatetime,
+                        data.getStartCreateDatetime())
+                .le(ValidateUtil.isNotBlank(data.getEndCreateDatetime()), UserInfo::getCreateDatetime,
+                        data.getEndCreateDatetime());
         String keyword = data.getKeyword();
         if (ValidateUtil.isNotBlank(keyword)) {
             queryChainWrapper
-                    .eq(UserInfo::getPhone, SecurityUtil.aesEncrypt(keyword, this.webConfigProperties.getDataSecurityAesKey()))
+                    .eq(UserInfo::getPhone,
+                            SecurityUtil.aesEncrypt(keyword, this.webConfigProperties.getDataSecurityAesKey()))
                     .or()
                     .like(UserInfo::getNickname, keyword)
                     .or()
@@ -420,7 +427,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         userInfo.setStatus(UserInfo.Status.DISABLE);
         super.updateById(userInfo);
 
-        //移除登录
+        // 移除登录
         String userIdKey = CacheConstant.CACHE_TOKEN_USER_PREFIX + userId;
 
         ZSetOperations<String, Object> opsForZSet = this.redisTemplate.opsForZSet();
@@ -460,7 +467,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         Long userId = token.getUserTag();
         String tokenStr = token.getToken();
         if (ClientType.FRONT_TOURIST.equals(token.getClientType())) {
-            //如果是游客
+            // 如果是游客
             if (token.isExpired()) {
                 throw new BusinessException("登录已失效");
             }
@@ -518,7 +525,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * @param theUser theUser
      * @return token
      */
-    protected String buildToken(UserInfo theUser, boolean rebuild, DeviceInfoDto deviceInfoDto, UserLoginDto.LoginType loginType) {
+    protected String buildToken(UserInfo theUser, boolean rebuild, DeviceInfoDto deviceInfoDto,
+            UserLoginDto.LoginType loginType) {
 
         // 生成token
         final TokenVo tokenVo = new TokenVo();
@@ -555,7 +563,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                 String deviceCache = (String) this.cacheManager.getValue(deviceCacheKey);
                 if (ValidateUtil.isNotBlank(deviceCache)) {
                     opsForZSet.remove(userIdKey, tokenTail);
-                    this.cacheManager.cacheValue(deviceCacheKey, tokenTail, webConfigProperties.getAppTokenExpireSeconds());
+                    this.cacheManager.cacheValue(deviceCacheKey, tokenTail,
+                            webConfigProperties.getAppTokenExpireSeconds());
                 }
 
                 this.pushUserLoginEvent(deviceInfoDto, loginType, theUser.getId());
@@ -600,7 +609,6 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         super.updateById(userInfo);
     }
 
-
     /**
      * 用户取消DTO
      *
@@ -644,7 +652,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         Long userId = super.getUserId();
         UserInfo userInfo = this.getUserInfoOptById(userId).orElseThrow(() -> new BusinessException("用户不存在"));
         userInfo.setNickname(nickname);
-        //从新构造token
+        // 从新构造token
         super.updateById(userInfo);
 
     }
@@ -712,7 +720,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
     public AuthCodeVo bindPhone(BindPhoneDto bindPhoneDto) {
         String oldPhone = this.getMyPhone();
         if (ValidateUtil.isNotBlank(oldPhone)) {
-            //验证原手机验证码
+            // 验证原手机验证码
             String sourcePhoneValidateCode = bindPhoneDto.getSourcePhoneValidateCode();
 
             this.checkPhoneValidate(sourcePhoneValidateCode, BusinessType.BIND_PHONE);
@@ -722,7 +730,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         String smsAuthCode = bindPhoneDto.getSmsAuthCode();
         this.validateSmsAuthCode(smsAuthCode, phone);
 
-        //检查新手机是否拥有账户
+        // 检查新手机是否拥有账户
         UserInfo userInfo = this.getUserInfoByPhone(phone);
         if (ValidateUtil.isNotBlank(userInfo)) {
             String validateKey = CacheConstant.CACHE_NEXT_BUSI_PREFIX + BusinessType.CANCEL_USER + super.getUserId();
@@ -785,7 +793,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                         throw new BusinessException("原账号不存在");
                     }
                     this.userCancel(userInfoByPhone);
-                    //取回当前用户对象
+                    // 取回当前用户对象
                     myUserInfo.setPhone(phone);
 
                 }
@@ -798,7 +806,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                     }
                     this.userCancel(userInfoByWxOpenId);
 
-                    //取回当前用户对象
+                    // 取回当前用户对象
                     myUserInfo.setWxOpenId(wxOpenId);
                 }
                 case BIND_APPLEID -> {
@@ -810,7 +818,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                     }
                     this.userCancel(userInfoByAppleOpenId);
 
-                    //取回当前用户对象
+                    // 取回当前用户对象
                     myUserInfo.setAppleOpenId(appleOpenId);
                 }
                 default -> throw new BusinessException("业务类型错误");
@@ -862,7 +870,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         if (ValidateUtil.isNotBlank(userInfo)) {
             Long userId = userInfo.getId();
             if (super.getUserId().equals(userId)) {
-                //无法检索自己
+                // 无法检索自己
                 return null;
             }
             UserInfoExtendsVo userInfoExtends = this.userInfoExtendsService.getUserInfoExtendsByUserIdFront(userId);
@@ -981,7 +989,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      */
     public Set<Long> queryUserInfoByPhone(String phone) {
         return super.lambdaQuery()
-                .eq(UserInfo::getPhone, SecurityUtil.aesEncrypt(phone, this.webConfigProperties.getDataSecurityAesKey()))
+                .eq(UserInfo::getPhone,
+                        SecurityUtil.aesEncrypt(phone, this.webConfigProperties.getDataSecurityAesKey()))
                 .list()
                 .stream()
                 .map(UserInfo::getId)
@@ -1084,7 +1093,9 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         return super.lambdaQuery()
                 .eq(UserInfo::getUsername, searchUserDto.getSearchValue())
                 .or()
-                .eq(UserInfo::getPhone, SecurityUtil.aesEncrypt(searchUserDto.getSearchValue(), this.webConfigProperties.getDataSecurityAesKey()))
+                .eq(UserInfo::getPhone,
+                        SecurityUtil.aesEncrypt(searchUserDto.getSearchValue(),
+                                this.webConfigProperties.getDataSecurityAesKey()))
                 .or()
                 .eq(UserInfo::getNickname, searchUserDto.getSearchValue())
                 .eq(UserInfo::getStatus, UserInfo.Status.ENABLE)
@@ -1098,7 +1109,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * @param loginType
      * @param deviceInfoDto
      */
-    private UserInfo userRegister(OtherLoginUserInfoDto otherLogin, UserLoginDto.LoginType loginType, DeviceInfoDto deviceInfoDto) {
+    private UserInfo userRegister(OtherLoginUserInfoDto otherLogin, UserLoginDto.LoginType loginType,
+            DeviceInfoDto deviceInfoDto) {
         super.checkNullParameter(otherLogin, loginType, deviceInfoDto);
 
         final String openId = otherLogin.getOpenId();
@@ -1109,9 +1121,9 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
             case PWD -> throw new BusinessException("不支持该种方式");
         };
 
-        //如果用户不存在，走注册逻辑
+        // 如果用户不存在，走注册逻辑
         if (ValidateUtil.isBlank(userInfo)) {
-            //用户注册
+            // 用户注册
             UserInfo saveUserInfo = new UserInfo();
             UserInfoExtends.UserRole userRole = UserInfoExtends.UserRole.NORMAL;
             switch (loginType) {
@@ -1123,14 +1135,16 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
             saveUserInfo.setCreateDatetime(DateUtil.getCurrentDate());
             saveUserInfo.setLastLoginDatetime(DateUtil.getCurrentDate());
             saveUserInfo.setStatus(UserInfo.Status.ENABLE);
-            saveUserInfo.setUsername(this.userConfigProperties.getUsernamePrefix() + StringUtil.getCurrentDate("yyyyMMddmmss"));
-            saveUserInfo.setNickname(saveUserInfo.getNickname() == null ? "m" + StringUtil.getRandomNumberString(12) : saveUserInfo.getNickname());
-            //此处短信注册不设置密码
+            saveUserInfo.setUsername(
+                    this.userConfigProperties.getUsernamePrefix() + StringUtil.getCurrentDate("yyyyMMddmmss"));
+            saveUserInfo.setNickname(saveUserInfo.getNickname() == null ? "m" + StringUtil.getRandomNumberString(12)
+                    : saveUserInfo.getNickname());
+            // 此处短信注册不设置密码
             super.save(saveUserInfo);
             userInfo = saveUserInfo;
-            //注册日志
+            // 注册日志
             this.pushUserRegisterEvent(deviceInfoDto, loginType, saveUserInfo.getId());
-            //初始化用户拓展资料
+            // 初始化用户拓展资料
             this.userInfoExtendsService.initUserInfoExtends(userInfo.getId(), UserInfoExtends.UserRole.NORMAL);
         } else {
             if (UserInfo.Status.DISABLE.equals(userInfo.getStatus())) {
@@ -1285,7 +1299,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         if (ValidateUtil.isNotBlank(userInfoExtends)) {
             dataMap.put("headImgPath", userInfoExtends.getHeadImgPath());
             dataMap.put("signature", userInfoExtends.getSignature());
-            dataMap.put("memberType", userInfoExtends.getMemberType() != null ? userInfoExtends.getMemberType().getValue() : null);
+            dataMap.put("memberType",
+                    userInfoExtends.getMemberType() != null ? userInfoExtends.getMemberType().getValue() : null);
             dataMap.put("authLevel", userInfoExtends.getAuthLevel());
         }
         dataMap.put("extendsData", userInfo.isExtendsData());
@@ -1318,7 +1333,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
     private UserInfo getCurrentUserInfo() {
         Long userId = super.getUserId();
         UserInfo userInfo = super.getById(userId);
-        //如果用户找不到，表明用户token校验逻辑出现问题
+        // 如果用户找不到，表明用户token校验逻辑出现问题
         if (ValidateUtil.isBlank(userInfo)) {
             throw new BusinessException("用户数据异常", 61001);
         }
@@ -1417,6 +1432,5 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                 .ne(UserInfo::getStatus, UserInfo.Status.DELETE)
                 .one();
     }
-
 
 }
