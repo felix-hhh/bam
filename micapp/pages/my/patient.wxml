@@ -1,0 +1,35 @@
+<!--pages/my/patient.wxml-->
+<view class="container">
+  <van-cell-group>
+    <van-field label="姓名" placeholder="请输入姓名" value="{{formData.name}}" input-align="right" />
+    <van-field value="{{ formData.sexLabel }}" is-link readonly label="性别" placeholder="请选择性别" bind:tap="showSexPopup" input-align="right" />
+    <van-field label="身份证号" value="{{formData.idCard}}" placeholder="请输入身份证号码" input-align="right" />
+    <van-field value="{{ formData.relationLabel }}" is-link readonly label="与账户人关系" placeholder="请选择关系" bind:tap="showRelation" input-align="right" />
+    <view class="form_item">
+    <view class="form_item_body">
+      <view class="form_item_body_label">手机号码</view>
+      <view class="form_item_body_area" bind:tap="showArea">
+        <text>{{formData.areaLabel}}</text>
+        <image src="/images/down.svg" alt="下" class="form_item_body_area_icon" />
+      </view>
+      <van-field border="{{false}}" class="form_item_body_phone" placeholder="请输入手机号码" input-align="right" />
+    </view>
+    </view>
+    <view class="form_item">
+      <view class="form_item_body">
+      <view class="form_item_body_label">设为默认就诊人</view>
+      <van-checkbox disabled value="{{ checked }}" bind:change="onChange">
+      </van-checkbox>
+      </view>
+    </view>
+  </van-cell-group>
+  <van-checkbox value="{{ checked }}" bind:change="onChange">
+    我已阅读并同意《康力得敏感个人信息授权书》
+  </van-checkbox>
+  <van-button block type="primary">添加</van-button>
+
+  <van-action-sheet show="{{ sexShow }}" actions="{{ sexColumns }}" bind:close="closePopup" title="请选择性别" bind:select="onSelectSex" />
+  <van-action-sheet show="{{ relationShow }}" actions="{{ relationColumns }}" bind:close="closePopup" title="请选择关系" bind:select="onSelectRelation" />
+  <van-action-sheet show="{{ areaShow }}" actions="{{ areaColumns }}" bind:close="closePopup" title="请选择区号" bind:select="onSelectArea" />
+
+</view>

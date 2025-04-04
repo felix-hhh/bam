@@ -1,0 +1,42 @@
+/* pages/my/patient.wxss */
+.popup_header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  &_title {
+    text-align: center;
+    flex: 1;
+    font-size: 16px;
+  }
+}
+
+.form_item {
+  padding: 0 16px;
+  background-color: #FFFFFF;
+
+  &_body {
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ebedf0;
+
+    &_area {
+      display: flex;
+      align-items: center;
+      margin-left: 40px;
+
+      &_icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+
+    &_phone {
+      flex: 1;
+    }
+  }
+
+
+}

@@ -1,0 +1,16 @@
+<!--pages/my/login.wxml-->
+<view class="container login_panel">
+  <view class="login_panel_logo">
+  <van-image src="/images/logo.png" width="144px" height="144px" fit="contain" />
+  </view>
+  <view class="login_panel_title">
+    你好！欢迎登录康力得
+  </view>
+  <view class="login_panel_agreement">
+    <van-checkbox value="{{ checked }}" value="{{agree}}" bind:change="changeAgree">
+      我已阅读并同意协议《康力得用户服务协议》、《法律声明》、《隐私政策协议》
+    </van-checkbox>
+  </view>
+  <van-button type="primary" open-type="getPhoneNumber" bindgetphonenumber="userLogin" disabled="{{!agree}}" block>手机号快捷登录</van-button>
+  <view class="login_panel_tips">未注册手机号，将为您注册康力得账号，并直接登录</view>
+</view>
