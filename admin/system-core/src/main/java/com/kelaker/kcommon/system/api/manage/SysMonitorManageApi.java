@@ -2,11 +2,11 @@ package com.kelaker.kcommon.system.api.manage;
 
 import com.kelaker.kcommon.system.service.SysMonitorService;
 import com.kelaker.kcommon.system.vo.SysMonitorVo;
-import com.kelaker.kcommon.system.vo.SysRedisMonitorVo;
 import com.kelaker.ktools.web.annotation.HasAction;
 import com.kelaker.ktools.web.annotation.InModule;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import jakarta.annotation.Resource;
 
 /**
@@ -23,7 +23,7 @@ public class SysMonitorManageApi {
      * 服务对象
      */
     @Resource
-    private SysMonitorService  sysMonitorService;
+    private SysMonitorService sysMonitorService;
 
     @HasAction(actionCode = "SYSTEM_MONITOR:SYS",actionName = "系统监控")
     @GetMapping("/sys")

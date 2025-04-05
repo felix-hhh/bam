@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * 用户基础信息
  *
- * @author makejava
+ * @author felix huang
  * @since 2021-12-10 10:59:47
  */
 @Slf4j
@@ -80,7 +80,7 @@ public class UserInfoFrontApi extends BaseApi {
      */
     @GetMapping("/send/sms/{type}")
     public void sendSmsMy(@Validated @NotNull(message = "验证码类型不能为空") @PathVariable("type") BusinessType type) {
-//        this.userInfoService.sendSmsMy(type);
+        // this.userInfoService.sendSmsMy(type);
     }
 
     /**
@@ -103,7 +103,7 @@ public class UserInfoFrontApi extends BaseApi {
     @NoLogin
     @GetMapping("/sms/{phone}")
     public void sendSms(@Validated @NotBlank(message = "手机号码不能为空") @PathVariable("phone") String phone) {
-        //this.userInfoService.sendLoginSms(phone);
+        // this.userInfoService.sendLoginSms(phone);
     }
 
     /**
@@ -180,7 +180,7 @@ public class UserInfoFrontApi extends BaseApi {
      */
     @PutMapping("/bind/openid")
     public AuthCodeVo bindOpenId(@Validated @RequestBody BindOpenIdDto bindOpenIdDto) {
-//        return this.userInfoService.bindOpenId(bindOpenIdDto);
+        // return this.userInfoService.bindOpenId(bindOpenIdDto);
         return null;
     }
 
@@ -201,16 +201,17 @@ public class UserInfoFrontApi extends BaseApi {
      */
     @PostMapping("/phone/reset/sms")
     public void sendResetPhoneSms(@Validated @RequestBody ResetPhoneSmsDto resetPhoneSmsDto) {
-//        this.userInfoService.sendResetPhoneSms(resetPhoneSmsDto);
+        // this.userInfoService.sendResetPhoneSms(resetPhoneSmsDto);
     }
 
     /**
      * 重设手机号码
+     * 
      * @param resetPhoneDto 重设手机号码
      */
     @PostMapping("/phone/reset")
     public void sendResetPhone(@Validated @RequestBody ResetPhoneDto resetPhoneDto) {
-//        this.userInfoService.resetPhone(resetPhoneDto);
+        // this.userInfoService.resetPhone(resetPhoneDto);
     }
 
     /**
@@ -275,7 +276,8 @@ public class UserInfoFrontApi extends BaseApi {
      * @param authCode 二维码内容
      */
     @GetMapping("/validate/qrcode/{authCode}")
-    public QrCodeVo validateQrCode(@Validated @NotBlank(message = "验证码不能为空") @PathVariable("authCode") String authCode) {
+    public QrCodeVo validateQrCode(
+            @Validated @NotBlank(message = "验证码不能为空") @PathVariable("authCode") String authCode) {
         return this.userInfoService.validateQrCode(authCode);
     }
 
@@ -325,7 +327,8 @@ public class UserInfoFrontApi extends BaseApi {
      * @param nickname 用户昵称
      */
     @GetMapping("/check/nickname/{nickname}")
-    public boolean checkInfoNickname(@Validated @NotBlank(message = "用户昵称D不能为空") @PathVariable("nickname") String nickname) {
+    public boolean checkInfoNickname(
+            @Validated @NotBlank(message = "用户昵称D不能为空") @PathVariable("nickname") String nickname) {
         return this.userInfoService.checkInfoNickname(nickname);
     }
 
