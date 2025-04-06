@@ -12,6 +12,8 @@ export default tseslint.config(
       globals: globals.browser,
     },
     plugins: {},
-    rules: {},
+    rules: {
+      "vue/valid-v-for": "off"
+    },
   },
 );
