@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, onUnmounted } from "vue";
 import useAxios from "@/api";
 import {
   FormColumn,
@@ -41,7 +41,7 @@ const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
-const gridColumn: TableColumn[] = [];
+const gridColumn = ref<TableColumn[]>([]);
 const addFormRef = ref();
 const addFormData = ref({});
 const addFormItems = ref<FormColumn[]>([]);
@@ -57,15 +57,24 @@ const sort: Sort = { prop: "createDatetime", order: "descending" };
 /**
  * 取回页面配置
  */
-const getViewConfig =  () => {
-  const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
-   sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
-    .then(req => {
-      viewConfig.value = req;
-    })
-    .then(() => {
-      initView(viewConfig.value.id);
-    });
+const getViewConfig = async () => {
+  try {
+    const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
+    const config = await sendGet<ViewConfig>(`/system/manage/view/path/${path}`);
+    viewConfig.value = config;
+
+    if (config.id) {
+      // 先获取列配置
+      await getViewColumnConfig(config.id);
+      // 列配置初始化完成后再获取数据
+      if (config.initData) {
+        await getViewData();
+      }
+    }
+  } catch (error) {
+    console.error("Failed to initialize view:", error);
+    ElMessage.error("页面初始化失败");
+  }
 };
 
 /**
@@ -88,7 +97,6 @@ const getViewColumnConfig = (viewId: number) => {
  * 初始化视图表头
  */
 const initViewColumns = () => {
-  console.log(viewColumnConfig.value);
   if (viewColumnConfig.value) {
     viewColumnConfig.value.map(viewColumn => {
       if (viewColumn.showColumn) {
@@ -100,7 +108,7 @@ const initViewColumns = () => {
           sortable: viewColumn.sortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
-        gridColumn.push(tableColumn);
+        gridColumn.value.push(tableColumn);
       }
     });
 
@@ -140,8 +148,7 @@ const initViewColumns = () => {
       }
     }
 
-    gridColumn.push(optLine);
-    console.log(gridColumn);
+    gridColumn.value.push(optLine);
   }
 };
 
@@ -193,14 +200,20 @@ const getColumnFormat = (formatName?: string) => {
 /**
  * 初始化页面
  */
-const initView = (viewId: number) => {
+const initView = async (viewId: number) => {
   if (viewConfig.value) {
     const config = viewConfig.value;
     if (config.initData) {
-      //页面数据
-      getViewData();
-      getViewColumnConfig(viewId);
-      initOptButton();
+      try {
+        displayControl.loading = true;
+        await getViewColumnConfig(viewId);
+        await getViewData();
+      } catch (error) {
+        console.error("Failed to initialize view:", error);
+        ElMessage.error("页面初始化失败");
+      } finally {
+        displayControl.loading = false;
+      }
     }
   }
 };
@@ -326,6 +339,18 @@ const getViewData = () => {
 
 onMounted(() => {
   getViewConfig();
+});
+
+onUnmounted(() => {
+  // 清理数据
+  viewConfig.value = {};
+  viewColumnConfig.value = undefined;
+  viewData.value = [];
+  viewPageData.value = undefined;
+  optButtons.value = [];
+  gridColumn.value = [];
+  addFormItems.value = [];
+  addFormRules.value = {};
 });
 </script>
 
