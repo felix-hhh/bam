@@ -1,20 +1,21 @@
 package com.kelaker.kcommon.medical.service;
 
-import com.kelaker.kcommon.medical.entity.MedicalPatient;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kelaker.kcommon.medical.dao.MedicalPatientDao;
-import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
-import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
 import com.kelaker.kcommon.medical.dto.MedicalPatientDto;
+import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
+import com.kelaker.kcommon.medical.entity.MedicalPatient;
+import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
+import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  * 病人信息(MedicalPatient)表服务
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:51
+ * @since 2025-04-09 10:39:07
  */
 @Service
 public class MedicalPatientService extends BaseService<MedicalPatientDao, MedicalPatient> {
@@ -39,6 +40,9 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
      */
     public MedicalPatientVo getMedicalPatient(Long id) {
         MedicalPatient medicalPatient = super.getById(id);
+        if (medicalPatient == null) {
+            throw new BusinessException("病人信息不存在");
+        }
         return this.convertToVo(medicalPatient);
     }
 
@@ -53,10 +57,39 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
     }
 
     /**
+     * 更新对象
+     *
+     * @param dto 对象
+     */
+    public void updateMedicalPatient(MedicalPatientDto dto) {
+        if (dto.getId() == null) {
+            throw new BusinessException("病人ID不能为空");
+        }
+        MedicalPatient existingPatient = super.getById(dto.getId());
+        if (existingPatient == null) {
+            throw new BusinessException("病人信息不存在");
+        }
+        MedicalPatient medicalPatient = super.objectConvert(dto, MedicalPatient.class);
+        super.updateById(medicalPatient);
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param id 对象ID
+     */
+    public void deleteMedicalPatient(Long id) {
+        MedicalPatient existingPatient = super.getById(id);
+        if (existingPatient == null) {
+            throw new BusinessException("病人信息不存在");
+        }
+        super.removeById(id);
+    }
+
+    /**
      * 对象转换
      */
     private MedicalPatientVo convertToVo(MedicalPatient medicalPatient) {
         return super.objectConvert(medicalPatient, MedicalPatientVo.class);
     }
 }
-

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  * 队列(MedicalQueue)表数据库访问层
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:51
+ * @since 2025-04-09 10:39:08
  */
 @Repository
 public interface MedicalQueueDao extends BaseMapper<MedicalQueue> {

@@ -8,7 +8,7 @@ import lombok.Data;
  * 队列(MedicalQueue)查询实体类
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:51
+ * @since 2025-04-09 10:39:08
  */
 @Data
 public class MedicalQueueSearchDto {
@@ -17,6 +17,11 @@ public class MedicalQueueSearchDto {
      * 序号
      */
     private Integer id;
+
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 
     /**
      * 医院ID

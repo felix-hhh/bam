@@ -1,10 +1,10 @@
 package com.kelaker.kcommon.medical.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  * 员工信息(MedicalDoctor)表实体类
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:50
+ * @since 2025-04-09 10:39:06
  */
 @Data
 @TableName("medical_doctor")
@@ -57,16 +57,43 @@ public class MedicalDoctor extends Model<MedicalDoctor> {
     /**
      * 状态
      */
-    private String status;
+    private Status status;
 
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createDatetime;
 
     /**
      * 服务次数
      */
     private Integer serviceCount;
-}
 
+    @Getter
+    @AllArgsConstructor
+    public enum Status implements IEnum<String> {
+
+        ENABLE("M_D_S_NORMAL", "启用"),
+        DISABLE("M_D_S_DISABLE", "禁用"),
+        DELETE("M_D_S_DELETE", "删除");
+
+        private final String value;
+
+        private final String remark;
+
+        public static Status toEnum(String value) {
+            for (Status status : values()) {
+                if (value.equals(status.getValue())) {
+                    return status;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+}

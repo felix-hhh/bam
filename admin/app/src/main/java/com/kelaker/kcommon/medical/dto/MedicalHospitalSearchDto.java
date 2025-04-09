@@ -8,7 +8,7 @@ import lombok.Data;
  * 医院信息(MedicalHospital)查询实体类
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:50
+ * @since 2025-04-09 10:39:07
  */
 @Data
 public class MedicalHospitalSearchDto {

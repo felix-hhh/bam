@@ -1,20 +1,21 @@
 package com.kelaker.kcommon.medical.service;
 
-import com.kelaker.kcommon.medical.entity.MedicalHospital;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kelaker.kcommon.medical.dao.MedicalHospitalDao;
-import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
-import com.kelaker.kcommon.medical.dto.MedicalHospitalSearchDto;
 import com.kelaker.kcommon.medical.dto.MedicalHospitalDto;
+import com.kelaker.kcommon.medical.dto.MedicalHospitalSearchDto;
+import com.kelaker.kcommon.medical.entity.MedicalHospital;
+import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
+import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
  * 医院信息(MedicalHospital)表服务
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:50
+ * @since 2025-04-09 10:39:07
  */
 @Service
 public class MedicalHospitalService extends BaseService<MedicalHospitalDao, MedicalHospital> {
@@ -39,6 +40,9 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
      */
     public MedicalHospitalVo getMedicalHospital(Long id) {
         MedicalHospital medicalHospital = super.getById(id);
+        if (medicalHospital == null) {
+            throw new BusinessException("医院信息不存在");
+        }
         return this.convertToVo(medicalHospital);
     }
 
@@ -53,10 +57,39 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
     }
 
     /**
+     * 更新对象
+     *
+     * @param dto 对象
+     */
+    public void updateMedicalHospital(MedicalHospitalDto dto) {
+        if (dto.getId() == null) {
+            throw new BusinessException("医院ID不能为空");
+        }
+        MedicalHospital existingHospital = super.getById(dto.getId());
+        if (existingHospital == null) {
+            throw new BusinessException("医院信息不存在");
+        }
+        MedicalHospital medicalHospital = super.objectConvert(dto, MedicalHospital.class);
+        super.updateById(medicalHospital);
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param id 对象ID
+     */
+    public void deleteMedicalHospital(Long id) {
+        MedicalHospital existingHospital = super.getById(id);
+        if (existingHospital == null) {
+            throw new BusinessException("医院信息不存在");
+        }
+        super.removeById(id);
+    }
+
+    /**
      * 对象转换
      */
     private MedicalHospitalVo convertToVo(MedicalHospital medicalHospital) {
         return super.objectConvert(medicalHospital, MedicalHospitalVo.class);
     }
 }
-

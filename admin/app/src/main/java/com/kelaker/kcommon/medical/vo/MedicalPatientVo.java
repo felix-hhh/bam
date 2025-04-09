@@ -8,7 +8,7 @@ import lombok.Data;
  * 病人信息(MedicalPatient)表实体类
  *
  * @author Felix Huang
- * @since 2025-04-09 10:21:51
+ * @since 2025-04-09 10:39:07
  */
 @Data
 public class MedicalPatientVo {
