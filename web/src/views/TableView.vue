@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { onMounted, reactive, ref, onUnmounted } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import useAxios from "@/api";
 import {
   FormColumn,
@@ -41,7 +41,7 @@ const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
-const gridColumn = ref<TableColumn[]>([]);
+const gridColumn: TableColumn[] = [];
 const addFormRef = ref();
 const addFormData = ref({});
 const addFormItems = ref<FormColumn[]>([]);
@@ -57,24 +57,15 @@ const sort: Sort = { prop: "createDatetime", order: "descending" };
 /**
  * 取回页面配置
  */
-const getViewConfig = async () => {
-  try {
-    const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
-    const config = await sendGet<ViewConfig>(`/system/manage/view/path/${path}`);
-    viewConfig.value = config;
-
-    if (config.id) {
-      // 先获取列配置
-      await getViewColumnConfig(config.id);
-      // 列配置初始化完成后再获取数据
-      if (config.initData) {
-        await getViewData();
-      }
-    }
-  } catch (error) {
-    console.error("Failed to initialize view:", error);
-    ElMessage.error("页面初始化失败");
-  }
+const getViewConfig = () => {
+  const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
+  sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
+    .then(req => {
+      viewConfig.value = req;
+    })
+    .then(() => {
+      initView(viewConfig.value.id);
+    });
 };
 
 /**
@@ -108,7 +99,7 @@ const initViewColumns = () => {
           sortable: viewColumn.sortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
-        gridColumn.value.push(tableColumn);
+        gridColumn.push(tableColumn);
       }
     });
 
@@ -148,7 +139,7 @@ const initViewColumns = () => {
       }
     }
 
-    gridColumn.value.push(optLine);
+    gridColumn.push(optLine);
   }
 };
 
@@ -159,20 +150,13 @@ const initForm = () => {
   if (viewConfig.value?.optAdd) {
     viewColumnConfig.value?.map(column => {
       //表格数据
-      const itemData = {
+      addFormItems.value?.push({
         label: column.columnLabel,
         prop: column.columnName,
         type: column.dataType,
         addHandle: column.addHandle,
         editHandle: column.editHandle,
-        dataSource: column.dataSource,
-      };
-
-      if (column.dataSource != null) {
-        itemData["selectData"] = getSelectData(column.dataSource);
-      }
-
-      addFormItems.value?.push(itemData);
+      });
 
       //表格规则
       if (column.ruleRequired) {
@@ -182,7 +166,6 @@ const initForm = () => {
         };
       }
     });
-
   }
 };
 
@@ -200,20 +183,14 @@ const getColumnFormat = (formatName?: string) => {
 /**
  * 初始化页面
  */
-const initView = async (viewId: number) => {
+const initView = (viewId: number) => {
   if (viewConfig.value) {
     const config = viewConfig.value;
     if (config.initData) {
-      try {
-        displayControl.loading = true;
-        await getViewColumnConfig(viewId);
-        await getViewData();
-      } catch (error) {
-        console.error("Failed to initialize view:", error);
-        ElMessage.error("页面初始化失败");
-      } finally {
-        displayControl.loading = false;
-      }
+      //页面数据
+      getViewData();
+      getViewColumnConfig(viewId);
+      initOptButton();
     }
   }
 };
@@ -226,7 +203,7 @@ const initOptButton = () => {
     const config = viewConfig.value;
     if (config.optAdd && (config.optAddShowRegion === "S_V_R_OPT" || config.optAddShowRegion === "S_V_R_BOTH")) {
       const optButton: TableOptButton = {
-        label: config.optAddLabel || "添加",
+        label: config.optAddLabel,
         selectHandler: false,
         type: "primary",
         handle: showAddDialog,
@@ -234,17 +211,6 @@ const initOptButton = () => {
       optButtons.value.push(optButton);
     }
   }
-};
-
-/**
- * 根据字典分组代码取回下拉列表的值
- * @param dictGroupCode
- */
-const getSelectData = async (dictGroupCode: string) => {
-  await sendGet(`/system/manage/dict/list/${dictGroupCode}`)
-    .then(res => {
-      return res;
-    });
 };
 
 /**
@@ -340,18 +306,6 @@ const getViewData = () => {
 onMounted(() => {
   getViewConfig();
 });
-
-onUnmounted(() => {
-  // 清理数据
-  viewConfig.value = {};
-  viewColumnConfig.value = undefined;
-  viewData.value = [];
-  viewPageData.value = undefined;
-  optButtons.value = [];
-  gridColumn.value = [];
-  addFormItems.value = [];
-  addFormRules.value = {};
-});
 </script>
 
 <template>
@@ -385,16 +339,6 @@ onUnmounted(() => {
                         :label="item.label" :prop="item.prop">
             <template v-if="item.type==='switch'">
               <el-switch v-model="addFormData[item.prop]" />
-            </template>
-            <template v-else-if="item.type==='select'">
-              <el-select v-model="value" placeholder="Select">
-                <el-option
-                  v-for="select in item.selectData"
-                  :key="select.dictCode"
-                  :label="select.dictValue"
-                  :value="select.dictCode"
-                />
-              </el-select>
             </template>
             <template v-else>
               <el-input :type="item.type" v-model="addFormData[item.prop]" />

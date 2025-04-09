@@ -6,7 +6,6 @@ import com.kelaker.kcommon.system.dao.SysActionDao;
 import com.kelaker.kcommon.system.dto.SysActionDto;
 import com.kelaker.kcommon.system.dto.SysActionSearchDto;
 import com.kelaker.kcommon.system.entity.SysAction;
-import com.kelaker.kcommon.system.entity.SysAdminInfo;
 import com.kelaker.kcommon.system.manager.SysCacheManager;
 import com.kelaker.kcommon.system.vo.SysActionVo;
 import com.kelaker.kcommon.system.vo.SysModuleTreeVo;
@@ -16,10 +15,10 @@ import com.kelaker.ktools.common.populator.ConvertUtils;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,8 +46,9 @@ public class SysActionService extends BaseService<SysActionDao, SysAction> {
      */
     @CacheExpire(key = SystemConstant.SYS_ACTION_LIST_CACHE_KEY)
     public void addSystemAction(SysActionDto dto) {
-        sysModuleService.findByModuleCode(dto.getModuleCode())
-                .orElseThrow(() -> new BusinessException("系统模块不存在"));
+        String moduleCode = dto.getModuleCode();
+        sysModuleService.findByModuleCode(moduleCode)
+                .orElseThrow(() -> new BusinessException("系统模块不存在：" + moduleCode));
 
         findByActionCode(dto.getActionCode()).ifPresent((sysAction -> {
             log.error("======系统功能已存在{}", sysAction.getActionCode());

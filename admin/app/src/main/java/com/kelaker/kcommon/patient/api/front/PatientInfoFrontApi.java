@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024-03-27 11:42:56
  */
 @RestController
-@RequestMapping("/front/patient")
+@RequestMapping("/patient/front")
 public class PatientInfoFrontApi extends BaseApi {
 
     /**
