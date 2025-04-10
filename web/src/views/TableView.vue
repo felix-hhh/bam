@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, onUnmounted } from "vue";
 import useAxios from "@/api";
 import {
   FormColumn,
@@ -41,7 +41,7 @@ const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
-const gridColumn: TableColumn[] = [];
+const gridColumn = ref<TableColumn[]>([]);
 const addFormRef = ref();
 const addFormData = ref({});
 const addFormItems = ref<FormColumn[]>([]);
@@ -58,14 +58,25 @@ const sort: Sort = { prop: "createDatetime", order: "descending" };
  * 取回页面配置
  */
 const getViewConfig = () => {
-  const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
-  sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
-    .then(req => {
-      viewConfig.value = req;
-    })
-    .then(() => {
-      initView(viewConfig.value.id);
-    });
+  try {
+    const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
+    sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
+      .then(req => {
+        if (req !== undefined) {
+          viewConfig.value = req;
+          initOptButton();
+          getViewColumnConfig(viewConfig.value.id);
+          // 列配置初始化完成后再获取数据
+          if (viewConfig.value.initData) {
+            getViewData();
+          }
+        }
+      });
+
+  } catch (error) {
+    console.error("Failed to initialize view:", error);
+    ElMessage.error("页面初始化失败");
+  }
 };
 
 /**
@@ -76,9 +87,6 @@ const getViewColumnConfig = (viewId: number) => {
   sendGet<ViewColumnConfig[]>(`/system/manage/view/column/list/${viewId}`)
     .then(req => {
       viewColumnConfig.value = req;
-    })
-    .then(() => {
-      //视图表头初始化
       initViewColumns();
       initForm();
     });
@@ -99,7 +107,7 @@ const initViewColumns = () => {
           sortable: viewColumn.sortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
-        gridColumn.push(tableColumn);
+        gridColumn.value.push(tableColumn);
       }
     });
 
@@ -139,7 +147,7 @@ const initViewColumns = () => {
       }
     }
 
-    gridColumn.push(optLine);
+    gridColumn.value.push(optLine);
   }
 };
 
@@ -150,13 +158,17 @@ const initForm = () => {
   if (viewConfig.value?.optAdd) {
     viewColumnConfig.value?.map(column => {
       //表格数据
-      addFormItems.value?.push({
+      const itemData = {
         label: column.columnLabel,
         prop: column.columnName,
         type: column.dataType,
         addHandle: column.addHandle,
         editHandle: column.editHandle,
-      });
+        dataSource: column.dataSource,
+      };
+
+
+      addFormItems.value?.push(itemData);
 
       //表格规则
       if (column.ruleRequired) {
@@ -166,6 +178,7 @@ const initForm = () => {
         };
       }
     });
+
   }
 };
 
@@ -181,21 +194,6 @@ const getColumnFormat = (formatName?: string) => {
 };
 
 /**
- * 初始化页面
- */
-const initView = (viewId: number) => {
-  if (viewConfig.value) {
-    const config = viewConfig.value;
-    if (config.initData) {
-      //页面数据
-      getViewData();
-      getViewColumnConfig(viewId);
-      initOptButton();
-    }
-  }
-};
-
-/**
  * 初始化操作按钮
  */
 const initOptButton = () => {
@@ -203,7 +201,7 @@ const initOptButton = () => {
     const config = viewConfig.value;
     if (config.optAdd && (config.optAddShowRegion === "S_V_R_OPT" || config.optAddShowRegion === "S_V_R_BOTH")) {
       const optButton: TableOptButton = {
-        label: config.optAddLabel,
+        label: config.optAddLabel || "添加",
         selectHandler: false,
         type: "primary",
         handle: showAddDialog,
@@ -305,6 +303,18 @@ const getViewData = () => {
 
 onMounted(() => {
   getViewConfig();
+});
+
+onUnmounted(() => {
+  // 清理数据
+  viewConfig.value = {};
+  viewColumnConfig.value = undefined;
+  viewData.value = [];
+  viewPageData.value = undefined;
+  optButtons.value = [];
+  gridColumn.value = [];
+  addFormItems.value = [];
+  addFormRules.value = {};
 });
 </script>
 

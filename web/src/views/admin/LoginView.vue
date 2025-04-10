@@ -4,11 +4,12 @@ import { FormItemRule } from "element-plus";
 import { LoginData } from "#/entity.ts";
 import { MD5 } from "crypto-js";
 import useAxios from "@/api";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import useStore from "@/stores";
 
 const loginFormData = ref<LoginData>({ identity: "", password: "", username: "", verifyCode: "" });
 const loginFormRef = ref();
+const router = useRouter();
 const imageUrl = ref<String>();
 const rules = {
   username: [

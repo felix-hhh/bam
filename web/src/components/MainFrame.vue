@@ -1,33 +1,34 @@
 <script setup lang="ts">
 import { ChatLineRound, Bell, Expand, Fold, FullScreen, HomeFilled } from "@element-plus/icons-vue";
-import { RouteRecordRaw, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { onMounted, reactive, ref } from "vue";
 import useStore from "@/stores";
 import useAxios from "@/api";
 import { SysMenu, TokenInfo } from "#/entity.ts";
-import MainFrame from "@/components/MainFrame.vue";
-import TableView from "@/views/TableView.vue";
 
+const store = useStore();
 const isShow = ref(true);
 const isCollapse = ref(false);
 const router = useRouter();
-const routerList: RouteRecordRaw[] = router.options.routes;
 const menuList = ref<SysMenu[]>();
 
 const username = ref();
-const { sendPut, sendGet } = useAxios();
+const { sendPut } = useAxios();
 const displayControl = reactive({
   changePwdDialog: false,
 });
 
+/**
+ * 取回当前登录用户名
+ */
 const getUsername = () => {
-  const store = useStore();
   const tokenInfo: TokenInfo = store.getTokenInfo();
   username.value = tokenInfo.userData.nickname || tokenInfo.userData.username;
 };
 
 const logout = () => {
   sendPut("/system/manage/admin/info/logout").then(() => {
+    store.init();
     router.push("/");
   });
 };
@@ -36,39 +37,7 @@ const logout = () => {
  * 取回所有菜单列表
  */
 const getMenuList = () => {
-  sendGet<SysMenu[]>("/system/manage/menu/list").then((req) => {
-    menuList.value = req;
-    initMenu();
-  });
-};
-
-const initMenu = async () => {
-  menuList.value?.map((menu) => {
-    router.addRoute({
-      name: menu.name,
-      path: menu.path,
-      component: getComponent(menu.component),
-    });
-
-    menu.children?.map((child) => {
-      router.addRoute(menu.name, {
-        name: child.name,
-        path: menu.path + child.path,
-        component: getComponent(child.component),
-      });
-    });
-  });
-};
-
-const getComponent = (componentName?: "MainFrame" | "TableView") => {
-  switch (componentName) {
-    case "TableView":
-      return TableView;
-    case "MainFrame":
-      return MainFrame;
-    default:
-      return MainFrame;
-  }
+    menuList.value = store.getMenuList();
 };
 
 const showChangePwdDialog = () => {
