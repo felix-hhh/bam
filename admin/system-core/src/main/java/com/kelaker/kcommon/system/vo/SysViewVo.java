@@ -39,7 +39,7 @@ public class SysViewVo {
     /**
      * 初始化请求数据
      */
-    private Integer initData;
+    private Boolean initData;
 
     /**
      * 初始化数据请求地址
