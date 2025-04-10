@@ -7,6 +7,7 @@ import com.kelaker.kcommon.system.dto.SysMenuSearchDto;
 import com.kelaker.kcommon.system.service.SysMenuService;
 import com.kelaker.kcommon.system.vo.SysMenuVo;
 import com.kelaker.ktools.common.vo.RequestPage;
+import com.kelaker.ktools.web.annotation.NoLogin;
 import com.kelaker.ktools.web.base.api.BaseApi;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,7 @@ public class SysMenuManageApi extends BaseApi {
     /**
      * 取回系统菜单数据
      */
+    @NoLogin
     @GetMapping("/list")
     public List<SysMenuVo> listSysMenu() {
         return this.sysMenuService.listAll();
