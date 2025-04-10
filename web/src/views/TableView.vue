@@ -222,7 +222,9 @@ const showAddDialog = () => {
 /**
  * 显示编辑窗口
  */
-const showEditDialog = () => {
+const showEditDialog = (index,data) => {
+  console.log(data);
+  addFormData.value = data;
   displayControl.addDialog = true;
   displayControl.isEdit = true;
 };
