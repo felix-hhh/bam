@@ -4,21 +4,17 @@ import com.kelaker.kcommon.system.dto.SysActionDto;
 import com.kelaker.kcommon.system.entity.SysAction;
 import com.kelaker.kcommon.system.service.SysActionService;
 import com.kelaker.ktools.common.utils.ValidateUtil;
-import com.kelaker.ktools.common.vo.R;
 import com.kelaker.ktools.web.annotation.HasAction;
 import com.kelaker.ktools.web.annotation.InModule;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.util.pattern.PathPattern;
 
-import jakarta.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +39,9 @@ public class ActionScanHelper {
         manageController.forEach((key, value) -> {
             Class<?> object = value.getClass();
             InModule module = object.getAnnotation(InModule.class);
+            if (ValidateUtil.isBlank(module)) {
+                return;
+            }
             Map<String, String> pathPattern = this.getPathPattern();
             String moduleCode = module.moduleCode();
 

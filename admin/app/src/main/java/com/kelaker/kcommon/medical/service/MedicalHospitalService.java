@@ -90,6 +90,8 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
      * 对象转换
      */
     private MedicalHospitalVo convertToVo(MedicalHospital medicalHospital) {
-        return super.objectConvert(medicalHospital, MedicalHospitalVo.class);
+        MedicalHospitalVo vo = super.objectConvert(medicalHospital, MedicalHospitalVo.class);
+        vo.setStatusStr(medicalHospital.getStatus().getRemark());
+        return vo;
     }
 }

@@ -1,8 +1,8 @@
 package com.kelaker.kcommon.medical.vo;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 医院信息(MedicalHospital)表实体类
@@ -72,5 +72,6 @@ public class MedicalHospitalVo {
      * 状态
      */
     private String status;
+    private String statusStr;
 }
 

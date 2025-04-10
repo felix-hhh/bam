@@ -90,6 +90,8 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
      * 对象转换
      */
     private MedicalPatientVo convertToVo(MedicalPatient medicalPatient) {
-        return super.objectConvert(medicalPatient, MedicalPatientVo.class);
+        MedicalPatientVo vo = super.objectConvert(medicalPatient, MedicalPatientVo.class);
+        vo.setStatusStr(medicalPatient.getStatus().getRemark());
+        return vo;
     }
 }

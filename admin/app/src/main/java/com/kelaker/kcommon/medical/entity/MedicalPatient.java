@@ -65,6 +65,16 @@ public class MedicalPatient extends Model<MedicalPatient> {
     private Date birthday;
 
     /**
+     * 上一次就诊时间
+     */
+    private Date lastTreatDatetime;
+
+    /**
+     * 就诊次数
+     */
+    private int treatCount;
+
+    /**
      * 数据创建时间
      */
     @TableField(fill = FieldFill.INSERT)
