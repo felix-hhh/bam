@@ -13,7 +13,7 @@ import {
 } from "#/conponent.ts";
 import { ElMessage, ElMessageBox, Sort } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
-import { booleanFormat, datetimeFormat } from "@/utils/util";
+import { booleanFormat, datetimeFormat, depthCopy } from "@/utils/util";
 import { MD5 } from "crypto-js";
 import { useRouter } from "vue-router";
 import Base64 from "crypto-js/enc-base64";
@@ -224,7 +224,7 @@ const showAddDialog = () => {
  */
 const showEditDialog = (index,data) => {
   console.log(data);
-  addFormData.value = data;
+  addFormData.value = depthCopy(data);
   displayControl.addDialog = true;
   displayControl.isEdit = true;
 };
