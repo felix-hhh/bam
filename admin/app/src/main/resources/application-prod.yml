@@ -61,3 +61,7 @@ minio:
       name: images
     files:
       name: upload
+bam:
+  tools:
+    wxMicAppId: wx2ecd3a0ec2002c20
+    wxMicSecret: 78fa51300dbc3a242df06a0a3f661865

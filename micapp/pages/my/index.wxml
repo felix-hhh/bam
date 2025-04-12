@@ -12,10 +12,10 @@
         </view>
         <view class="user_panel_info">
           <view class="user_panel_info_name">
-            <text>kld1234</text>
+            <text>{{userInfo.nickname || userInfo.username || '未设置昵称'}}</text>
           </view>
           <view class="user_panel_info_phone">
-            <text>绑定手机号：13800138000</text>
+            <text>绑定手机号：{{userInfo.phone || '未绑定手机号'}}</text>
           </view>
         </view>
         <view>
@@ -28,24 +28,14 @@
         <view class="panel_header_title">常用就诊人</view>
       </view>
       <view class="user_list_body">
-        <view class="user_list_body_item">
+        <view class="user_list_body_item" wx:for="{{patientList}}" wx:key="id">
           <view class="user_list_body_item_header">
-            <van-image width="24px" height="24px" fit="contain" src="/images/nanren.png" />
+            <van-image width="24px" height="24px" fit="contain" src="{{item.gender === 1 ? '/images/nanren.png' : '/images/nvren.png'}}" />
           </view>
-          <view class="user_list_body_item_name">张三</view>
-          <view class="user_list_body_item_relation">本人</view>
-          <view class="user_list_body_item_icon man">
-            <van-image width="20px" height="20px" fit="contain" src="/images/nanrenicon.svg" />
-          </view>
-        </view>
-        <view class="user_list_body_item">
-          <view class="user_list_body_item_header">
-            <van-image width="24px" height="24px" fit="contain" src="/images/nvren.png" />
-            </view>
-          <view class="user_list_body_item_name">张三</view>
-          <view class="user_list_body_item_relation">本人</view>
-          <view class="user_list_body_item_icon women">
-            <van-image width="20px" height="20px" fit="contain" src="/images/nvrenicon.svg" />
+          <view class="user_list_body_item_name">{{item.name}}</view>
+          <view class="user_list_body_item_relation">{{item.relation}}</view>
+          <view class="user_list_body_item_icon {{item.gender === 1 ? 'man' : 'women'}}">
+            <van-image width="20px" height="20px" fit="contain" src="{{item.gender === 1 ? '/images/nanrenicon.svg' : '/images/nvrenicon.svg'}}" />
           </view>
         </view>
         <view class="user_list_body_item add_btn" bind:tap="gotoAddPatient">
@@ -59,7 +49,7 @@
         <view class="panel_header_title">工具</view>
       </view>
       <view class="tools_list_body">
-        <view class="tools_list_body_item">
+        <view class="tools_list_body_item" bind:tap="gotoRecord">
           <view class="tools_list_body_item_icon">
             <image src="/images/record.svg"/>
           </view>
@@ -67,7 +57,7 @@
             记录
           </view>
         </view>
-        <view class="tools_list_body_item">
+        <view class="tools_list_body_item" bind:tap="gotoReport">
           <view class="tools_list_body_item_icon">
             <image src="/images/report.svg" />
           </view>
@@ -75,7 +65,7 @@
             报告
           </view>
         </view>
-        <view class="tools_list_body_item">
+        <view class="tools_list_body_item" bind:tap="gotoVideo">
           <view class="tools_list_body_item_icon">
           <image src="/images/video.svg" />
           </view>

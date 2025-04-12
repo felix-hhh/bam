@@ -35,7 +35,7 @@ public class MedicalPatientFrontApi extends BaseApi {
      *
      * @return 查询结果
      */
-    @PostMapping("/list")
+    @GetMapping("/list")
     public List<MedicalPatientVo> listMyMedicalPatient() {
         return this.medicalPatientService.listMyMedicalPatient();
     }

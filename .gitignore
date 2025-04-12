@@ -1,5 +1,6 @@
 .vscode/
 .idea/
+.cloudbase/
 **/.DS_Store/
 node_modules/
 build/

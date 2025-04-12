@@ -8,13 +8,28 @@ Page({
    * 页面的初始数据
    */
   data: {
+    patientList: [] // 病人列表数据
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    
+  },
 
+  // 获取病人列表
+  getPatientList() {
+    sendGet({
+      url: '/medical/front/patient/list',
+      data: {}
+    }).then(res => {
+      this.setData({
+        patientList: res
+      });
+    }).catch(err => {
+      console.error('获取病人列表失败:', err);
+    });
   },
 
   /**
@@ -29,6 +44,7 @@ Page({
    */
   onShow() {
     this.getTabBar().init();
+    this.getPatientList();
   },
 
   /**
