@@ -1,17 +1,21 @@
 package com.kelaker.kcommon.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kelaker.kcommon.system.dao.SysAdminRoleDao;
 import com.kelaker.kcommon.system.dto.SysAdminRoleDto;
 import com.kelaker.kcommon.system.dto.SysAdminRoleGrantActionDto;
+import com.kelaker.kcommon.system.dto.SysAdminRoleSearchDto;
 import com.kelaker.kcommon.system.entity.SysAdminRole;
 import com.kelaker.kcommon.system.vo.SysAdminRoleVo;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.populator.ConvertUtils;
+import com.kelaker.ktools.common.utils.ValidateUtil;
+import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,8 +78,25 @@ public class SysAdminRoleService extends BaseService<SysAdminRoleDao, SysAdminRo
 
         // grant actions
         sysAdminRoleActionLinkService.grantActionsUnSafe(dto.getId(),
-                                                      dto.getActionCodes(),
-                                                      getLoggingUserIdSafely());
+                dto.getActionCodes(),
+                super.getUserId());
+    }
+
+    /**
+     * 分页查询管理员角色
+     *
+     * @param searchDto 查询dto
+     */
+    public IPage<SysAdminRoleVo> pageSysAdminRole(RequestPage<SysAdminRoleSearchDto> searchDto) {
+        SysAdminRoleSearchDto dto = searchDto.getData();
+        if (ValidateUtil.isBlank(dto)) {
+            dto = new SysAdminRoleSearchDto();
+        }
+        SysAdminRole sysAdminRole = super.objectConvert(dto, SysAdminRole.class);
+
+
+        IPage<SysAdminRole> page = super.page(super.createPage(searchDto), super.createWrapper(sysAdminRole));
+        return super.mapPageToTarget(page, this::convertToVo);
     }
 
     /**
@@ -86,7 +107,7 @@ public class SysAdminRoleService extends BaseService<SysAdminRoleDao, SysAdminRo
     public List<SysAdminRoleVo> listRoleVos() {
         List<SysAdminRole> list = super.lambdaQuery()
                 .list();
-        return super.mapListToTarget(list,this::entityToVo);
+        return super.mapListToTarget(list, this::convertToVo);
     }
 
     /**
@@ -113,7 +134,7 @@ public class SysAdminRoleService extends BaseService<SysAdminRoleDao, SysAdminRo
      * 根据角色代码更新角色状态
      *
      * @param roleId 角色id
-     * @param status   {@link SysAdminRole.Status}
+     * @param status {@link SysAdminRole.Status}
      * @throws BusinessException 如果角色不存在
      */
     public void updateStatusByRoleCode(Long roleId, SysAdminRole.Status status) {
@@ -149,29 +170,13 @@ public class SysAdminRoleService extends BaseService<SysAdminRoleDao, SysAdminRo
     /**
      * entity to Vo
      *
-     * @param entity
-     *         entity
-     *
+     * @param entity entity
      * @return Vo
      */
-    protected SysAdminRoleVo entityToVo(SysAdminRole entity) {
+    protected SysAdminRoleVo convertToVo(SysAdminRole entity) {
         SysAdminRoleVo sysAdminRoleVo = super.objectConvert(entity, SysAdminRoleVo.class);
         sysAdminRoleVo.setStatusStr(entity.getStatus().getRemark());
         return sysAdminRoleVo;
     }
-
-    /**
-     * 获取当前已经登录的管理员ID(管理员必须已经登录)
-     *
-     * @return 管理员ID
-     */
-    private Long getLoggingUserIdSafely() {
-        final Long userId = getUserId();
-        if (userId == null) {
-            throw new BusinessException("用户未登录");
-        }
-        return userId;
-    }
-
 
 }

@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { ElMessage } from "element-plus";
-import router from "@/router";
 import useStore from "@/stores";
 import { ResponseData } from "#/entity.ts";
+import { Router } from "vue-router";
 
 const useAxios = () => {
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -41,7 +41,7 @@ const useAxios = () => {
     (error) => {
       const response = error.response;
       if (response !== undefined && response.status === HttpStatusCode.Unauthorized) {
-        router.push("/");
+        ElMessage.error("无权限操作，请重新登录");
         return;
       }
       if (response) {

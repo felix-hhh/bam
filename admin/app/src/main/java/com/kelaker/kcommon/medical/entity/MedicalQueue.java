@@ -42,7 +42,7 @@ public class MedicalQueue extends Model<MedicalQueue> {
     /**
      * 患者ID
      */
-    private Integer patientId;
+    private Long patientId;
 
     /**
      * 患者信息
@@ -73,7 +73,7 @@ public class MedicalQueue extends Model<MedicalQueue> {
     /**
      * 当前号码
      */
-    private Integer currentNum;
+    private Long currentNum;
 
     /**
      * 诊断时间

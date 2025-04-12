@@ -6,10 +6,12 @@ import com.kelaker.kcommon.medical.dto.MedicalDoctorDto;
 import com.kelaker.kcommon.medical.dto.MedicalDoctorSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalDoctor;
 import com.kelaker.kcommon.medical.vo.MedicalDoctorVo;
+import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +22,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MedicalDoctorService extends BaseService<MedicalDoctorDao, MedicalDoctor> {
+
+    @Resource
+    private MedicalHospitalService medicalHospitalService;
 
     /**
      * 分页查询
@@ -91,6 +96,9 @@ public class MedicalDoctorService extends BaseService<MedicalDoctorDao, MedicalD
      * 对象转换
      */
     private MedicalDoctorVo convertToVo(MedicalDoctor medicalDoctor) {
-        return super.objectConvert(medicalDoctor, MedicalDoctorVo.class);
+        MedicalDoctorVo vo = super.objectConvert(medicalDoctor, MedicalDoctorVo.class);
+        MedicalHospitalVo medicalHospital = medicalHospitalService.getMedicalHospital(medicalDoctor.getHospitalId());
+        vo.setHospitalName(medicalHospital.getName());
+        return vo;
     }
 }

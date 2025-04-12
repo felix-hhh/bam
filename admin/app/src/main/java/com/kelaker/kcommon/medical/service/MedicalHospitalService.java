@@ -6,6 +6,7 @@ import com.kelaker.kcommon.medical.dto.MedicalHospitalDto;
 import com.kelaker.kcommon.medical.dto.MedicalHospitalSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalHospital;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
+import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
@@ -38,6 +39,7 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
      *
      * @param id 对象ID
      */
+    @CacheIt(key = "MEDICAL_HOSPITAL", paramKey = true)
     public MedicalHospitalVo getMedicalHospital(Long id) {
         MedicalHospital medicalHospital = super.getById(id);
         if (medicalHospital == null) {

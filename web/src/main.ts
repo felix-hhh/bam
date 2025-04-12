@@ -21,7 +21,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.use(pinia);
-const router:Router = await initRouter()
+const router: Router = await initRouter();
 app.use(router);
 
 app.use(ElementPlus, {

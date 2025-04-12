@@ -6,11 +6,16 @@ import com.kelaker.kcommon.medical.dao.MedicalQueueDao;
 import com.kelaker.kcommon.medical.dto.MedicalQueueDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalQueue;
+import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
 import com.kelaker.kcommon.medical.vo.MedicalQueueVo;
+import com.kelaker.ktools.cache.manager.CacheManager;
 import com.kelaker.ktools.common.exception.BusinessException;
+import com.kelaker.ktools.common.populator.ConvertUtils;
+import com.kelaker.ktools.common.utils.StringUtil;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +26,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQueue> {
+
+    @Resource
+    private MedicalPatientService medicalPatientService;
+
+    @Resource
+    private CacheManager cacheManager;
+
+    /**
+     * 自增ID时间
+     */
+    public static final String INCREMENT_DATE_KEY = "INCREMENT_DATE";
+
+    /**
+     * 当前num
+     */
+    public static final String CURRENT_NUM_KEY = "CURRENT_NUM";
 
     /**
      * 分页查询（管理端）
@@ -94,6 +115,7 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
      */
     public void addMedicalQueue(MedicalQueueDto dto) {
         MedicalQueue medicalQueue = super.objectConvert(dto, MedicalQueue.class);
+        medicalQueue.setCurrentNum(this.getCurrentNum());
         super.save(medicalQueue);
     }
 
@@ -127,10 +149,32 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         super.removeById(id);
     }
 
+
+    /**
+     * 取回当前排号
+     */
+    public Long getCurrentNum() {
+        this.checkIncrementId();
+        return cacheManager.incr(CURRENT_NUM_KEY);
+    }
+
+    private void checkIncrementId() {
+        Integer incrementDate = (Integer) cacheManager.getValue(INCREMENT_DATE_KEY);
+        Integer currentDate = ConvertUtils.convertToInteger(StringUtil.getCurrentDate("yyyyMMdd"));
+        if (ValidateUtil.isBlank(incrementDate) || incrementDate < currentDate) {
+            cacheManager.cacheValue(INCREMENT_DATE_KEY, currentDate, -1);
+            cacheManager.cacheValue(CURRENT_NUM_KEY, 0, -1);
+        }
+    }
+
     /**
      * 对象转换
      */
     private MedicalQueueVo convertToVo(MedicalQueue medicalQueue) {
-        return super.objectConvert(medicalQueue, MedicalQueueVo.class);
+        MedicalQueueVo vo = super.objectConvert(medicalQueue, MedicalQueueVo.class);
+        vo.setStatusStr(medicalQueue.getStatus().getRemark());
+        MedicalPatientVo medicalPatient = medicalPatientService.getMedicalPatient(medicalQueue.getPatientId());
+        vo.setPatientName(medicalPatient.getName());
+        return vo;
     }
 }

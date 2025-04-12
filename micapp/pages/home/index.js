@@ -1,3 +1,6 @@
+import {
+  sendGet
+} from "../../utils/request"
 // pages/home/index.js
 Page({
 
@@ -5,7 +8,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-
   },
 
   /**
@@ -63,6 +65,7 @@ Page({
   onShareAppMessage() {
 
   },
+
 
   gotoAddPatient() {
     wx.navigateTo({

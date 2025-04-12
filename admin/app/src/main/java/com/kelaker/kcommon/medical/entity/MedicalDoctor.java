@@ -22,12 +22,12 @@ public class MedicalDoctor extends Model<MedicalDoctor> {
      * 序号
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 医院ID
      */
-    private Integer hospitalId;
+    private Long hospitalId;
 
     /**
      * 医生姓名

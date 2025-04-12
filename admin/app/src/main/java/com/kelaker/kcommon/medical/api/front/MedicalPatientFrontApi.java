@@ -1,17 +1,16 @@
 package com.kelaker.kcommon.medical.api.front;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kelaker.kcommon.medical.dto.MedicalPatientDto;
-import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
 import com.kelaker.kcommon.medical.service.MedicalPatientService;
 import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
-import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.api.BaseApi;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 病人信息(MedicalPatient)表控制层
@@ -32,14 +31,13 @@ public class MedicalPatientFrontApi extends BaseApi {
     private MedicalPatientService medicalPatientService;
 
     /**
-     * 分页查询
+     * 列表查询
      *
-     * @param searchDto 查询对象
      * @return 查询结果
      */
-    @PostMapping("/page")
-    public IPage<MedicalPatientVo> pageMedicalPatient(@RequestBody RequestPage<MedicalPatientSearchDto> searchDto) {
-        return this.medicalPatientService.queryPage(searchDto);
+    @PostMapping("/list")
+    public List<MedicalPatientVo> listMyMedicalPatient() {
+        return this.medicalPatientService.listMyMedicalPatient();
     }
 
     /**

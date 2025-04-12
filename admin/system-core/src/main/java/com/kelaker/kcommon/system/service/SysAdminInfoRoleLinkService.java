@@ -10,7 +10,6 @@ import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
@@ -94,7 +93,7 @@ public class SysAdminInfoRoleLinkService extends BaseService<SysAdminInfoRoleLin
      */
     public Set<SysAdminRoleVo> listGrantedRoleVosByAdminId(long adminId) {
         return listGrantedRolesByAdminId(adminId).stream()
-                .map(sysAdminRoleService::entityToVo)
+                .map(sysAdminRoleService::convertToVo)
                 .collect(Collectors.toSet());
     }
 

@@ -66,10 +66,7 @@ const getViewConfig = () => {
           viewConfig.value = req;
           initOptButton();
           getViewColumnConfig(viewConfig.value.id);
-          // 列配置初始化完成后再获取数据
-          if (viewConfig.value.initData) {
-            getViewData();
-          }
+          
         }
       });
 
@@ -89,6 +86,10 @@ const getViewColumnConfig = (viewId: number) => {
       viewColumnConfig.value = req;
       initViewColumns();
       initForm();
+      // 列配置初始化完成后再获取数据
+      if (viewConfig.value.initData) {
+            getViewData();
+          }
     });
 };
 
@@ -178,7 +179,6 @@ const initForm = () => {
         };
       }
     });
-
   }
 };
 
@@ -223,7 +223,6 @@ const showAddDialog = () => {
  * 显示编辑窗口
  */
 const showEditDialog = (index,data) => {
-  console.log(data);
   addFormData.value = depthCopy(data);
   displayControl.addDialog = true;
   displayControl.isEdit = true;
@@ -268,15 +267,14 @@ const saveHandle = () => {
   addFormRef.value.validate(valid => {
     if (valid) {
       if (viewConfig.value) {
+        const submitData = JSON.parse(JSON.stringify(addFormData.value));
         if (displayControl.isEdit) {
-          sendPut(viewConfig.value.optEditUrl, addFormData).then(() => {
+          sendPut(viewConfig.value.optEditUrl, submitData).then(() => {
             getViewData();
             hideDialog();
             ElMessage.success("操作成功");
           });
         } else {
-          const submitData = JSON.parse(JSON.stringify(addFormData.value));
-          submitData.password = MD5(submitData.password).toString().toLowerCase();
           sendPost(viewConfig.value.optAddUrl, submitData).then(() => {
             getViewData();
             hideDialog();
@@ -309,10 +307,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   // 清理数据
-  viewConfig.value = {};
-  viewColumnConfig.value = undefined;
+  viewConfig.value = null;
+  viewColumnConfig.value = null;
   viewData.value = [];
-  viewPageData.value = undefined;
+  viewPageData.value = null;
   optButtons.value = [];
   gridColumn.value = [];
   addFormItems.value = [];

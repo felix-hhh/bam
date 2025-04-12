@@ -1,8 +1,8 @@
 package com.kelaker.kcommon.medical.vo;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 员工信息(MedicalDoctor)表实体类
@@ -22,6 +22,11 @@ public class MedicalDoctorVo {
      * 医院ID
      */
     private Integer hospitalId;
+
+    /**
+     * 医院名称
+     */
+    private String hospitalName;
 
     /**
      * 医生姓名
@@ -52,6 +57,8 @@ public class MedicalDoctorVo {
      * 状态
      */
     private String status;
+
+    private String statusStr;
 
     /**
      * 创建时间

@@ -1,8 +1,8 @@
 package com.kelaker.kcommon.medical.vo;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 队列(MedicalQueue)表实体类
@@ -44,6 +44,11 @@ public class MedicalQueueVo {
     private Object patientInfo;
 
     /**
+     * 患者名字
+     */
+    private String patientName;
+
+    /**
      * 检查项目
      */
     private String checkItem;
@@ -57,6 +62,7 @@ public class MedicalQueueVo {
      * 状态
      */
     private String status;
+    private String statusStr;
 
     /**
      * 队列号码
@@ -66,7 +72,7 @@ public class MedicalQueueVo {
     /**
      * 当前号码
      */
-    private Integer currentNum;
+    private Long currentNum;
 
     /**
      * 诊断时间

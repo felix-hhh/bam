@@ -6,10 +6,13 @@ import com.kelaker.kcommon.medical.dto.MedicalPatientDto;
 import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalPatient;
 import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
+import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 病人信息(MedicalPatient)表服务
@@ -34,10 +37,23 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
     }
 
     /**
+     * 列表查询当前登录用户的就诊人
+     */
+    public List<MedicalPatientVo> listMyMedicalPatient() {
+        List<MedicalPatient> patientList = super.lambdaQuery()
+                .eq(MedicalPatient::getUserId, super.getUserId())
+                .eq(MedicalPatient::getStatus, MedicalPatient.Status.ENABLE)
+                .orderByDesc(MedicalPatient::getCreateDatetime)
+                .list();
+        return super.mapListToTarget(patientList, this::convertToVo);
+    }
+
+    /**
      * 取回对象
      *
      * @param id 对象ID
      */
+    @CacheIt(key = "MEDICAL_PATIENT", paramKey = true)
     public MedicalPatientVo getMedicalPatient(Long id) {
         MedicalPatient medicalPatient = super.getById(id);
         if (medicalPatient == null) {
