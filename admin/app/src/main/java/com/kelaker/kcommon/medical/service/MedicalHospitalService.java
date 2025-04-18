@@ -1,5 +1,6 @@
 package com.kelaker.kcommon.medical.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kelaker.kcommon.medical.dao.MedicalHospitalDao;
 import com.kelaker.kcommon.medical.dto.MedicalHospitalDto;
@@ -11,6 +12,8 @@ import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 医院信息(MedicalHospital)表服务
@@ -32,6 +35,20 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
         MedicalHospital empty = super.objectConvert(searchDtoData, MedicalHospital.class);
         IPage<MedicalHospital> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
         return mapPageToTarget(page, this::convertToVo);
+    }
+
+    /**
+     * 获取所有启用的医院列表
+     *
+     * @return 医院列表
+     */
+    public List<MedicalHospitalVo> listHospitals() {
+        LambdaQueryWrapper<MedicalHospital> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(MedicalHospital::getStatus, MedicalHospital.Status.ENABLE);
+        queryWrapper.orderByDesc(MedicalHospital::getCreateDatetime);
+
+        List<MedicalHospital> hospitals = super.list(queryWrapper);
+        return super.mapListToTarget(hospitals, this::convertToVo);
     }
 
     /**

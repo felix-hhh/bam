@@ -22,7 +22,7 @@ public class MedicalQueue extends Model<MedicalQueue> {
      * 序号
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 用户ID
@@ -32,12 +32,12 @@ public class MedicalQueue extends Model<MedicalQueue> {
     /**
      * 医院ID
      */
-    private Integer hospitalId;
+    private Long hospitalId;
 
     /**
      * 医生ID
      */
-    private Integer doctorId;
+    private Long doctorId;
 
     /**
      * 患者ID
@@ -52,7 +52,7 @@ public class MedicalQueue extends Model<MedicalQueue> {
     /**
      * 检查项目
      */
-    private String checkItem;
+    private CheckItem checkItem;
 
     /**
      * 创建时间
@@ -79,6 +79,45 @@ public class MedicalQueue extends Model<MedicalQueue> {
      * 诊断时间
      */
     private Date diagnosticTime;
+
+    /**
+     * 是否有诊断报告
+     */
+    private Boolean record;
+
+    /**
+     * 是否有评估报告
+     */
+    private Boolean report;
+
+    /**
+     * 是否有运动视频
+     */
+    private Boolean video;
+
+    @Getter
+    @AllArgsConstructor
+    public enum CheckItem implements IEnum<String> {
+        POSTURE_FUSION("M_Q_C_POSTURE_FUSION", "体位融合"),
+        CHRONIC_PAIN_ASSESSMENT("M_Q_C_CHRONIC_PAIN_ASSESSMENT", "慢性疼痛评估");
+
+        private final String value;
+        private final String remark;
+
+        public static CheckItem toEnum(String value) {
+            for (CheckItem checkItem : values()) {
+                if (value.equals(checkItem.getValue())) {
+                    return checkItem;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
 
     @Getter
     @AllArgsConstructor

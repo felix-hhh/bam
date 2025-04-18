@@ -30,6 +30,11 @@ public class MedicalHospital extends Model<MedicalHospital> {
     private String name;
 
     /**
+     * 说明
+     */
+    private String descriptions;
+
+    /**
      * 地址
      */
     private String address;

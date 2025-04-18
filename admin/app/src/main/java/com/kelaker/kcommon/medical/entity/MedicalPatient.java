@@ -37,7 +37,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
     /**
      * 性别
      */
-    private Boolean gender;
+    private int gender;
 
     /**
      * 手机号码
@@ -52,7 +52,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
     /**
      * 数据归属用户ID
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 备注
@@ -73,6 +73,11 @@ public class MedicalPatient extends Model<MedicalPatient> {
      * 就诊次数
      */
     private int treatCount;
+
+    /**
+     * 与账户人关系
+     */
+    private Relation relation;
 
     /**
      * 数据创建时间
@@ -101,6 +106,36 @@ public class MedicalPatient extends Model<MedicalPatient> {
             for (Status status : values()) {
                 if (value.equals(status.getValue())) {
                     return status;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum Relation implements IEnum<String> {
+
+        SELF("M_P_R_SELF", "本人"),
+        PARENT("M_P_R_PARENT", "父母"),
+        CHILD("M_P_R_CHILD", "子女"),
+        FRIEND("M_P_R_FRIEND", "朋友"),
+        RELATIVE("M_P_R_RELATIVE", "亲属"),
+        OTHER("M_P_R_OTHER", "其他");
+
+        private final String value;
+
+        private final String remark;
+
+        public static Relation toEnum(String value) {
+            for (Relation relation : values()) {
+                if (value.equals(relation.getValue())) {
+                    return relation;
                 }
             }
             return null;

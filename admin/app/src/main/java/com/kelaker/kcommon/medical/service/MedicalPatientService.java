@@ -69,6 +69,7 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
      */
     public void addMedicalPatient(MedicalPatientDto dto) {
         MedicalPatient medicalPatient = super.objectConvert(dto, MedicalPatient.class);
+        medicalPatient.setUserId(super.getUserId());
         super.save(medicalPatient);
     }
 
@@ -108,6 +109,7 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
     private MedicalPatientVo convertToVo(MedicalPatient medicalPatient) {
         MedicalPatientVo vo = super.objectConvert(medicalPatient, MedicalPatientVo.class);
         vo.setStatusStr(medicalPatient.getStatus().getRemark());
+        vo.setRelationStr(medicalPatient.getRelation().getRemark());
         return vo;
     }
 }

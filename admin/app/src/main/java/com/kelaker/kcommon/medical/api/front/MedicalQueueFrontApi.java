@@ -11,6 +11,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 队列(MedicalQueue)表控制层
  *
@@ -39,6 +41,28 @@ public class MedicalQueueFrontApi extends BaseApi {
         return this.medicalQueueService.queryPageFront(searchDto);
     }
 
+    @PostMapping("/page/completed")
+    public IPage<MedicalQueueVo> pageMedicalQueueCompleted(@RequestBody RequestPage<MedicalQueueSearchDto> searchDto) {
+        searchDto.getData().setStatus("M_Q_S_COMPLETED");
+        return this.medicalQueueService.queryPageFront(searchDto);
+    }
+
+    /**
+     * 列表查询当前登录用户的订单
+     */
+    @GetMapping("/list")
+    public List<MedicalQueueVo> listMedicalQueue() {
+        return this.medicalQueueService.listMyQueue();
+    }
+
+    /**
+     * 列表查询当前登录用户的订单
+     */
+    @GetMapping("/list/completed")
+    public List<MedicalQueueVo> listMedicalQueueCompleted() {
+        return this.medicalQueueService.listMyQueueCompleted();
+    }
+
     /**
      * 获取队列信息
      *
@@ -49,4 +73,5 @@ public class MedicalQueueFrontApi extends BaseApi {
     public MedicalQueueVo getMedicalQueue(@PathVariable("id") @NotNull(message = "队列ID不能为空") Long id) {
         return this.medicalQueueService.getMedicalQueueFront(id);
     }
+
 }

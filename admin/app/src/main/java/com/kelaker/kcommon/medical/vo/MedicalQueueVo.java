@@ -3,6 +3,7 @@ package com.kelaker.kcommon.medical.vo;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 队列(MedicalQueue)表实体类
@@ -16,32 +17,42 @@ public class MedicalQueueVo {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 用户ID
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 医院ID
      */
-    private Integer hospitalId;
+    private Long hospitalId;
+
+    /**
+     * 医院名字
+     */
+    private String hospitalName;
+
+    /**
+     * 医院电话
+     */
+    private String hospitalPhone;
 
     /**
      * 医生ID
      */
-    private Integer doctorId;
+    private Long doctorId;
+
+    /**
+     * 医生名字
+     */
+    private String doctorName;
 
     /**
      * 患者ID
      */
-    private Integer patientId;
-
-    /**
-     * 患者信息
-     */
-    private Object patientInfo;
+    private Long patientId;
 
     /**
      * 患者名字
@@ -49,9 +60,39 @@ public class MedicalQueueVo {
     private String patientName;
 
     /**
+     * 患者性别
+     */
+    private int patientGender;
+
+    /**
+     * 患者性别说明
+     */
+    private String patientGenderStr;
+
+    /**
+     * 与账户人关系
+     */
+    private String patientRelation;
+
+    /**
+     * 与账户人关系说明
+     */
+    private String patientRelationStr;
+
+    /**
+     * 患者信息
+     */
+    private Map<String, String> patientInfo;
+
+    /**
      * 检查项目
      */
     private String checkItem;
+
+    /**
+     * 检查项目说明
+     */
+    private String checkItemStr;
 
     /**
      * 创建时间
@@ -62,6 +103,10 @@ public class MedicalQueueVo {
      * 状态
      */
     private String status;
+
+    /**
+     * 状态说明
+     */
     private String statusStr;
 
     /**
@@ -78,5 +123,19 @@ public class MedicalQueueVo {
      * 诊断时间
      */
     private Date diagnosticTime;
-}
 
+    /**
+     * 是否有诊断报告
+     */
+    private boolean record;
+
+    /**
+     * 是否有评估报告
+     */
+    private boolean report;
+
+    /**
+     * 是否有运动视频
+     */
+    private boolean video;
+}

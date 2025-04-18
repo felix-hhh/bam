@@ -13,6 +13,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 医院信息(MedicalHospital)表控制层
  *
@@ -39,6 +41,16 @@ public class MedicalHospitalFrontApi extends BaseApi {
     @PostMapping("/page")
     public IPage<MedicalHospitalVo> pageMedicalHospital(@RequestBody RequestPage<MedicalHospitalSearchDto> searchDto) {
         return this.medicalHospitalService.queryPage(searchDto);
+    }
+
+    /**
+     * 获取所有启用的医院列表
+     *
+     * @return 医院列表
+     */
+    @GetMapping("/list")
+    public List<MedicalHospitalVo> listEnabledHospitals() {
+        return this.medicalHospitalService.listHospitals();
     }
 
     /**

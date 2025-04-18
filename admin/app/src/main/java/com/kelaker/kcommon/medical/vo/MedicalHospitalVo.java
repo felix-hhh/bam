@@ -24,6 +24,11 @@ public class MedicalHospitalVo {
     private String name;
 
     /**
+     * 说明
+     */
+    private String descriptions;
+
+    /**
      * 地址
      */
     private String address;
@@ -74,4 +79,3 @@ public class MedicalHospitalVo {
     private String status;
     private String statusStr;
 }
-

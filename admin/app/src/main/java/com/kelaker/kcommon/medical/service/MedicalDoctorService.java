@@ -7,6 +7,7 @@ import com.kelaker.kcommon.medical.dto.MedicalDoctorSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalDoctor;
 import com.kelaker.kcommon.medical.vo.MedicalDoctorVo;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
+import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
@@ -44,6 +45,7 @@ public class MedicalDoctorService extends BaseService<MedicalDoctorDao, MedicalD
      *
      * @param id 对象ID
      */
+    @CacheIt(key="MEDICAL_DOCTOR",paramKey = true)
     public MedicalDoctorVo getMedicalDoctor(Long id) {
         MedicalDoctor medicalDoctor = super.getById(id);
         if (ValidateUtil.isBlank(medicalDoctor)) {

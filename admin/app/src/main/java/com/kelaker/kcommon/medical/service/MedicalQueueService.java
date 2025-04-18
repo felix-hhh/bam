@@ -6,6 +6,8 @@ import com.kelaker.kcommon.medical.dao.MedicalQueueDao;
 import com.kelaker.kcommon.medical.dto.MedicalQueueDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalQueue;
+import com.kelaker.kcommon.medical.vo.MedicalDoctorVo;
+import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
 import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
 import com.kelaker.kcommon.medical.vo.MedicalQueueVo;
 import com.kelaker.ktools.cache.manager.CacheManager;
@@ -18,6 +20,8 @@ import com.kelaker.ktools.web.base.service.BaseService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 队列(MedicalQueue)表服务
  *
@@ -29,6 +33,12 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
 
     @Resource
     private MedicalPatientService medicalPatientService;
+
+    @Resource
+    private MedicalHospitalService medicalHospitalService;
+
+    @Resource
+    private MedicalDoctorService medicalDoctorService;
 
     @Resource
     private CacheManager cacheManager;
@@ -67,12 +77,25 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         MedicalQueueSearchDto searchDtoData = searchDto.getData();
         MedicalQueue empty = super.objectConvert(searchDtoData, MedicalQueue.class);
 
+        if (ValidateUtil.isNotBlank(searchDtoData.getStatus())) {
+            empty.setStatus(MedicalQueue.Status.toEnum(searchDtoData.getStatus()));
+        }
+
         // 创建查询条件，只查询当前用户的数据
         LambdaQueryWrapper<MedicalQueue> queryWrapper = super.createWrapper(empty);
         queryWrapper.eq(MedicalQueue::getUserId, super.getUserId());
 
         IPage<MedicalQueue> page = super.page(super.createPage(searchDto), queryWrapper);
         return mapPageToTarget(page, this::convertToVo);
+    }
+
+    /**
+     * 列表查询当前登录用户的订单
+     */
+    public List<MedicalQueueVo> listMyQueue() {
+        List<MedicalQueue> medicalQueueList = super.lambdaQuery().eq(MedicalQueue::getUserId, super.getUserId())
+                .orderByDesc(MedicalQueue::getCreateDatetime).list();
+        return super.mapListToTarget(medicalQueueList, this::convertToVo);
     }
 
     /**
@@ -149,7 +172,6 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         super.removeById(id);
     }
 
-
     /**
      * 取回当前排号
      */
@@ -173,8 +195,30 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
     private MedicalQueueVo convertToVo(MedicalQueue medicalQueue) {
         MedicalQueueVo vo = super.objectConvert(medicalQueue, MedicalQueueVo.class);
         vo.setStatusStr(medicalQueue.getStatus().getRemark());
+        if (medicalQueue.getCheckItem() != null) {
+            vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
+        }
         MedicalPatientVo medicalPatient = medicalPatientService.getMedicalPatient(medicalQueue.getPatientId());
         vo.setPatientName(medicalPatient.getName());
+        vo.setPatientGender(medicalPatient.getGender());
+        vo.setPatientGenderStr(medicalPatient.getGender() == 1 ? "男" : "女");
+        vo.setPatientRelation(medicalPatient.getRelation());
+        vo.setPatientRelationStr(medicalPatient.getRelationStr());
+        MedicalHospitalVo medicalHospitalVo = this.medicalHospitalService
+                .getMedicalHospital(medicalQueue.getHospitalId());
+        vo.setHospitalName(medicalHospitalVo.getName());
+        vo.setHospitalPhone(medicalHospitalVo.getPhone());
+        MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
+        vo.setDoctorName(medicalDoctorVo.getName());
         return vo;
+    }
+
+    public List<MedicalQueueVo> listMyQueueCompleted() {
+        List<MedicalQueue> medicalQueueList = super.lambdaQuery()
+                .eq(MedicalQueue::getUserId, super.getUserId())
+                .eq(MedicalQueue::getStatus, MedicalQueue.Status.COMPLETED)
+                .orderByDesc(MedicalQueue::getCreateDatetime)
+                .list();
+        return super.mapListToTarget(medicalQueueList, this::convertToVo);
     }
 }

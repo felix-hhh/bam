@@ -33,7 +33,7 @@ public class MedicalPatientVo {
     /**
      * 性别
      */
-    private Boolean gender;
+    private int gender;
 
     /**
      * 手机号码
@@ -71,9 +71,14 @@ public class MedicalPatientVo {
     private int treatCount;
 
     /**
-     * 年龄
+     * 与账户人关系
      */
-    private int age;
+    private String relation;
+
+    /**
+     * 关系名称
+     */
+    private String relationStr;
 
     /**
      * 数据创建时间
@@ -85,11 +90,13 @@ public class MedicalPatientVo {
      */
     private String status;
 
+    /**
+     * 状态名称
+     */
     private String statusStr;
 
-    public int getAge(){
+    public int getAge() {
         LocalDate localDate = ConvertUtils.convertToLocalDate(birthday);
         return LocalDate.now().getYear() - localDate.getYear();
     }
 }
-
