@@ -1,43 +1,50 @@
-import {
-  sendGet
-} from "../../utils/request"
+import { sendGet } from "../../utils/request";
 // pages/home/index.js
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-    patientList: [] // 病人列表数据
+    patientList: [], // 病人列表数据
+    hospitals: [],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-    
-  },
+  onLoad(options) {},
 
   // 获取病人列表
   getPatientList() {
     sendGet({
-      url: '/medical/front/patient/list',
-      data: {}
-    }).then(res => {
-      this.setData({
-        patientList: res
+      url: "/medical/front/patient/list",
+      data: {},
+    })
+      .then((res) => {
+        this.setData({
+          patientList: res,
+        });
+      })
+      .catch((err) => {
+        console.error("获取病人列表失败:", err);
       });
-    }).catch(err => {
-      console.error('获取病人列表失败:', err);
+  },
+
+  // 加载医院列表
+  loadHospitals() {
+    sendGet({
+      url: "/medical/front/hospital/list",
+    }).then((res) => {
+      this.setData({
+        hospitals: res,
+      });
     });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {
-
-  },
+  onReady() {},
 
   /**
    * 生命周期函数--监听页面显示
@@ -45,47 +52,43 @@ Page({
   onShow() {
     this.getTabBar().init();
     this.getPatientList();
+    this.loadHospitals();
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() {
-
-  },
+  onHide() {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload() {
-
-  },
+  onUnload() {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh() {
-
-  },
+  onPullDownRefresh() {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom() {
-
-  },
+  onReachBottom() {},
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage() {
-
-  },
-
+  onShareAppMessage() {},
 
   gotoAddPatient() {
     wx.navigateTo({
-      url: '/pages/my/patient'
+      url: "/pages/my/patient",
     });
-  }
-})
+  },
+
+  gotoPartners() {
+    wx.navigateTo({
+      url: "/pages/home/partners",
+    });
+  },
+});

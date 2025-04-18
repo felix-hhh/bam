@@ -11,7 +11,7 @@
           <van-image width="24px" height="24px" fit="contain" src="{{item.gender === 1 ? '/images/nanren.png' : '/images/nvren.png'}}" />
         </view>
         <view class="user_list_body_item_name">{{item.name}}</view>
-        <view class="user_list_body_item_relation">{{item.relation}}</view>
+        <view class="user_list_body_item_relation">{{item.relationStr}}</view>
         <view class="user_list_body_item_icon {{item.gender === 1 ? 'man' : 'women'}}">
           <van-image width="20px" height="20px" fit="contain" src="{{item.gender === 1 ? '/images/nanrenicon.svg' : '/images/nvrenicon.svg'}}" />
         </view>
@@ -26,34 +26,22 @@
   <view class="hospital_list">
     <view class="hospital_list_header">
       <view class="hospital_list_header_title">合作医疗机构</view>
-      <view class="hospital_list_header_link">
+      <view class="hospital_list_header_link" bind:tap="gotoPartners">
       更多
       <image src="/images/right.png"  class="hospital_list_header_link_icon" mode=""/>
       </view>
     </view>
   </view>
   <van-cell-group inset>
-    <van-cell title-class="hospital_list_body_item" is-link>
+    <van-cell title-class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id" is-link>
       <view class="hospital_list_body_item" slot="title">
         <view class="hospital_list_body_item_image">
           图片
         </view>
         <view class="hospital_list_body_item_info">
-          <view class="hospital_list_body_item_info_name">莆田医院</view>
-          <view class="hospital_list_body_item_info_descriptions">莆田医院</view>
-          <view class="hospital_list_body_item_info_address">莆田医院</view>
-        </view>
-      </view>
-    </van-cell>
-    <van-cell title-class="hospital_list_body_item" is-link>
-      <view class="hospital_list_body_item" slot="title">
-        <view class="hospital_list_body_item_image">
-          图片
-        </view>
-        <view class="hospital_list_body_item_info">
-          <view class="hospital_list_body_item_info_name">莆田医院</view>
-          <view class="hospital_list_body_item_info_descriptions">莆田医院</view>
-          <view class="hospital_list_body_item_info_address">莆田医院</view>
+          <view class="hospital_list_body_item_info_name">{{item.name}}</view>
+          <view class="hospital_list_body_item_info_descriptions">{{item.descriptions || ""}}</view>
+          <view class="hospital_list_body_item_info_address">{{item.address}}</view>
         </view>
       </view>
     </van-cell>

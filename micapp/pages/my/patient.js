@@ -1,11 +1,15 @@
 // pages/my/patient.js
+import {
+  sendPost
+} from "../../utils/request"
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    sexColumns: [{
+    genderColumns: [{
         name: '男',
         value:1
       },
@@ -16,21 +20,27 @@ Page({
     ],
     relationColumns: [{
         name: '本人',
+        value: '本人'
       },
       {
         name: '父母',
+        value: '父母'
       },
       {
         name: '子女',
+        value: '子女'
       },
       {
         name: '朋友',
+        value: '朋友'
       },
       {
         name: '亲属',
+        value: '亲属'
       },
       {
         name: '其他',
+        value: '其他'
       }
     ],
     areaColumns: [{
@@ -47,8 +57,13 @@ Page({
       }
     ],
     areaShow: false,
-    sexShow: false,
+    genderShow: false,
     relationShow: false,
+    birthdayShow: false,
+    minDate: new Date(1940, 0, 1).getTime(),
+    maxDate: new Date(1990, 11, 31).getTime(),
+    currentDate: new Date(1990, 0, 1).getTime(),
+    checked: false,
     formData:{
       areaLabel: "中国大陆+86",
       areaCode: "+86",
@@ -56,9 +71,12 @@ Page({
       relationLabel:'',
       relationValue:'',
       idCard:'',
-      sexLabel:'',
-      sexValue:0,
-      name:''
+      genderLabel:'',
+      genderValue:0,
+      name:'',
+      birthday: '',
+      defaultPatient:false,
+      agree:false
     }
   },
 
@@ -80,7 +98,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.getTabBar().init();
   },
 
   /**
@@ -120,15 +138,16 @@ Page({
 
   closePopup() {
     this.setData({
-      sexShow: false,
+      genderShow: false,
       relationShow: false,
-      areaShow: false
+      areaShow: false,
+      birthdayShow: false
     })
   },
 
-  showSexPopup() {
+  showGenderPopup() {
     this.setData({
-      sexShow: true
+      genderShow: true
     })
   },
 
@@ -143,6 +162,13 @@ Page({
       areaShow: true,
     })
   },
+
+  showBirthdayPopup() {
+    this.setData({
+      birthdayShow: true
+    });
+  },
+
   onSelectArea(event) {
     const formData = this.data.formData;
     formData.areaLabel = event.detail.name;
@@ -155,20 +181,160 @@ Page({
   onSelectRelation(event){
     const formData = this.data.formData;
     formData.relationLabel = event.detail.name;
+    formData.relationValue = event.detail.value;
     
     this.setData({
       formData :formData
     });
   },
-  onSelectSex(event){
+  onSelectGender(event){
     const formData = this.data.formData;
-    formData.sexLabel = event.detail.name;
-    formData.sexValue = event.detail.value;
+    formData.genderLabel = event.detail.name;
+    formData.genderValue = event.detail.value;
     this.setData({
       formData :formData
     });
+  },
+  onDefaultPatient(event){
+    const formData = this.data.formData;
+    formData.defaultPatient = event.detail;
+    this.setData({
+      formData :formData
+    });
+  },
+  onAgree(event){
+    const formData = this.data.formData;
+    formData.agree = event.detail;
+    this.setData({
+      formData :formData
+    });
+  },
+  onInputName(event) {
+    const formData = this.data.formData;
+    formData.name = event.detail;
+    this.setData({
+      formData: formData
+    });
+  },
+  onInputIdCard(event) {
+    const formData = this.data.formData;
+    formData.idCard = event.detail;
+    this.setData({
+      formData: formData
+    });
+  },
+  onInputPhone(event) {
+    const formData = this.data.formData;
+    formData.phone = event.detail;
+    this.setData({
+      formData: formData
+    });
+  },
+  onChange(event) {
+    this.setData({
+      checked: event.detail
+    });
+  },
+  onBirthdayConfirm(event) {
+    const date = new Date(event.detail);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const birthday = `${year}-${month}-${day}`;
+    
+    const formData = this.data.formData;
+    formData.birthday = birthday;
+    this.setData({
+      formData: formData,
+      birthdayShow: false
+    });
+  },
+  validateForm() {
+    const formData = this.data.formData;
+    console.log(formData);
+    if (!formData.name) {
+      wx.showToast({
+        title: '请输入姓名',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.genderValue) {
+      wx.showToast({
+        title: '请选择性别',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.idCard) {
+      wx.showToast({
+        title: '请输入身份证号',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.relationValue) {
+      wx.showToast({
+        title: '请选择关系',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.phone) {
+      wx.showToast({
+        title: '请输入手机号',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.birthday) {
+      wx.showToast({
+        title: '请选择生日',
+        icon: 'none'
+      });
+      return false;
+    }
+    if (!formData.agree) {
+      wx.showToast({
+        title: '请同意授权书',
+        icon: 'none'
+      });
+      return false;
+    }
+    return true;
+  },
+  submitForm() {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    const formData = this.data.formData;
+    const submitData = {
+      name: formData.name,
+      gender: formData.genderValue,
+      idCard: formData.idCard,
+      relation: formData.relationValue,
+      phone: formData.areaCode + formData.phone,
+      birthday: formData.birthday,
+      defaultPatient: formData.defaultPatient
+    };
+
+    sendPost({
+      url: '/medical/front/patient/add',
+      data: submitData
+    }).then(res => {
+      wx.showToast({
+        title: '添加成功',
+        icon: 'success'
+      });
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 1500);
+    }).catch(err => {
+      wx.showToast({
+        title: '添加失败',
+        icon: 'error'
+      });
+    });
   }
-
-
-  
 })

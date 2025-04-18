@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const formatDateTime = value => {
+const formatDatetime = value => {
   let date = value;
   if (date === undefined || date == null) {
     return "";
@@ -70,7 +70,7 @@ const base64Decode = (str) => {
 }
 
 module.exports = {
-  formatDateTime,
+  formatDatetime,
   formatDate,
   base64Encode,
   base64Decode

@@ -1,3 +1,10 @@
+import {
+  sendGet,
+  sendPost
+} from "../../utils/request";
+import {
+  formatDatetime
+} from "../../utils/util";
 // pages/report/index.js
 Page({
 
@@ -5,7 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    recordList: [],
+    reportList:[]
   },
 
   /**
@@ -27,6 +35,7 @@ Page({
    */
   onShow() {
     this.getTabBar().init();
+    this.getRecord();
   },
 
   /**
@@ -62,5 +71,61 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  /**
+   * 取回就诊记录
+   */
+  getRecord() {
+    sendGet({
+      url: "/medical/front/queue/list"
+    }).then(req => {
+      const reqData = req;
+      reqData.forEach(item => {
+        if (item.diagnosticTime !== null) {
+          item.diagnosticTime = formatDatetime(item.diagnosticTime);
+        }
+      });
+
+      this.setData({
+        recordList: reqData
+      });
+    });
+  },
+  getReport() {
+    sendGet({
+      url: `/medical/front/queue/list/completed`
+    }).then(req => {
+      const reqData = req;
+      reqData.forEach(item => {
+          item.diagnosticTime = formatDatetime(item.diagnosticTime);
+      });
+      this.setData({
+        reportList: reqData
+      })
+    })
+  },
+  /**
+   * 就诊记录详情
+   */
+  gotoDetail(event) {
+    const id = event.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/report/detail?id=${id}`,
+    });
+  },
+  tabChange(event) {
+    const tabName = event.detail.name;
+
+    switch (tabName) {
+      case 0:
+        this.getRecord();
+        break;
+      case 1:
+        this.getReport();
+        break;
+      case 2:
+        getVideos();
+        break;
+    }
+  },
 })

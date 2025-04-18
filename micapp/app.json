@@ -4,7 +4,9 @@
     "pages/report/index",
     "pages/my/index",
     "pages/my/patient",
-    "pages/my/login"
+    "pages/my/login",
+    "pages/home/partners",
+    "pages/report/detail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

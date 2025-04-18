@@ -33,7 +33,7 @@
             <van-image width="24px" height="24px" fit="contain" src="{{item.gender === 1 ? '/images/nanren.png' : '/images/nvren.png'}}" />
           </view>
           <view class="user_list_body_item_name">{{item.name}}</view>
-          <view class="user_list_body_item_relation">{{item.relation}}</view>
+          <view class="user_list_body_item_relation">{{item.relationStr}}</view>
           <view class="user_list_body_item_icon {{item.gender === 1 ? 'man' : 'women'}}">
             <van-image width="20px" height="20px" fit="contain" src="{{item.gender === 1 ? '/images/nanrenicon.svg' : '/images/nvrenicon.svg'}}" />
           </view>
