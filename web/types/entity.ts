@@ -23,6 +23,21 @@ export interface LoginData {
   identity: string;
 }
 
+export interface ResponseData<T> {
+  /**
+   * 是否处理成功
+   */
+  success: boolean;
+  /**
+   * 响应内容
+   */
+  data?: T;
+  /**
+   * 错误消息
+   */
+  errMsg: string;
+}
+
 /**
  * token信息
  */

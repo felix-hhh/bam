@@ -3,10 +3,11 @@
     "pages/home/index",
     "pages/report/index",
     "pages/my/index",
-    "pages/my/patient",
+    "pages/my/patientAdd",
     "pages/my/login",
     "pages/home/partners",
-    "pages/report/detail"
+    "pages/report/detail",
+    "pages/my/patientList"
   ],
   "window": {
     "navigationBarTextStyle": "black",

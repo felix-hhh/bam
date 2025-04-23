@@ -2,7 +2,6 @@ import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { ElMessage } from "element-plus";
 import useStore from "@/stores";
 import { ResponseData } from "#/entity.ts";
-import { Router } from "vue-router";
 
 const useAxios = () => {
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;

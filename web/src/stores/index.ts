@@ -11,7 +11,7 @@ const useStore = defineStore("main", {
   persist: true,
   state: (): { tokenInfo: TokenInfo, token: string, menuList: SysMenu[] } => ({
     tokenInfo:  undefined,
-    token: undefined,
+    token: "",
     menuList: undefined,
   }),
   actions: {

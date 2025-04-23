@@ -15,7 +15,7 @@ import { Router } from "vue-router";
 const pinia: Pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
-const app:App<Element> = createApp(App);
+const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }

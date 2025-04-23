@@ -1,5 +1,5 @@
-const baseUrl = "http://192.168.0.4:10000";
-// const baseUrl = "https://api.yidingjiaoyu.net";
+// const baseUrl = "http://192.168.0.4:10000";
+const baseUrl = "https://kelaker.imdo.co";
 const authHeader = {};
 
 // 处理401未授权的情况

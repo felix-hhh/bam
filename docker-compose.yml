@@ -1,11 +1,19 @@
+networks:
+  custom_network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
 services:
   webapp:
     build:
-      context: ./web/vite-element-starter
+      context: ./web
       dockerfile: Dockerfile
     container_name: web-service
     image: web-service:1.1.0
     restart: always
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.3
     ports:
       - "14444:80"
   server:
@@ -15,11 +23,38 @@ services:
     container_name: admin-service
     image: admin-service:1.0.2
     restart: always
-    depends_on:
-      - database
-      - cache
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.4
+    volumes:
+      - /opt/server/log:/var/log/server
+#    depends_on:
+#      - database
+#      - cache
     ports:
       - "10000:10000"
+  nginx:
+    container_name: nginx
+    image: nginx:1.25.2-alpine
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 32m
+        reservations:
+          memory: 32m
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.2
+    volumes:
+      - /opt/nginx/log:/var/log/nginx
+      - /opt/nginx/conf/conf.d:/etc/nginx/conf.d
+      - /opt/nginx/key:/etc/nginx/key
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "80:80"
+      - "443:443"
   store:
     container_name: minio
     image: minio/minio

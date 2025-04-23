@@ -8,6 +8,9 @@ export default defineConfig({
     vue(),
     tsconfigPaths(),
   ],
+  build:{
+    target:["es2022"]
+  },
   resolve: {
     alias: {
       "@": "/src",

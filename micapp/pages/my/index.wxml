@@ -25,7 +25,10 @@
     </view>
     <view class="user_list panel">
       <view class="panel_header">
-        <view class="panel_header_title">常用就诊人</view>
+        <view class="panel_header_title">常用健康卡</view>
+        <view class="panel_header_link" bind:tap="gotoPatientList">
+        更多
+        </view>
       </view>
       <view class="user_list_body">
         <view class="user_list_body_item" wx:for="{{patientList}}" wx:key="id">

@@ -74,7 +74,7 @@ Page({
 
   gotoAddPatient() {
     wx.navigateTo({
-      url: '/pages/my/patient'
+      url: '/pages/my/patientAdd'
     });
   },
 
@@ -120,6 +120,12 @@ Page({
   gotoVideo() {
     wx.navigateTo({
       url: '/pages/video/index'
+    });
+  },
+
+  gotoPatientList(){
+    wx.navigateTo({
+      url: '/pages/my/patientList',
     });
   }
 })

@@ -110,8 +110,8 @@ export interface TableColumn {
 
 export interface TableColumnHandle {
   label: string;
-  handleFun: () => void;
-  format?: () => void;
+  handleFun: (index:number,data:any) => void;
+  format?: (data:any) => void;
   type: "group" | "primary" | "success" | "warning" | "danger";
   items?: TableColumnHandle[];
 }
@@ -121,7 +121,7 @@ export interface TableColumnHandle {
  */
 export interface TableOptButton {
   label: string;
-  type: "primary";
+  type: "group" | "primary" | "success" | "warning" | "danger";
   selectHandler: boolean;
   handle?: () => void;
   items?: TableOptButton[];
@@ -156,4 +156,10 @@ export interface SearchItem {
   label: string;
   key: string;
   value: string;
+}
+
+export interface ColumnData{
+  column: any;
+  prop: string;
+  order: any;
 }

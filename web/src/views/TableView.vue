@@ -36,7 +36,7 @@ const searchItem = ref<SearchItem[]>([
   },
 ]);
 
-const viewConfig = ref<ViewConfig>({});
+const viewConfig = ref<ViewConfig>();
 const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
@@ -66,7 +66,7 @@ const getViewConfig = () => {
           viewConfig.value = req;
           initOptButton();
           getViewColumnConfig(viewConfig.value.id);
-          
+
         }
       });
 
@@ -88,8 +88,8 @@ const getViewColumnConfig = (viewId: number) => {
       initForm();
       // 列配置初始化完成后再获取数据
       if (viewConfig.value.initData) {
-            getViewData();
-          }
+        getViewData();
+      }
     });
 };
 
@@ -134,6 +134,7 @@ const initViewColumns = () => {
         optLine.handles?.push({
           label: value.optEditLabel || "编辑",
           handleFun: showEditDialog,
+          type: "primary",
         });
       }
 
@@ -222,7 +223,7 @@ const showAddDialog = () => {
 /**
  * 显示编辑窗口
  */
-const showEditDialog = (index,data) => {
+const showEditDialog = (index: number, data: any) => {
   addFormData.value = depthCopy(data);
   displayControl.addDialog = true;
   displayControl.isEdit = true;
@@ -264,7 +265,7 @@ const delHandle = () => {
  * 添加处理器
  */
 const saveHandle = () => {
-  addFormRef.value.validate(valid => {
+  addFormRef.value.validate((valid: boolean) => {
     if (valid) {
       if (viewConfig.value) {
         const submitData = JSON.parse(JSON.stringify(addFormData.value));

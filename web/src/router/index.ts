@@ -80,6 +80,7 @@ const initRouter = async () => {
         component: getComponent(child.component),
       });
     });
+    // @ts-ignore
     newRouter.children = childrenRouter;
     constantRoutes.push(newRouter);
   });

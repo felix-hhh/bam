@@ -4,7 +4,7 @@ import { ArrowDown } from "@element-plus/icons-vue";
 import { ElMessageBox, Sort } from "element-plus";
 import * as XLSX from "xlsx";
 import fs from "file-saver";
-import { PageResult, TableColumn, TableOptButton, TableSearch } from "#/conponent.ts";
+import { ColumnData, PageResult, TableColumn, TableOptButton, TableSearch } from "#/conponent.ts";
 import { ElMessageBoxOptions } from "element-plus/es/components/message-box/src/message-box.type";
 
 const props = defineProps<{
@@ -29,21 +29,21 @@ const displayControl = reactive({
 });
 const imageBaseUrl = import.meta.env.VITE_IMAGE_CDN_URL;
 const multipleSelection = ref([]);
-const handleSelectionChange = val => {
+const handleSelectionChange = (val) => {
   multipleSelection.value = val;
   $emit("selection-change", val);
 };
 
-const sizeChangeHandle = size => {
+const sizeChangeHandle = (size: number) => {
   props.gridDataFun(1, size);
 };
 
-const sortChangeHandle = (columnData) => {
+const sortChangeHandle = (columnData: ColumnData) => {
   props.gridDataFun(null, null, columnData.prop, columnData.order);
 };
 
-const currentChangeHandle = current => {
-  props.gridDataFun(current, props.gridData.size);
+const currentChangeHandle = (current: number) => {
+  props.gridDataFun(current, props.pageData.size);
 };
 
 const searchBarTagger = () => {
@@ -79,9 +79,9 @@ const exportData = () => {
     });
     excelData.push(excelHeadData);
 
-    const gridData = typeof props.gridData === "PageResult" ? (props.gridData as PageResult).records : props.gridData;
+    const gridData = props.gridData;
     gridData.forEach(item => {
-      const excelDataTemp = [];
+      const excelDataTemp = [] as object[];
       props.gridColumn?.forEach(column => {
         if (column.type !== "handle") {
           let itemData = item[column.prop];

@@ -1,17 +1,17 @@
 spring:
   datasource:
 #    url: jdbc:mysql://10.0.1.8:3306/project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://192.168.0.4:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    url: jdbc:mysql://rm-wz9m89l819397ls9t.mysql.rds.aliyuncs.com/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: dev
+    password: bXGjvtJJhayw8hK5
     # see https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
   jackson:
     serialization:
       write-dates-as-timestamps: true
   data:
     redis:
-      host: 192.168.0.4
-      port: 16379
+      host: r-wz9t61bqeik7nsg5sl.redis.rds.aliyuncs.com
+      port: 6379
       database: 1
 ktools:
   threads: 5

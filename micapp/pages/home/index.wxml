@@ -3,7 +3,7 @@
   <van-notice-bar left-icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" color="#545454" background="rgb(69, 170, 66, 0.2)" />
   <view class="user_list panel">
     <view class="panel_header">
-      <view class="panel_header_title">常用就诊人</view>
+      <view class="panel_header_title">常用健康卡</view>
     </view>
     <view class="user_list_body">
       <view class="user_list_body_item" wx:for="{{patientList}}" wx:key="id">
@@ -26,14 +26,10 @@
   <view class="hospital_list">
     <view class="hospital_list_header">
       <view class="hospital_list_header_title">合作医疗机构</view>
-      <view class="hospital_list_header_link" bind:tap="gotoPartners">
-      更多
-      <image src="/images/right.png"  class="hospital_list_header_link_icon" mode=""/>
-      </view>
     </view>
   </view>
   <van-cell-group inset>
-    <van-cell title-class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id" is-link>
+    <van-cell title-class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id">
       <view class="hospital_list_body_item" slot="title">
         <view class="hospital_list_body_item_image">
           图片

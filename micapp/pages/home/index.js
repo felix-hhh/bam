@@ -82,7 +82,7 @@ Page({
 
   gotoAddPatient() {
     wx.navigateTo({
-      url: "/pages/my/patient",
+      url: "/pages/my/patientAdd",
     });
   },
 

@@ -13,7 +13,8 @@ export default tseslint.config(
     },
     plugins: {},
     rules: {
-      "vue/valid-v-for": "off"
+      "vue/valid-v-for": "off",
+      "@typescript-eslint/no-unused-vars": "off"
     },
   },
 );
