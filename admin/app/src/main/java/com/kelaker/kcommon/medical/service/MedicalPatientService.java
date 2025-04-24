@@ -70,6 +70,8 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
     public void addMedicalPatient(MedicalPatientDto dto) {
         MedicalPatient medicalPatient = super.objectConvert(dto, MedicalPatient.class);
         medicalPatient.setUserId(super.getUserId());
+        medicalPatient.setStatus(MedicalPatient.Status.ENABLE);
+        medicalPatient.setRelation(MedicalPatient.Relation.toEnum(dto.getRelation()));
         super.save(medicalPatient);
     }
 

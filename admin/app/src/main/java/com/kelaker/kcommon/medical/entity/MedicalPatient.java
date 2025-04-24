@@ -62,7 +62,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
     /**
      * 生日
      */
-    private Date birthday;
+    private Integer age;
 
     /**
      * 上一次就诊时间

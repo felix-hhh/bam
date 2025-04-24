@@ -1,9 +1,7 @@
 package com.kelaker.kcommon.medical.vo;
 
-import com.kelaker.ktools.common.populator.ConvertUtils;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -58,7 +56,7 @@ public class MedicalPatientVo {
     /**
      * 生日
      */
-    private Date birthday;
+    private int age;
 
     /**
      * 上一次就诊时间
@@ -94,9 +92,4 @@ public class MedicalPatientVo {
      * 状态名称
      */
     private String statusStr;
-
-    public int getAge() {
-        LocalDate localDate = ConvertUtils.convertToLocalDate(birthday);
-        return LocalDate.now().getYear() - localDate.getYear();
-    }
 }

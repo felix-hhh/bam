@@ -1,8 +1,7 @@
 package com.kelaker.kcommon.medical.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * 病人信息(MedicalPatient)查询实体类
@@ -16,13 +15,15 @@ public class MedicalPatientDto {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
+    @NotBlank(message ="姓名不能为空")
     /**
      * 姓名
      */
     private String name;
 
+    @NotBlank(message = "身份证号不能为空")
     /**
      * 身份证
      */
@@ -33,6 +34,7 @@ public class MedicalPatientDto {
      */
     private Boolean gender;
 
+    @NotBlank(message = "手机号不能为空")
     /**
      * 手机号码
      */
@@ -44,28 +46,15 @@ public class MedicalPatientDto {
     private Boolean defaultPatient;
 
     /**
-     * 数据归属用户ID
-     */
-    private Integer userId;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
      * 生日
      */
-    private Date birthday;
+    private int age;
 
     /**
-     * 数据创建时间
+     * 就诊人关系
      */
-    private Date createDatetime;
+    @NotBlank(message = "就诊人关系不能为空")
+    private String relation;
 
-    /**
-     * 状态
-     */
-    private String status;
 }
 
