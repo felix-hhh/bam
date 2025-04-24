@@ -1,13 +1,15 @@
 {
   "pages": [
+    "pages/my/index",
     "pages/home/index",
     "pages/report/index",
-    "pages/my/index",
     "pages/my/patientAdd",
     "pages/my/login",
     "pages/home/partners",
     "pages/report/detail",
-    "pages/my/patientList"
+    "pages/my/patientList",
+    "pages/my/setting",
+    "pages/my/profile"
   ],
   "window": {
     "navigationBarTextStyle": "black",

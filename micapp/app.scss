@@ -12,15 +12,16 @@
 }
 
 page {
-  background-color: #F8F8F8;
+  background-color: #F6F6F6;
   font-size: 14px;
   --button-primary-background-color: #116BB4;
   --button-primary-border-color: #116BB4;
   --button-border-radius: 8px;
+  padding-bottom: 160rpx;
 }
 
 .panel {
-  border-radius: 8px;
+  border-radius: 24rpx;
   background-color: #FFF;
   margin: 10px 16px;
   padding: 12px;
@@ -35,7 +36,7 @@ page {
 
     &_title {
       color: #4F4F4F;
-      font-size: 16px;
+      font-size: 32rpx;
       font-weight: bold;
       flex: 1;
     }
@@ -59,43 +60,82 @@ page {
 
 
 .user_list {
+margin: 0 20rpx;
+  &_header{
+    height: 136rpx;
+    padding-left: 32rpx;
+    border-radius: 24rpx 24rpx 0rpx 0rpx;
+    background: linear-gradient( 90deg, #129ADD 0%, #21C875 100%);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: -30rpx;
+
+    &_title{
+      margin-top: 32rpx;
+      color: #FFF;
+      font-size: 32rpx;
+    }
+
+    &_bg{
+      height: 124rpx;
+      width: 340rpx;
+    }
+  }
 
   &_body {
+    background-color: #FFF;
     flex-direction: column;
     gap: 5px;
     display: flex;
+    border-radius: 24rpx 24rpx 24rpx 24rpx;
+    padding: 24rpx;
 
     &_item {
-      padding: 0 12px;
+      padding: 0 20rpx;
       display: flex;
       align-items: center;
-      background-color: rgb(17, 107, 180, 0.1);
-      height: 40px;
-      gap: 10px;
-      border-radius: 8px;
+      background-color: #F6F6F6;
+      height: 108rpx;
+      gap: 20rpx;
+      border-radius: 24rpx;
+      border: 2rpx solid #EDEDED;
 
       &_header {
-        background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
-        border-radius: 50%;
-        height: 30px;
-        width: 30px;
-        align-items: center;
-        justify-content: center;
-        display: flex;
+        
+      }
+
+      &_name{
+        font-size: 28rpx;
+
+      }
+
+      &_gender{
       }
 
       &_relation {
-        border: 4rpx solid rgb(69, 170, 66, 0.8);
-        padding: 1px;
-        border-radius: 5px;
-        font-size: 12px;
         margin-right: auto;
+      }
 
+      .tag{
+        font-size: 24rpx;
+        border-radius: 8rpx;
+        line-height: 34rpx;
+padding: 0 8rpx;
+        text-align: center;
+        height: 34rpx;
+        border: 2rpx solid #DEDEDE;
+        background: #ECECEC;
+        color: #777879;
       }
     }
 
     .add_btn {
       justify-content: center;
+      border-color: #18ACB4;
+      font-size: 28rpx;
+      color: #18ACB4;
+      background-color: #FFF;
+      height: 92rpx;
     }
   }
 }
@@ -169,4 +209,19 @@ page {
       }
     }
   }
+}
+
+.cell_group{
+  margin-bottom: 24rpx;
+  display: block;
+}
+
+.cell_item{
+  height: 128rpx;
+  align-items: center;
+}
+
+.cell_title{
+  color: #000;
+
 }

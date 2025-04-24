@@ -1,60 +1,33 @@
 /* pages/my/index.wxss */
 .header {
-  background: linear-gradient(rgb(17, 107, 180, 1), rgb(69, 170, 66, 0)) ;
-  padding: 30px 0;
+  background: linear-gradient(180deg, #E6FCF4 0%, #F6F6F6 100%);
+  height: 336rpx;
+  margin-bottom: -124rpx;
 }
 
 .user_panel {
   display: flex;
-  gap: 20rpx;
+  gap: 24rpx;
   height: 130rpx;
   align-items: center;
   justify-content: space-between;
-  padding: 20rpx 40rpx 40rpx;
+  padding: 40rpx;
 
   &_info {
     flex: 1;
 
     &_phone {
-      color: #696969;
-      font-size: 24rpx;
+      color: #525152;
+      font-size: 26rpx;
     }
 
-    &_name {
-      color: #080808;
-      font-size: 40rpx;
+    &_name ,&_login{
+      font-size: 36rpx;
       font-weight: bold;
     }
   }
 
-  &_icon {
-    font-size: 30px;
-    border-radius: 50%;
-    height: 160rpx;
-    width: 160rpx;
-    text-align: center;
-    background-color: #D2D2D2;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-
-    &_border {
-      background-color: #FFF;
-      height: 74px;
-      width: 74px;
-      border-radius: 50%;
-      justify-content: center;
-    align-items: center;
-    display: flex;
-    }
-
-    &_image {
-      background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
-      border-radius: 50%;
-      width: 68px;
-      height: 68px;
-    }
-  }
+  &_icon {}
 }
 
 .opt_btn {
@@ -125,14 +98,16 @@
 
       &_icon {
         text-align: center;
-        image{
-          width: 32px;
-          height: 32px;
+
+        image {
+          width: 80rpx;
+          height: 80rpx;
         }
       }
 
       &_label {
-        margin-top: 5px;
+        margin-top: 12rpx;
+        color: #525152;
         text-align: center;
       }
     }

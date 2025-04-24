@@ -3,17 +3,26 @@
   &_logo{
     justify-content: center;
    display: flex; 
+   margin: 30px;
   }
   &_title{
     text-align: center;
-    font-size: 20px;
+    font-size: 44rpx;
     font-weight: bold;
-    color: #116BB4;
+    // color: #116BB4;
     margin-bottom: 20px;
   }
 
   &_agreement{
-    font-size: 12px;
+    margin: 140rpx 0 32rpx;
+    text{
+      font-size: 12px;
+      color: #8C9099;
+    }
+  }
+
+  &_btn{
+    color: #FFF;
   }
 
   &_tips{

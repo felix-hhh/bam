@@ -2,7 +2,8 @@
   "usingComponents": {
     "van-checkbox": "@vant/weapp/checkbox/index",
     "van-button": "@vant/weapp/button/index",
-    "van-image": "@vant/weapp/image/index"
+    "van-image": "@vant/weapp/image/index",
+    "van-skeleton": "@vant/weapp/skeleton/index"
   },
   "navigationBarTitleText": "登录"
 }

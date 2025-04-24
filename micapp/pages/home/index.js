@@ -1,4 +1,6 @@
-import { sendGet } from "../../utils/request";
+import {
+  sendGet
+} from "../../utils/request";
 // pages/home/index.js
 Page({
   /**
@@ -7,6 +9,7 @@ Page({
   data: {
     patientList: [], // 病人列表数据
     hospitals: [],
+    loading: true
   },
 
   /**
@@ -17,12 +20,13 @@ Page({
   // 获取病人列表
   getPatientList() {
     sendGet({
-      url: "/medical/front/patient/list",
-      data: {},
-    })
+        url: "/medical/front/patient/list",
+        data: {},
+      })
       .then((res) => {
         this.setData({
           patientList: res,
+          loading: false
         });
       })
       .catch((err) => {
@@ -37,6 +41,7 @@ Page({
     }).then((res) => {
       this.setData({
         hospitals: res,
+        loading: false
       });
     });
   },

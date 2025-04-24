@@ -9,8 +9,18 @@
     border-bottom: 1px solid #ebedf0;
 
     &_orderno {
-      color: #116BB4;
+      color: #8C9099;
       flex: 1;
+    }
+
+    &_status{
+      font-weight: bold;
+    }
+    .disable{
+      color:#8C9099;
+    }
+    .primary{
+      color: #18ACB4;
     }
   }
 
@@ -21,10 +31,13 @@
       padding-left: 10px;
 
       &_name {
-        font-size: 16px;
+        font-size: 32rpx;
+        font-weight: bold;
       }
 
-      &_hospital {}
+      &_hospital {
+        color: #8C9099;
+      }
     }
   }
 
@@ -37,6 +50,9 @@
       flex-direction: column;
       gap: 5px;
       display: flex;
+      &_label{
+        color: #8C9099;
+      }
     }
 
     &_tips {
@@ -47,9 +63,14 @@
         color: #116BB4;
       }
 
+      &_label{
+        color: #FF5F00;
+        font-size: 24rpx;
+        line-height: 50rpx;
+      }
       &_num{
-        color: #116BB4;
-        font-size: 26px;
+        color: #FF5F00;
+        font-size: 44rpx;
         font-weight: bold;
       }
     }

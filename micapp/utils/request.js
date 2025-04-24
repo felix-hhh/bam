@@ -1,32 +1,49 @@
 // const baseUrl = "http://192.168.0.4:10000";
-const baseUrl = "https://kelaker.imdo.co";
+const baseUrl = "https://api.connectsir.com";
 const authHeader = {};
 
 // 处理401未授权的情况
 const handleUnauthorized = () => {
   const app = getApp();
+  const currentPages = getCurrentPages();
+  console.log("currentPages", currentPages)
   // 清除用户token
   app.globalData.userToken = '';
-  // 显示提示信息
-  console.log("登录提示")
-  wx.showToast({
-    title: '登录已过期，请重新登录',
-    icon: 'none',
-    duration: 2000
-  });
-  // 跳转到登录页
-  setTimeout(() => {
-    wx.navigateTo({
-      url: '../pages/login/index'
+  const currentPage = currentPages[currentPages.length - 1];
+  console.log("currentPage", currentPage);
+  console.log("pageName", currentPage.route);
+  if (currentPage.route !== 'pages/my/login') {
+    // 显示提示信息
+    wx.showToast({
+      title: '请登录使用',
+      icon: 'none',
+      duration: 2000
     });
-  }, 2000);
+    // 跳转到登录页
+    setTimeout(() => {
+      wx.navigateTo({
+        url: '/pages/my/login'
+      });
+    }, 2000);
+  }
 };
+
+const getToken = () => {
+  const app = getApp();
+  const token = app.globalData.userToken;
+  console.log("token:", token);
+  if (token === null) {
+    return false;
+  }
+  authHeader["Authorization"] = `bearer ${token}`;
+  return true;
+}
 
 /**
  * 检查状态码
  * @param statusCode 状态码 
  */
-const checkStatusCode = (statusCode,repData,resolve, reject) =>{
+const checkStatusCode = (statusCode, repData, resolve, reject) => {
   switch (statusCode) {
     case 200:
       if (repData.success) {
@@ -52,10 +69,8 @@ const checkStatusCode = (statusCode,repData,resolve, reject) =>{
 }
 
 const sendPost = (parmas) => {
-  const app = getApp();
-  authHeader["Authorization"] = "bearer " + app.globalData.userToken;
-  console.log(authHeader);
   return new Promise((resolve, reject) => {
+    getToken();
     wx.request({
       url: baseUrl + parmas.url,
       data: parmas.data,
@@ -67,19 +82,19 @@ const sendPost = (parmas) => {
       success: (res) => {
         const statusCode = res.statusCode;
         const repData = res.data;
-        checkStatusCode(statusCode, repData,resolve, reject);
+        checkStatusCode(statusCode, repData, resolve, reject);
       },
       fail: (err) => {
         reject(err);
       },
     })
-  })
+  });
 }
 
 const sendGet = (parmas) => {
-  const app = getApp();
-  authHeader["Authorization"] = "bearer " + app.globalData.userToken;
+
   return new Promise((resolve, reject) => {
+    getToken()
     wx.request({
       url: baseUrl + parmas.url,
       data: parmas.data,
@@ -104,7 +119,9 @@ const sendGet = (parmas) => {
         reject(err);
       },
     })
-  })
+
+
+  });
 }
 
 module.exports = {

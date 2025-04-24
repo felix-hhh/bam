@@ -22,6 +22,12 @@ const formatDate = value => {
   return moment(date).format("YYYY-MM-DD");
 }
 
+const checkUserLoginStatus = ()=>{
+  const app = getApp();
+  const userLogin = app.globalData.userLogin;
+  return userLogin;
+}
+
 const base64Encode = (str) => {
   const base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -73,5 +79,6 @@ module.exports = {
   formatDatetime,
   formatDate,
   base64Encode,
-  base64Decode
+  base64Decode,
+  checkUserLoginStatus
 }

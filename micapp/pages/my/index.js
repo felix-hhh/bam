@@ -2,14 +2,15 @@
 import {
   sendGet
 } from "../../utils/request"
-
+import {checkUserLoginStatus} from "../../utils/util"
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    loginState: true,
+    loading:true,
+    loginState: false,
     userInfo: null,
     patientList: [] // 添加病人列表数据
   },
@@ -33,8 +34,14 @@ Page({
    */
   onShow() {
     this.getTabBar().init();
-    this.getPatientList();
-    this.getUserInfo();
+    const userLoginStatus = checkUserLoginStatus();
+    this.setData({
+      loginState:userLoginStatus
+    })
+    if(userLoginStatus){
+      this.getPatientList();
+      this.getProfile();
+    }
   },
 
   /**
@@ -78,18 +85,6 @@ Page({
     });
   },
 
-  // 获取用户信息
-  getUserInfo() {
-    const app = getApp();
-    const userInfo = app.globalData.userInfo;
-    console.log("用户信息",userInfo)
-    if (userInfo) {
-      this.setData({
-        userInfo: userInfo
-      });
-    }
-  },
-
   // 获取病人列表
   getPatientList() {
     sendGet({
@@ -106,26 +101,48 @@ Page({
 
   // 添加工具区域的跳转功能
   gotoRecord() {
-    wx.navigateTo({
-      url: '/pages/record/index'
+    wx.switchTab({
+      url: '/pages/report/index'
     });
   },
 
   gotoReport() {
-    wx.navigateTo({
+    wx.switchTab({
       url: '/pages/report/index'
     });
   },
 
   gotoVideo() {
-    wx.navigateTo({
-      url: '/pages/video/index'
+    wx.switchTab({
+      url: '/pages/report/index'
     });
   },
 
   gotoPatientList(){
     wx.navigateTo({
-      url: '/pages/my/patientList',
+      url: '/pages/report/index',
     });
+  },
+
+  gotoSetting(){
+    wx.navigateTo({
+      url: '/pages/my/setting',
+    })
+  },
+
+  getProfile() {
+    sendGet({
+      url: "/user/front/info/my"
+    }).then(req => {
+      this.setData({
+        userInfo: req
+      })
+    });
+  },
+
+  gotoLogin(){
+    wx.navigateTo({
+      url: '/pages/my/login',
+    })
   }
 })

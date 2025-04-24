@@ -15,20 +15,20 @@ Component({
     active: 0,
     list: [{
         "text": "首页",
-        "icon": "wap-home-o",
-        "activeIcon": "wap-home",
+        "icon": "home_tab",
+        "activeIcon": "home_tab_active",
         "pagePath": "/pages/home/index"
       },
       {
         "text": "记录",
-        "icon": "completed-o",
-        "activeIcon": "completed",
+        "icon": "record_tab",
+        "activeIcon": "record_tab_active",
         "pagePath": "/pages/report/index"
       },
       {
         "text": "我的",
-        "icon": "user-o",
-        "activeIcon": "user",
+        "icon": "my_tab",
+        "activeIcon": "my_tab_active",
         "pagePath": "/pages/my/index"
       }
     ]

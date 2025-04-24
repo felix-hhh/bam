@@ -7,13 +7,20 @@
           <view class="record_list_header_orderno">
             订单编号：{{item.queueNum}}
           </view>
-          <view class="record_list_header_status">
+          <!-- 过期/取消 -->
+          <view class="record_list_header_status disable" wx:if="{{item.status == 'M_Q_S_CANCELLED' || item.status == 'M_Q_S_EXPIRED'}}">
+            {{item.statusStr}}
+          </view>
+          <view class="record_list_header_status primary" wx:if="{{item.status == 'M_Q_S_IN_PROGRESS'}}">
+            {{item.statusStr}}
+          </view>
+          <view class="record_list_header_status" wx:if="{{item.status != 'M_Q_S_IN_PROGRESS' && item.status != 'M_Q_S_CANCELLED' && item.status != 'M_Q_S_EXPIRED'}}">
             {{item.statusStr}}
           </view>
         </view>
         <view class="record_list_doctor">
           <view class="record_list_doctor_picture">
-            <van-image width="100" height="100" src="https://img.yzcdn.cn/vant/cat.jpeg" fit="cover" />
+            <van-image width="48" height="48" round src="https://img.yzcdn.cn/vant/cat.jpeg" fit="cover" />
           </view>
           <view class="record_list_doctor_info">
             <view class="record_list_doctor_info_name">{{item.doctorName}}</view>
@@ -22,16 +29,15 @@
         </view>
         <view class="record_list_detail">
           <view class="record_list_detail_patient">
-            <view>健康卡：{{item.patientName}}</view>
+            <view><text class="record_list_detail_patient_label">健康卡：</text>{{item.patientName}}</view>
             <view wx:if="{{item.status == 'M_Q_S_IN_PROGRESS' || item.status == 'M_Q_S_COMPLETED'}}">
-              康复时间：{{item.diagnosticTime}}
+              <text class="record_list_detail_patient_label">康复时间：</text>{{item.diagnosticTime}}
             </view>
-            <view>康复项目：{{item.checkItemStr}}</view>
+            <view><text class="record_list_detail_patient_label">康复项目：</text>{{item.checkItemStr}}</view>
           </view>
           <view class="record_list_detail_tips">
-            <view class="record_list_detail_tips_num" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">
-              {{item.currentNum}}
-            </view>
+            <view class="record_list_detail_tips_label" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">排队中</view>
+            <view class="record_list_detail_tips_num" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">{{item.currentNum}}</view>
           </view>
         </view>
       </view>

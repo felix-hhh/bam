@@ -75,7 +75,11 @@ Page({
    */
   userLogin(event) {
     const code = event.detail.code;
-    console.log(code)
+    console.log("code:",code);
+    if(code === undefined){
+      wx.exitMiniProgram();
+      return;
+    }
     const app = getApp();
 
     sendPost({
@@ -89,7 +93,7 @@ Page({
           app.globalData.userLogin = true;
           const dataArray = res.split(".");
           app.globalData.userToken = dataArray[2];
-          //获取用户基础信息，并存储在公共数据中。数据格式为：{"clientType":"FRONT","extendsData":false,"phone":"17776685148","signature":null,"headImgPath":null,"nickname":"m641020862437","memberType":null,"authLevel":0,"username":"wx202504043945"}
+          //获取用户基础信息，并存储在公共数据中。
           const userInfoData = JSON.parse(base64Decode(dataArray[1]));
           const userData = JSON.parse(userInfoData.userData);
           app.globalData.userInfo = userData;
