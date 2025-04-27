@@ -6,6 +6,7 @@ import com.kelaker.kcommon.medical.dto.MedicalHospitalSearchDto;
 import com.kelaker.kcommon.medical.service.MedicalHospitalService;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
 import com.kelaker.ktools.common.vo.RequestPage;
+import com.kelaker.ktools.web.annotation.NoLogin;
 import com.kelaker.ktools.web.base.api.BaseApi;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -43,6 +44,7 @@ public class MedicalHospitalFrontApi extends BaseApi {
         return this.medicalHospitalService.queryPage(searchDto);
     }
 
+    @NoLogin
     /**
      * 获取所有启用的医院列表
      *
