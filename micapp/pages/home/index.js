@@ -1,15 +1,26 @@
 import {
   sendGet
 } from "../../utils/request";
+import {checkUserLoginStatus} from "../../utils/util"
+
 // pages/home/index.js
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    orderType: [
+      { name: '智能排序', value: 0 },
+    ],
+    localcationOpt: [
+      { name: '全城', value: 'a' },
+    ],
+    locaclcationLabel:"全城",
+    orderTypeLabel:"智能排序",
     patientList: [], // 病人列表数据
     hospitals: [],
-    loading: true
+    loading: true,
+    loginState: false,
   },
 
   /**
@@ -56,7 +67,13 @@ Page({
    */
   onShow() {
     this.getTabBar().init();
-    this.getPatientList();
+    const userLoginStatus = checkUserLoginStatus();
+    this.setData({
+      loginState: userLoginStatus
+    });
+    if (userLoginStatus) {
+      this.getPatientList();
+    }
     this.loadHospitals();
   },
 
@@ -89,6 +106,11 @@ Page({
     wx.navigateTo({
       url: "/pages/my/patientAdd",
     });
+  },
+  gotoUserLogin(){
+wx.navigateTo({
+  url: '/pages/my/login',
+})
   },
 
   gotoPartners() {

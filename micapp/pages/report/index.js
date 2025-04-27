@@ -13,7 +13,7 @@ Page({
    */
   data: {
     recordList: [],
-    reportList:[]
+    reportList: []
   },
 
   /**
@@ -97,7 +97,7 @@ Page({
     }).then(req => {
       const reqData = req;
       reqData.forEach(item => {
-          item.diagnosticTime = formatDatetime(item.diagnosticTime);
+        item.diagnosticTime = formatDatetime(item.diagnosticTime);
       });
       this.setData({
         reportList: reqData

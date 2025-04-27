@@ -3,7 +3,8 @@ const {
 } = require("../../utils/request")
 const {
   base64Decode
-} = require("../../utils/util")
+} = require("../../utils/util");
+
 // pages/my/login.js
 Page({
 
@@ -12,13 +13,17 @@ Page({
    */
   data: {
     agree: false,
+    agreePopup: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    wx.onNeedPrivacyAuthorization((resolve, eventInfo) => {
+      console.log('触发本次事件的接口是：' + eventInfo)
+      this.resolvePrivacyAuthor = resolve
+    })
   },
 
   /**
@@ -69,14 +74,31 @@ Page({
   onShareAppMessage() {
 
   },
+  checkAgree() {
+    this.setData({
+      agreePopup: true
+    })
+  },
+  closePopup() {
+    this.setData({
+      agreePopup: false
+    });
+  },
+  handleAgreePrivacyAuthorization(e) {
+    this.setData({
+      agree: true
+    });
+    this.closePopup();
+  },
   /**
    * 
    * @param {获取手机号码} event 
    */
   userLogin(event) {
+
     const code = event.detail.code;
-    console.log("code:",code);
-    if(code === undefined){
+    console.log("code:", code);
+    if (code === undefined) {
       wx.exitMiniProgram();
       return;
     }
@@ -90,23 +112,23 @@ Page({
         "deviceInfo": {}
       }
     }).then(res => {
-          app.globalData.userLogin = true;
-          const dataArray = res.split(".");
-          app.globalData.userToken = dataArray[2];
-          //获取用户基础信息，并存储在公共数据中。
-          const userInfoData = JSON.parse(base64Decode(dataArray[1]));
-          const userData = JSON.parse(userInfoData.userData);
-          app.globalData.userInfo = userData;
-          console.log(userData)
-          wx.setStorageSync('userToken', dataArray[2]);
-          wx.setStorageSync('userInfo', userInfoData.userData);
-          
-          wx.navigateBack();
+      app.globalData.userLogin = true;
+      const dataArray = res.split(".");
+      app.globalData.userToken = dataArray[2];
+      //获取用户基础信息，并存储在公共数据中。
+      const userInfoData = JSON.parse(base64Decode(dataArray[1]));
+      const userData = JSON.parse(userInfoData.userData);
+      app.globalData.userInfo = userData;
+      console.log(userData)
+      wx.setStorageSync('userToken', dataArray[2]);
+      wx.setStorageSync('userInfo', userInfoData.userData);
+
+      wx.navigateBack();
     })
   },
   changeAgree(event) {
     this.setData({
-      agree:event.detail
+      agree: event.detail
     })
   }
 })

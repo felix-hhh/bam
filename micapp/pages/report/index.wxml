@@ -4,7 +4,7 @@
     <van-tab title="就诊记录">
       <view class="record_list panel" wx:for="{{recordList}}" wx:key="id" bind:tap="gotoDetail" data-id="{{item.id}}">
         <view class="record_list_header">
-          <view class="record_list_header_orderno">
+          <view class="record_list_header_orderno secondary">
             订单编号：{{item.queueNum}}
           </view>
           <!-- 过期/取消 -->
@@ -24,59 +24,70 @@
           </view>
           <view class="record_list_doctor_info">
             <view class="record_list_doctor_info_name">{{item.doctorName}}</view>
-            <view class="record_list_doctor_info_hospital">{{item.hospitalName}}</view>
+            <view class="secondary">{{item.hospitalName}}</view>
           </view>
         </view>
         <view class="record_list_detail">
           <view class="record_list_detail_patient">
-            <view><text class="record_list_detail_patient_label">健康卡：</text>{{item.patientName}}</view>
+            <view><text class="secondary">健康卡：</text>{{item.patientName}}</view>
             <view wx:if="{{item.status == 'M_Q_S_IN_PROGRESS' || item.status == 'M_Q_S_COMPLETED'}}">
-              <text class="record_list_detail_patient_label">康复时间：</text>{{item.diagnosticTime}}
+              <text class="secondary">康复时间：</text>{{item.diagnosticTime}}
             </view>
-            <view><text class="record_list_detail_patient_label">康复项目：</text>{{item.checkItemStr}}</view>
+            <view><text class="secondary">康复项目：</text>{{item.checkItemStr}}</view>
           </view>
-          <view class="record_list_detail_tips">
-            <view class="record_list_detail_tips_label" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">排队中</view>
-            <view class="record_list_detail_tips_num" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">{{item.currentNum}}</view>
+          <view class="record_list_detail_tips" wx:if="{{item.status == 'M_Q_S_QUEUING'}}">
+            <view class="record_list_detail_tips_label">排队中</view>
+            <view class="record_list_detail_tips_num">{{item.currentNum}}</view>
           </view>
+          <view class="record_list_detail_btn" wx:else>查看详情</view>
         </view>
+
       </view>
     </van-tab>
     <van-tab title="就诊报告">
-      <view class="report_list panel" wx:for="{{reportList}}" wx:key="id">
-        <view class="report_list_patient">
-          <view class="report_list_patient_header">
-            <view class="report_list_patient_header_icon">
-              <van-image wx:if="{{item.patientGender == 1}}" width="24px" height="24px" fit="contain" src="/images/nanren.png" />
-              <van-image wx:else width="24px" height="24px" fit="contain" src="/images/nvren.png" />
-            </view>
-            <view class="report_list_patient_header_name">{{item.patientName}}</view>
-            <view class="report_list_patient_header_relation">{{item.patientRelationStr}}</view>
-            <view class="report_list_patient_header_illness">病情：{{item.checkItemStr}}</view>
-            <view class="report_list_patient_header_gender">
-              <van-image wx:if="{{item.patientGender == 1}}" width="20px" height="20px" fit="contain" src="/images/nanrenicon.svg" />
-              <van-image wx:else width="20px" height="20px" fit="contain" src="/images/nanrenicon.svg" />
-            </view>
+      <view class="report_list" wx:for="{{reportList}}" wx:key="id">
+        <view class="report_list_header">
+          <view class="report_list_header_icon">
+            <van-image wx:if="{{item.patientGender == 1}}" width="32" height="32" fit="contain" src="/images/nanren.png" />
+            <van-image wx:else width="32" height="32" fit="contain" src="/images/nvren.png" />
           </view>
-          <view class="report_list_patient_info">
-            <view>就诊医院：{{item.hospitalName}}</view>
-            <view>就诊时间：{{item.diagnosticTime}}</view>
+          <view class="report_list_header_name">{{item.patientName}}</view>
+          <view class="report_list_header_gender tag">
+            <text wx:if="{{item.patientGender == 1}}">男</text>
+            <text wx:else>女</text>
+          </view>
+          <view class="report_list_header_relation tag">{{item.patientRelationStr}}</view>
+          <view class="report_list_header_illness">
+            <text class="secondary">就诊病情：</text>
+            {{item.checkItemStr}}
           </view>
         </view>
-        <van-grid column-num="3" border="{{false}}">
-          <van-grid-item use-slot wx:if="{{item.record}}">
-            <image class="report_list_file_icon" src="../../images/record.svg" />
-            <text>就诊报告</text>
-          </van-grid-item>
-          <van-grid-item use-slot wx:if="{{item.report}}">
-            <image class="report_list_file_icon" src="../../images/report.svg" />
-            <text>评估报告</text>
-          </van-grid-item>
-          <van-grid-item use-slot wx:if="{{item.video}}">
-            <image class="report_list_file_icon" src="../../images/video.svg" />
-            <text>运动视频</text>
-          </van-grid-item>
-        </van-grid>
+        <view class="report_list_info">
+          <view>
+            <text class="secondary">就诊医院：</text>
+            {{item.hospitalName}}
+          </view>
+          <view>
+            <text class="secondary">就诊时间：</text>
+            {{item.diagnosticTime}}
+          </view>
+        </view>
+        <view class="report_list_file">
+          <van-grid column-num="3" border="{{false}}">
+            <van-grid-item use-slot wx:if="{{item.record}}">
+              <image class="report_list_file_icon" src="/images/record.png" />
+              <text>就诊报告</text>
+            </van-grid-item>
+            <van-grid-item use-slot wx:if="{{item.report}}">
+              <image class="report_list_file_icon" src="/images/report.png" />
+              <text>评估报告</text>
+            </van-grid-item>
+            <van-grid-item use-slot wx:if="{{item.video}}">
+              <image class="report_list_file_icon" src="/images/video.png" />
+              <text>运动视频</text>
+            </van-grid-item>
+          </van-grid>
+        </view>
       </view>
     </van-tab>
     <van-tab title="运动视频">内容 3</van-tab>

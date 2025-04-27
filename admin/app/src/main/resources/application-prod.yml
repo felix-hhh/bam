@@ -63,5 +63,5 @@ minio:
       name: upload
 bam:
   tools:
-    wxMicAppId: wx2ecd3a0ec2002c20
-    wxMicSecret: 78fa51300dbc3a242df06a0a3f661865
+    wxMicAppId: wx887bb611d3bbe4b9
+    wxMicSecret: 51e3c0fa64e668faa7f24e3abaa06e89

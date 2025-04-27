@@ -1,7 +1,7 @@
 <!--pages/my/login.wxml-->
 <view class="container login_panel">
   <view class="login_panel_logo">
-  <van-image src="/images/logo.png" width="119px" height="119px" fit="contain" />
+    <van-image src="/images/logo.png" width="119px" height="119px" fit="contain" />
   </view>
   <view class="login_panel_title">
     你好！欢迎登录康力得
@@ -11,6 +11,21 @@
       <text>我已阅读并同意协议《康力得用户服务协议》、《法律声明》、《隐私政策协议》</text>
     </van-checkbox>
   </view>
-  <van-button class="login_panel_btn" color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%)" open-type="getPhoneNumber" bindgetphonenumber="userLogin" disabled="{{!agree}}" block>手机号快捷登录</van-button>
+  <van-button class="login_panel_btn" color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%)" bind:click="checkAgree" block wx:if="{{!agree}}">手机号快捷登录</van-button>
+  <van-button class="login_panel_btn" color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%)" open-type="agreePrivacyAuthorization|getPhoneNumber" bindagreeprivacyauthorization="handleAgreePrivacyAuthorization" bindgetphonenumber="userLogin" block wx:else>手机号快捷登录</van-button>
   <view class="login_panel_tips">未注册手机号，将为您注册康力得账号，并直接登录</view>
+  <van-popup show="{{ agreePopup }}" round position="bottom"  bind:close="closePopup">
+    <view class="agree_panel">
+      <view class="agree_panel_title">
+        请阅读同意
+      </view>
+      <view class="agree_panel_body">
+        《康力得用户服务协议》、《法律声明》、《隐私政策协议》
+      </view>
+      <view class="agree_panel_foot">
+        <van-button bind:click="closePopup" block>取消</van-button>
+        <van-button class="login_panel_btn" color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%)" open-type="agreePrivacyAuthorization|getPhoneNumber" bindagreeprivacyauthorization="handleAgreePrivacyAuthorization" bindgetphonenumber="userLogin" block>同意</van-button>
+      </view>
+    </view>
+  </van-popup>
 </view>

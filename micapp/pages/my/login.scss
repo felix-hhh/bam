@@ -1,11 +1,12 @@
 /* pages/my/login.wxss */
-.login_panel{
-  &_logo{
+.login_panel {
+  &_logo {
     justify-content: center;
-   display: flex; 
-   margin: 30px;
+    display: flex;
+    margin: 30px;
   }
-  &_title{
+
+  &_title {
     text-align: center;
     font-size: 44rpx;
     font-weight: bold;
@@ -13,21 +14,49 @@
     margin-bottom: 20px;
   }
 
-  &_agreement{
+  &_agreement {
     margin: 140rpx 0 32rpx;
-    text{
+
+    text {
       font-size: 12px;
       color: #8C9099;
     }
   }
 
-  &_btn{
+  &_btn {
     color: #FFF;
   }
 
-  &_tips{
+  &_tips {
     font-size: 12px;
     color: #AAA;
     text-align: center;
+  }
+}
+
+.agree_panel {
+  &_title {
+    line-height: 116rpx;
+    font-weight: bold;
+    font-size: 32rpx;
+    text-align: center;
+  }
+
+  &_body {
+    color: #18ACB4;
+    font-size: 30rpx;
+    padding: 40rpx 56rpx;
+
+  }
+
+  &_foot {
+    display: flex;
+    gap: 30rpx;
+    justify-content: center;
+    height: 100rpx;
+
+    .van-button {
+      width: 320rpx;
+    }
   }
 }

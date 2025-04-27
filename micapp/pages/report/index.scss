@@ -1,5 +1,6 @@
 /* pages/report/index.wxss */
 .record_list {
+  position: relative;
 
   &_header {
     display: flex;
@@ -9,19 +10,14 @@
     border-bottom: 1px solid #ebedf0;
 
     &_orderno {
-      color: #8C9099;
       flex: 1;
     }
 
-    &_status{
+    &_status {
       font-weight: bold;
     }
-    .disable{
-      color:#8C9099;
-    }
-    .primary{
-      color: #18ACB4;
-    }
+
+    
   }
 
   &_doctor {
@@ -34,25 +30,19 @@
         font-size: 32rpx;
         font-weight: bold;
       }
-
-      &_hospital {
-        color: #8C9099;
-      }
     }
   }
 
   &_detail {
     margin-top: 10px;
     display: flex;
+    align-items: flex-end;
 
     &_patient {
       flex: 1;
       flex-direction: column;
       gap: 5px;
       display: flex;
-      &_label{
-        color: #8C9099;
-      }
     }
 
     &_tips {
@@ -63,64 +53,93 @@
         color: #116BB4;
       }
 
-      &_label{
+      &_label {
         color: #FF5F00;
         font-size: 24rpx;
         line-height: 50rpx;
       }
-      &_num{
+
+      &_num {
         color: #FF5F00;
         font-size: 44rpx;
         font-weight: bold;
       }
+
+    }
+
+    &_btn {
+      font-size: 26rpx;
+      color: #18ACB4;
+      border: 2rpx solid;
+      border-radius: 100rpx;
+      width: 144rpx;
+      line-height: 58rpx;
+      text-align: center;
+      height: 58rpx;
     }
   }
+
+
 }
 
 .report_list {
-  &_patient {
-    &_header {
-      padding: 0 12px;
-      background-color: rgb(17, 107, 180, 0.1);
-      border-radius: 8px;
-      height: 40px;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  margin: 0 20rpx 20rpx;
+  padding: 12rpx;
+
+  &_header {
+border-radius: 16rpx;
+background-color: #F8F8F8;
+height: 96rpx;
+padding: 0 16rpx;
+justify-content: space-between;
+display: flex;
+align-items: center;
+gap: 8rpx;
+
+    &_icon {
+      background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
       display: flex;
-      margin: -10px -10px 0;
-
-      &_icon {
-        background: linear-gradient(rgb(69, 170, 66, 0.8), rgb(69, 170, 66, 0.2));
-        border-radius: 50%;
-        height: 30px;
-        width: 30px;
-        align-items: center;
-        justify-content: center;
-        display: flex;
-      }
-
-      &_name {}
-
-      &_relation {
-        border: 4rpx solid rgb(69, 170, 66, 0.8);
-        padding: 1px;
-        border-radius: 5px;
-        font-size: 12px;
-        margin-right: auto;
-      }
     }
 
-    &_info{
-      padding: 10px 0;
-      display: flex;
-      gap: 5px;
-      flex-direction: column;
-      border-bottom: 1px solid #ebedf0;
+    &_name {}
+
+    &_relation {
+      margin-right: auto;
     }
   }
 
-  &_file_icon{
-    width: 32px;
-    height: 32px;
+  &_info {
+    height: 132rpx;
+    padding: 10px 0;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    border-bottom: 1px solid #ebedf0;
+    justify-content: center;
   }
+
+
+  &_file_icon {
+    width: 80rpx;
+    height: 80rpx;
+  }
+}
+
+.disable {
+  color: #8C9099;
+}
+
+.primary {
+  color: #18ACB4;
+}
+
+.secondary{
+  color: #8C9099;
 }

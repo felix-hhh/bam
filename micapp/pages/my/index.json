@@ -5,8 +5,7 @@
     "van-icon": "@vant/weapp/icon/index",
     "van-button": "@vant/weapp/button/index",
     "van-image": "@vant/weapp/image/index",
-    "van-notice-bar": "@vant/weapp/notice-bar/index",
-    "van-skeleton": "@vant/weapp/skeleton/index"
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
   },
   "navigationBarBackgroundColor": "#E6FCF4",
   "navigationBarTitleText": "我的"

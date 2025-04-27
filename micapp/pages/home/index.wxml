@@ -1,51 +1,67 @@
 <!--pages/home/index.wxml-->
 <view>
-  <van-skeleton title avatar row="3" loading="{{ loading }}">
-    <van-notice-bar left-icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" color="#545454" background="rgb(69, 170, 66, 0.2)" />
-    <view class="user_list">
-      <view class="user_list_header">
-        <view class="user_list_header_title">常用健康卡</view>
+  <van-notice-bar left-icon="volume-o" text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。" color="#545454" background="rgb(69, 170, 66, 0.2)" />
+  <view class="user_list">
+    <view class="user_list_header">
+      <view class="user_list_header_title">
+        <view wx:if="{{loginState}}">常用健康卡</view>
+        <view wx:else>欢迎使用康力得运动管理</view>
       </view>
-      <view class="user_list_body">
-        <view class="user_list_body_item" wx:for="{{patientList}}" wx:key="id">
-          <view class="user_list_body_item_header">
-            <van-image width="41px" height="41px" fit="contain" src="{{item.gender === 1 ? '/images/nanren.png' : '/images/nvren.png'}}" />
-          </view>
-          <view class="user_list_body_item_name">{{item.name}}</view>
-          <view class="user_list_body_item_gender tag">
-            <text wx:if="{{item.gender === 1}}">男</text>
-            <text wx:else="">女</text>
-          </view>
-          <view class="user_list_body_item_relation tag">{{item.relationStr}}</view>
-          <view class="user_list_body_item_edit">
-            <van-image width="20px" height="20px" fit="contain" src="/images/bianji.svg" />
-          </view>
+      <image class="user_list_header_bg" src="/images/header_bg.png" />
+    </view>
+    <view class="user_list_body" wx:if="{{loginState}}">
+      <view class="user_list_body_item" wx:for="{{patientList}}" wx:key="id">
+        <view class="user_list_body_item_header">
+          <van-image width="41px" height="41px" fit="contain" src="{{item.gender === 1 ? '/images/nanren.png' : '/images/nvren.png'}}" />
         </view>
-        <view wx:if="{{patientList.size() < 6}}" class="user_list_body_item add_btn" bind:tap="gotoAddPatient">
-          <van-image width="17px" height="17px" fit="contain" src="/images/add_user.svg" />
-          <text>添加常用健康卡</text>
+        <view class="user_list_body_item_name">{{item.name}}</view>
+        <view class="user_list_body_item_gender tag">
+          <text wx:if="{{item.gender === 1}}">男</text>
+          <text wx:else="">女</text>
         </view>
+        <view class="user_list_body_item_relation tag">{{item.relationStr}}</view>
+        <view class="user_list_body_item_edit">
+          <van-image width="20px" height="20px" fit="contain" src="/images/bianji.svg" />
+        </view>
+      </view>
+      <view wx:if="{{patientList.length < 6}}" class="user_list_body_item add_btn" bind:tap="gotoAddPatient">
+        <van-image width="17px" height="17px" fit="contain" src="/images/add_user.svg" />
+        <text>添加常用健康卡</text>
       </view>
     </view>
+    <view class="user_list_body" wx:else>
+      <view class="user_list_body_icon">
+        <van-image width="100" height="100" src="/images/logo.png" />
+      </view>
+      <view class="user_list_body_item add_btn" bind:tap="gotoUserLogin">
+        <van-image width="17px" height="17px" fit="contain" src="/images/add_user.svg" />
+        <text>登录/注册</text>
+      </view>
+    </view>
+  </view>
 
-    <view class="hospital_list">
-      <view class="hospital_list_header">
-        <view class="hospital_list_header_title">合作医疗机构</view>
+  <view class="hospital_list">
+    <view class="hospital_list_header">
+      <view class="hospital_list_header_select">
+        <text>{{locaclcationLabel}}</text>
+        <image src="/images/down.svg" alt="下" class="hospital_list_header_select_icon" />
+      </view>
+      <view class="hospital_list_header_select">
+        <text>{{orderTypeLabel}}</text>
+        <image src="/images/down.svg" alt="下" class="hospital_list_header_select_icon" />
       </view>
     </view>
-    <van-cell-group inset>
-      <van-cell title-class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id">
-        <view class="hospital_list_body_item" slot="title">
-          <view class="hospital_list_body_item_image">
-            图片
-          </view>
-          <view class="hospital_list_body_item_info">
-            <view class="hospital_list_body_item_info_name">{{item.name}}</view>
-            <view class="hospital_list_body_item_info_descriptions">{{item.descriptions || ""}}</view>
-            <view class="hospital_list_body_item_info_address">{{item.address}}</view>
-          </view>
+    <view class="hospital_list_body">
+      <view class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id">
+        <view class="hospital_list_body_item_image">
+          图片
         </view>
-      </van-cell>
-    </van-cell-group>
-  </van-skeleton>
+        <view class="hospital_list_body_item_info">
+          <view class="hospital_list_body_item_info_name">{{item.name}}</view>
+          <view class="hospital_list_body_item_info_descriptions">{{item.descriptions || ""}}</view>
+          <view class="hospital_list_body_item_info_address">{{item.address}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

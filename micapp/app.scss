@@ -60,23 +60,25 @@ page {
 
 
 .user_list {
-margin: 0 20rpx;
-  &_header{
+  margin: 0 20rpx;
+
+  &_header {
     height: 136rpx;
     padding-left: 32rpx;
     border-radius: 24rpx 24rpx 0rpx 0rpx;
-    background: linear-gradient( 90deg, #129ADD 0%, #21C875 100%);
-    display: flex;
-    justify-content: space-between;
+    background: linear-gradient(90deg, #129ADD 0%, #21C875 100%);
     margin-bottom: -30rpx;
 
-    &_title{
+    &_title {
       margin-top: 32rpx;
       color: #FFF;
       font-size: 32rpx;
+      position: absolute;
     }
 
-    &_bg{
+    &_bg {
+      position: absolute;
+      right: 0;
       height: 124rpx;
       width: 340rpx;
     }
@@ -90,6 +92,13 @@ margin: 0 20rpx;
     border-radius: 24rpx 24rpx 24rpx 24rpx;
     padding: 24rpx;
 
+    &_icon{
+      height: 240rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     &_item {
       padding: 0 20rpx;
       display: flex;
@@ -100,33 +109,20 @@ margin: 0 20rpx;
       border-radius: 24rpx;
       border: 2rpx solid #EDEDED;
 
-      &_header {
-        
-      }
+      &_header {}
 
-      &_name{
+      &_name {
         font-size: 28rpx;
 
       }
 
-      &_gender{
-      }
+      &_gender {}
 
       &_relation {
         margin-right: auto;
       }
 
-      .tag{
-        font-size: 24rpx;
-        border-radius: 8rpx;
-        line-height: 34rpx;
-padding: 0 8rpx;
-        text-align: center;
-        height: 34rpx;
-        border: 2rpx solid #DEDEDE;
-        background: #ECECEC;
-        color: #777879;
-      }
+      
     }
 
     .add_btn {
@@ -140,88 +136,30 @@ padding: 0 8rpx;
   }
 }
 
-.hospital_list {
-  &_header {
-    margin: 0 16px 5px;
-    display: flex;
-    align-items: center;
-
-    &_title {
-      font-weight: bold;
-      font-size: 16px;
-      margin-left: 10px;
-      flex: 1;
-      position: relative;
-
-      &:before {
-        position: absolute;
-        content: '';
-        background-color: #116BB4;
-        width: 5px;
-        height: 20px;
-        left: -10px;
-      }
-    }
-
-    &_link {
-      align-items: center;
-      display: flex;
-      font-size: 12px;
-      color: #A2A2A2;
-
-      &_icon {
-        width: 12px;
-        height: 12px;
-      }
-    }
-  }
-
-  &_body {
-    &_item {
-      display: flex;
-      width: auto;
-      flex-direction: row;
-
-      &_image {
-        width: 100px;
-      }
-
-      &_info {
-        flex-direction: column;
-        gap: 5px;
-        display: flex;
-
-        &_name {
-          font-size: 14px;
-        }
-
-        &_descriptions {
-          font-size: 12px;
-          line-height: 14px;
-          color: rgb(50, 50, 50, 0.5);
-        }
-
-        &_address {
-          font-size: 12px;
-          line-height: 14px;
-          color: rgb(50, 50, 50, 0.5);
-        }
-      }
-    }
-  }
+.tag {
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  line-height: 34rpx;
+  padding: 0 8rpx;
+  text-align: center;
+  height: 34rpx;
+  border: 2rpx solid #DEDEDE;
+  background: #ECECEC;
+  color: #777879;
 }
 
-.cell_group{
+
+.cell_group {
   margin-bottom: 24rpx;
   display: block;
 }
 
-.cell_item{
+.cell_item {
   height: 128rpx;
   align-items: center;
 }
 
-.cell_title{
+.cell_title {
   color: #000;
 
 }

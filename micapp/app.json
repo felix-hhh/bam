@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/my/index",
     "pages/home/index",
+    "pages/my/index",
     "pages/report/index",
     "pages/my/patientAdd",
     "pages/my/login",
