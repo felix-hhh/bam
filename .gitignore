@@ -2,8 +2,8 @@
 .idea/
 .cloudbase/
 **/.DS_Store/
-node_modules/
-miniprogram_npm/
+**/node_modules/
+**/miniprogram_npm/
 build/
 gradle/
 .gradle
