@@ -2,4 +2,5 @@ version '1.0.0'
 
 dependencies {
     api project(":common-core")
+    api("com.aliyun.oss:aliyun-sdk-oss:3.17.4")
 }

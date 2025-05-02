@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.0.3:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.0.4:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
 #    url: jdbc:mysql://localhost:13306/local_project?useUnicode=true&characterEncoding=utf8&useAffectedRows=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
@@ -10,7 +10,7 @@ spring:
       write-dates-as-timestamps: true
   data:
     redis:
-      host: 192.168.0.3
+      host: 192.168.0.4
       port: 16379
       database: 2
 ktools:
@@ -31,13 +31,20 @@ ktools:
     - language
   lang-req-key: language
   admin-name: admin
-  admin-pwd: C7122A1349C22CB3C009DA3613D242AB
+  admin-pwd: FCF299C7C32A8A08B5E560176F33AE1E
   data-security-aes-key: XbtGQQViz2Z2aYSa
 
 bam:
   tools:
     wxMicAppId: wx2ecd3a0ec2002c20
     wxMicSecret: 78fa51300dbc3a242df06a0a3f661865
+    aliyunOssRegionId: cn-shenzhen
+    aliyunOssEndpoint: oss-cn-shenzhen
+    aliyunOssBucketName: kld-image
+    aliyunOssAccessKeyId: LTAI5tMTqcyToHDbwwam2xXZ
+    aliyunOssAccessKeySecret: omBtcOpxl4JXucnR3JNzmV3q1IYVyc
+    aliyunOssArn: acs:ram::1057999219938374:role/oss-manager
+
 
 
 mybatis-plus:

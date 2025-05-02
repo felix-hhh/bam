@@ -31,7 +31,7 @@ ktools:
     - language
   lang-req-key: language
   admin-name: admin
-  admin-pwd: C7122A1349C22CB3C009DA3613D242AB
+  admin-pwd: FCF299C7C32A8A08B5E560176F33AE1E
   data-security-aes-key: XbtGQQViz2Z2aYSa
 
 mybatis-plus:

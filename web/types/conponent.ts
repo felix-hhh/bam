@@ -36,7 +36,7 @@ export interface ViewColumnConfig {
   addHandle: boolean;
   columnLabel: string;
   columnName: string;
-  dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select";
+  dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select" | "image";
   editHandle: boolean;
   dataSource?: string;
   id: number;
@@ -110,8 +110,8 @@ export interface TableColumn {
 
 export interface TableColumnHandle {
   label: string;
-  handleFun: (index:number,data:any) => void;
-  format?: (data:any) => void;
+  handleFun: (index: number, data: any) => void;
+  format?: (data: any) => void;
   type: "group" | "primary" | "success" | "warning" | "danger";
   items?: TableColumnHandle[];
 }
@@ -142,7 +142,7 @@ export interface TableSearch {
 export interface FormColumn {
   label: string;
   prop: string;
-  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select";
+  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select"|"image";
   addHandle: boolean;
   editHandle: boolean;
   dataSource?: string;
@@ -158,7 +158,7 @@ export interface SearchItem {
   value: string;
 }
 
-export interface ColumnData{
+export interface ColumnData {
   column: any;
   prop: string;
   order: any;

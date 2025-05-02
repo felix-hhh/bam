@@ -11,15 +11,17 @@ import {
   ViewColumnConfig,
   ViewConfig,
 } from "#/conponent.ts";
-import { ElMessage, ElMessageBox, Sort } from "element-plus";
+import { ElMessage, ElMessageBox, Sort, UploadFile } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
 import { booleanFormat, datetimeFormat, depthCopy } from "@/utils/util";
-import { MD5 } from "crypto-js";
 import { useRouter } from "vue-router";
 import Base64 from "crypto-js/enc-base64";
 import Utf8 from "crypto-js/enc-utf8";
+import OSS from 'ali-oss';
+import { OssSts } from "#/entity.ts";
 
 const router = useRouter();
+const ossSts = ref<OssSts>();
 const { sendPut, sendGet, sendPost } = useAxios();
 //页面配置
 const displayControl = reactive({
@@ -36,7 +38,7 @@ const searchItem = ref<SearchItem[]>([
   },
 ]);
 
-const viewConfig = ref<ViewConfig>();
+const viewConfig = ref<ViewConfig>({});
 const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
@@ -54,10 +56,18 @@ const searchData = reactive({
 });
 const sort: Sort = { prop: "createDatetime", order: "descending" };
 
+const getOssSts=()=>{
+  sendGet("tools/front/file/sts").then((res) => {
+    ossSts.value = res;
+    console.log(res);
+  })
+}
+
 /**
  * 取回页面配置
  */
 const getViewConfig = () => {
+  console.log("viewConfig:", viewConfig.value);
   try {
     const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
     sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
@@ -66,7 +76,6 @@ const getViewConfig = () => {
           viewConfig.value = req;
           initOptButton();
           getViewColumnConfig(viewConfig.value.id);
-
         }
       });
 
@@ -261,6 +270,38 @@ const delHandle = () => {
     });
 };
 
+const handleImageUpload:UploadProps['onSuccess'] = (uploadFile) => {
+  addFormData.value.imageView = URL.createObjectURL(uploadFile.raw!);
+};
+
+const handleImageUploadBefore= (uploadFile) => {
+  fileUpload(uploadFile);
+}
+
+const fileUpload = async (file: UploadFile) => {
+  if(!file){
+    console.log("请选择文件");
+    return;
+  }
+  const fileName = file.name;
+  console.log("fileName", fileName);
+  const client:OSS = await new OSS({
+    region: 'oss-cn-shenzhen',
+    accessKeyId: ossSts.value.accessKeyId,
+    accessKeySecret: ossSts.value.accessKeySecret,
+    bucket: 'kld-image',
+    stsToken: ossSts.value.securityToken
+  });
+
+  const signatureFileName =  await client.signatureUrlV4('PUT', 3600, {
+    headers: {} // 请根据实际发送的请求头设置此处的请求头
+  }, fileName);
+
+  console.log(signatureFileName);
+  const result = await client.put(fileName, file.raw);
+  console.log("文件上传成功",result);
+}
+
 /**
  * 添加处理器
  */
@@ -304,6 +345,7 @@ const getViewData = () => {
 
 onMounted(() => {
   getViewConfig();
+  getOssSts();
 });
 
 onUnmounted(() => {
@@ -350,6 +392,17 @@ onUnmounted(() => {
                         :label="item.label" :prop="item.prop">
             <template v-if="item.type==='switch'">
               <el-switch v-model="addFormData[item.prop]" />
+            </template>
+            <template v-else-if="item.type==='image'">
+              <el-upload
+                class="avatar-uploader"
+                :auto-upload="false"
+                :show-file-list="false"
+                :on-change="handleImageUploadBefore"
+              >
+                <el-image v-if="addFormData.imageView" :src="addFormData.imageView" class="avatar" />
+                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+              </el-upload>
             </template>
             <template v-else>
               <el-input :type="item.type" v-model="addFormData[item.prop]" />

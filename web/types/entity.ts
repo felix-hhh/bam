@@ -73,6 +73,13 @@ export interface UserData {
   username: string;
 }
 
+export interface OssSts {
+  securityToken: string;
+  accessKeySecret: string;
+  accessKeyId: string;
+  expiration: number;
+}
+
 /**
  * 系统菜单信息
  */
