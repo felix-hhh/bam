@@ -1,0 +1,17 @@
+<!--pages/home/partners.wxml-->
+<view>
+  <van-cell-group inset>
+    <van-cell title-class="hospital_list_body_item" wx:for="{{hospitals}}" wx:key="id" is-link>
+      <view class="hospital_list_body_item" slot="title">
+        <view class="hospital_list_body_item_image">
+          图片
+        </view>
+        <view class="hospital_list_body_item_info">
+          <view class="hospital_list_body_item_info_name">{{item.name}}</view>
+          <view class="hospital_list_body_item_info_descriptions">{{item.descriptions || ""}}</view>
+          <view class="hospital_list_body_item_info_address">{{item.address}}</view>
+        </view>
+      </view>
+    </van-cell>
+  </van-cell-group>
+</view>

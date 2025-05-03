@@ -1,0 +1,59 @@
+/* pages/my/patient.wxss */
+.popup_header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  &_title {
+    text-align: center;
+    flex: 1;
+    font-size: 16px;
+  }
+}
+
+.form_item {
+  padding: 0 16px;
+  background-color: #FFFFFF;
+
+  &_body {
+    height: 128rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ebedf0;
+
+    &_area {
+      display: flex;
+      align-items: center;
+      background-color: #f6f6f6;
+      height: 82rpx;
+      padding: 0 16rpx;
+      border-radius: 20rpx;
+
+      &_icon {
+        height: 32rpx;
+        width: 32rpx;
+      }
+    }
+
+    &_phone {
+      flex: 1;
+    }
+  }
+
+}
+
+.button_view {
+  padding: 0 44rpx;
+  margin-top: 208rpx;
+  display: flex;
+  gap: 30rpx;
+  justify-content: space-between;
+  van-button{
+    flex: 1;
+  }
+}
+
+.agree_view {
+  margin: 0 44rpx;
+}

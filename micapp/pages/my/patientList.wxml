@@ -1,0 +1,33 @@
+<!--pages/my/patientList.wxml-->
+<view class="patient_header"></view>
+<view class="patient_tips">
+  已添加 {{patientList.length}} 位健康卡，还能添加 {{6-patientList.length <0 ? 0: 6-patientList.length}} 个健康卡
+</view>
+<view class="patient_list">
+  <view class="patient_list_item" wx:for="{{patientList}}" wx:key="id" bind:tap="gotoPatientEdit">
+    <view class="patient_list_item_icon">
+      <van-image width="41px" height="41px" src="/images/{{item.gender == 1?'nanren.png':'nvren.png'}}" />
+    </view>
+    <view class="patient_list_item_info">
+      <view class="patient_list_item_info_base">
+        <view class="patient_list_item_info_base_name">{{item.name}}</view>
+        <view class="patient_list_item_info_base_age">{{item.age}}岁</view>
+        <view class="patient_list_item_info_base_gender">{{item.gender == 1?'男':'女'}}</view>
+        <view class="patient_list_item_info_base_relation">
+          {{item.relationStr}}
+        </view>
+      </view>
+      <view class="patient_list_item_info_number">
+        <view class="patient_list_item_info_number_idcard">{{item.idCard}}</view>
+        <view class="patient_list_item_info_number_phone">{{item.phone}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="patient_add_tips">
+  <view>温馨提示：</view>
+  <view>1.健康姓名、证件信息、电话等信息用于平台审核，不会外传。请输入正确的健康卡姓名和证件号</view>
+</view>
+<view class="patient_add_button">
+  <van-button disabled="{{patientList.length >= 6}}" block color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%);" bind:click="submitForm">添加</van-button>
+</view>

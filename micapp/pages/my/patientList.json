@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-image": "@vant/weapp/image/index"
+  },
+  "navigationBarBackgroundColor": "#E6FCF4",
+  "navigationBarTitleText": "常用健康卡"
+}
