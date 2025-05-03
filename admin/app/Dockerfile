@@ -1,5 +1,5 @@
 
-FROM openjdk:17
+FROM openjdk:17.0-jdk
 
 COPY build/libs/app-1.0.0.jar /app.jar
 
