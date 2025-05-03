@@ -6,13 +6,13 @@
 <view class="patient_list">
   <view class="patient_list_item" wx:for="{{patientList}}" wx:key="id" bind:tap="gotoPatientEdit">
     <view class="patient_list_item_icon">
-      <van-image width="41px" height="41px" src="/images/{{item.gender == 1?'nanren.png':'nvren.png'}}" />
+      <van-image width="41px" height="41px" src="/images/{{item.gender === 1?'nanren.png':'nvren.png'}}" />
     </view>
     <view class="patient_list_item_info">
       <view class="patient_list_item_info_base">
         <view class="patient_list_item_info_base_name">{{item.name}}</view>
         <view class="patient_list_item_info_base_age">{{item.age}}岁</view>
-        <view class="patient_list_item_info_base_gender">{{item.gender == 1?'男':'女'}}</view>
+        <view class="patient_list_item_info_base_gender">{{item.gender === 1?'男':'女'}}</view>
         <view class="patient_list_item_info_base_relation">
           {{item.relationStr}}
         </view>
