@@ -1,7 +1,7 @@
 package com.kelaker.kcommon.tools.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.kelaker.kcommon.tools.entity.ToolsFileUpload;
+import com.kelaker.kcommon.tools.entity.ToolsFile;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * @since 2025-04-30 03:44:50
  */
 @Repository
-public interface ToolsFileUploadDao extends BaseMapper<ToolsFileUpload> {
+public interface ToolsFileUploadDao extends BaseMapper<ToolsFile> {
 
 }
 

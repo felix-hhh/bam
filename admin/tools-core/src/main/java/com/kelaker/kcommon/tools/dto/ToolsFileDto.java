@@ -1,5 +1,6 @@
 package com.kelaker.kcommon.tools.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -19,11 +20,13 @@ public class ToolsFileDto {
     /**
      * 真实文件名
      */
+    @NotNull(message = "真实文件名不能为空")
     private String realFileName;
 
     /**
      * 原文件名
      */
+    @NotNull(message = "原文件名不能为空")
     private String origFileName;
 
     /**
@@ -34,6 +37,7 @@ public class ToolsFileDto {
     /**
      * 文件路径
      */
+    @NotNull(message = "文件路径不能为空")
     private String filePath;
 
     /**

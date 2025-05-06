@@ -2,11 +2,12 @@ import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { ElMessage } from "element-plus";
 import useStore from "@/stores";
 import { ResponseData } from "#/entity.ts";
-import { useRouter } from "vue-router";
+import { Router, useRouter } from "vue-router";
+
 
 const useAxios = () => {
 
-  const router:Router = useRouter();
+  const router: Router = useRouter();
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const instance = axios.create({

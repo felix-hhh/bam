@@ -2,6 +2,7 @@ package com.kelaker.kcommon.tools.service;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.OSSObject;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
@@ -13,19 +14,22 @@ import com.kelaker.kcommon.tools.configs.ToolsConfigProperties;
 import com.kelaker.kcommon.tools.dao.ToolsFileUploadDao;
 import com.kelaker.kcommon.tools.dto.ToolsFileDto;
 import com.kelaker.kcommon.tools.dto.ToolsFileSearchDto;
-import com.kelaker.kcommon.tools.entity.ToolsFileUpload;
+import com.kelaker.kcommon.tools.entity.ToolsFile;
 import com.kelaker.kcommon.tools.vo.ToolsFileStsVo;
 import com.kelaker.kcommon.tools.vo.ToolsFileVo;
 import com.kelaker.ktools.common.exception.BusinessException;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -36,11 +40,9 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFileUpload> {
+public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFile> {
 
-    public static final String ROLE_SESSION_NAME="sts_temp";
-
-
+    public static final String ROLE_SESSION_NAME = "sts_temp";
 
     @Resource
     private ToolsConfigProperties toolsConfigProperties;
@@ -56,8 +58,8 @@ public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFileU
      */
     public IPage<ToolsFileVo> queryPage(RequestPage<ToolsFileSearchDto> searchDto) {
         ToolsFileSearchDto searchDtoData = searchDto.getData();
-        ToolsFileUpload empty = super.objectConvert(searchDtoData, ToolsFileUpload.class);
-        IPage<ToolsFileUpload> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
+        ToolsFile empty = super.objectConvert(searchDtoData, ToolsFile.class);
+        IPage<ToolsFile> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
         return mapPageToTarget(page, this::convertToVo);
     }
 
@@ -79,12 +81,15 @@ public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFileU
         try {
             AssumeRoleResponse response = client.getAcsResponse(request);
             AssumeRoleResponse.Credentials credentials = response.getCredentials();
-            return super.objectConvert(credentials, ToolsFileStsVo.class);
+            ToolsFileStsVo toolsFileStsVo = super.objectConvert(credentials, ToolsFileStsVo.class);
+            toolsFileStsVo.setRegion(this.toolsConfigProperties.getAliyunOssRegion());
+            toolsFileStsVo.setBucketName(this.toolsConfigProperties.getAliyunOssBucketName());
+
+            return toolsFileStsVo;
         } catch (ClientException e) {
             throw new RuntimeException(e);
         }
     }
-
 
 
     /**
@@ -109,13 +114,28 @@ public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFileU
     }
 
     /**
+     * 文件路径签名
+     *
+     * @param filePath 文件路径
+     */
+    public String getSignatureUrl(String filePath) {
+        OSS ossClient = this.getOssClient();
+        Date expiration = new Date(new Date().getTime() + 3600000);
+        URL signedUrl = ossClient.generatePresignedUrl(
+                this.toolsConfigProperties.getAliyunOssBucketName(),
+                filePath,
+                expiration);
+        return signedUrl.toString();
+    }
+
+    /**
      * 取回对象
      *
      * @param id 对象ID
      */
-    public ToolsFileVo getToolsFileUpload(Long id) {
-        ToolsFileUpload toolsFileUpload = super.getById(id);
-        return this.convertToVo(toolsFileUpload);
+    public ToolsFileVo getToolsFile(Long id) {
+        ToolsFile toolsFile = super.getById(id);
+        return this.convertToVo(toolsFile);
     }
 
     /**
@@ -123,16 +143,52 @@ public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFileU
      *
      * @param dto 对象
      */
-    public void addToolsFileUpload(ToolsFileDto dto) {
-        ToolsFileUpload toolsFileUpload = super.objectConvert(dto, ToolsFileUpload.class);
-        super.save(toolsFileUpload);
+    @Transactional(rollbackOn = Exception.class)
+    public ToolsFileVo addToolsFile(ToolsFileDto dto) {
+        moveFile(dto);
+
+        ToolsFile toolsFile = super.objectConvert(dto, ToolsFile.class);
+        toolsFile.setPlatform(ToolsFile.Platform.ALIYUN);
+        toolsFile.setStatus(ToolsFile.Status.NORMAL);
+        super.save(toolsFile);
+        return this.convertToVo(toolsFile);
+    }
+
+    private void moveFile(ToolsFileDto dto) {
+        String filename = dto.getFilePath();
+        String aliyunOssBucketName = toolsConfigProperties.getAliyunOssBucketName();
+        String suffix = filename.substring(filename.lastIndexOf("."));
+        try {
+            OSS ossClient = this.getOssClient();
+            //文件信息
+            OSSObject clientObject = ossClient.getObject(aliyunOssBucketName, filename);
+            long fileSize = clientObject.getObjectMetadata().getContentLength();
+            String contentType = clientObject.getObjectMetadata().getContentType();
+            dto.setFileSize(fileSize);
+            dto.setFileType(contentType);
+
+            String fileType = contentType.substring(0, contentType.indexOf("/"));
+            String newPath = fileType + "/" + UUID.randomUUID() + suffix;
+            dto.setFilePath(newPath);
+
+            //移动
+            ossClient.copyObject(aliyunOssBucketName, filename, aliyunOssBucketName, newPath);
+            ossClient.deleteObject(aliyunOssBucketName, filename);
+            return newPath;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new BusinessException("文件上传失败");
+        } finally {
+            oss.shutdown();
+        }
+
     }
 
     /**
      * 对象转换
      */
-    private ToolsFileVo convertToVo(ToolsFileUpload toolsFileUpload) {
-        return super.objectConvert(toolsFileUpload, ToolsFileVo.class);
+    private ToolsFileVo convertToVo(ToolsFile toolsFile) {
+        return super.objectConvert(toolsFile, ToolsFileVo.class);
     }
 
     private OSS getOssClient() {

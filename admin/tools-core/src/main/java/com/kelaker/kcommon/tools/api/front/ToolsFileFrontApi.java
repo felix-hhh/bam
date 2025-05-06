@@ -29,7 +29,7 @@ public class ToolsFileFrontApi extends BaseApi {
     @GetMapping("/get/{id}")
     public ToolsFileVo getToolsFileUpload(@Validated @NotNull(message = "ID不能为空") @PathVariable("id") Long id) {
 
-        return this.toolsFileService.getToolsFileUpload(id);
+        return this.toolsFileService.getToolsFile(id);
     }
 
     @PostMapping("/upload")

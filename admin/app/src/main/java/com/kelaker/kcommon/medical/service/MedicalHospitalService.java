@@ -7,10 +7,13 @@ import com.kelaker.kcommon.medical.dto.MedicalHospitalDto;
 import com.kelaker.kcommon.medical.dto.MedicalHospitalSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalHospital;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
+import com.kelaker.kcommon.tools.service.ToolsFileService;
 import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +26,8 @@ import java.util.List;
  */
 @Service
 public class MedicalHospitalService extends BaseService<MedicalHospitalDao, MedicalHospital> {
+    @Resource
+    private ToolsFileService toolsFileService;
 
     /**
      * 分页查询
@@ -72,6 +77,7 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
      */
     public void addMedicalHospital(MedicalHospitalDto dto) {
         MedicalHospital medicalHospital = super.objectConvert(dto, MedicalHospital.class);
+        medicalHospital.setStatus(MedicalHospital.Status.ENABLE);
         super.save(medicalHospital);
     }
 
@@ -111,6 +117,9 @@ public class MedicalHospitalService extends BaseService<MedicalHospitalDao, Medi
     private MedicalHospitalVo convertToVo(MedicalHospital medicalHospital) {
         MedicalHospitalVo vo = super.objectConvert(medicalHospital, MedicalHospitalVo.class);
         vo.setStatusStr(medicalHospital.getStatus().getRemark());
+        if (ValidateUtil.isNotBlank(medicalHospital.getLogo())) {
+           vo.setLogo(this.toolsFileService.getSignatureUrl(medicalHospital.getLogo()));
+        }
         return vo;
     }
 }

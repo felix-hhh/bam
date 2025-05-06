@@ -15,8 +15,8 @@ import java.util.Date;
  * @since 2025-04-30 03:44:50
  */
 @Data
-@TableName("tools_file_upload")
-public class ToolsFileUpload extends Model<ToolsFileUpload> {
+@TableName("tools_file")
+public class ToolsFile extends Model<ToolsFile> {
 
     /**
      * id

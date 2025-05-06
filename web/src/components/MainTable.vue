@@ -291,7 +291,7 @@ onMounted(() => {
             :sortable="item.sortable ? item.sortable : false"
           >
             <template #default="scope">
-              <el-image class="table-image" :src="imageBaseUrl + scope.row.coverPath" fit="cover">
+              <el-image class="table-image" :src="scope.row[item.prop]" fit="cover">
                 <template #error>
                   <div class="image-slot">
                     <el-icon>
@@ -326,7 +326,7 @@ onMounted(() => {
           </el-text>
         </div>
         <div v-else>
-          <el-text> 多选功能禁用</el-text>
+          <el-text>多选功能禁用</el-text>
         </div>
         <div v-if="page">
           <el-pagination
@@ -388,5 +388,8 @@ onMounted(() => {
   justify-content: space-between;
 }
 
-
+.table-image {
+  width: 50px;
+  height: 50px;
+}
 </style>

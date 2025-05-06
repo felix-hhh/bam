@@ -28,9 +28,9 @@ services:
         ipv4_address: 172.20.0.4
     volumes:
       - /opt/server/log:/var/log/server
-#    depends_on:
-#      - database
-#      - cache
+    depends_on:
+      - database
+      - cache
     ports:
       - "10000:10000"
   nginx:
@@ -86,6 +86,9 @@ services:
     hostname: redis
     ports:
       - "16379:6379"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.5
     volumes:
       - /opt/docker/data/redis/data:/data
       - /opt/docker/data/redis/conf:/etc/redis
@@ -108,6 +111,9 @@ services:
     ports:
       - "13306:3306"
       - "33060:33060"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.6
     volumes:
       - /opt/docker/data/mysql/data:/var/lib/mysql
       - /opt/docker/data/mysql/secure_file:/var/lib/mysql-files

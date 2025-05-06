@@ -73,11 +73,39 @@ export interface UserData {
   username: string;
 }
 
+/**
+ * 文件
+ */
+export interface ToolsFile {
+  /**
+   * 实际文件名
+   */
+  realFileName: string;
+  /**
+   * 原文件名
+   */
+  origFileName: string;
+  /**
+   * 文件类型
+   */
+  fileType: string;
+  /**
+   * 文件路径
+   */
+  filePath: string;
+  /**
+   * 文件大小
+   */
+  fileSize: number;
+}
+
 export interface OssSts {
   securityToken: string;
   accessKeySecret: string;
   accessKeyId: string;
   expiration: number;
+  bucketName: string;
+  region: string;
 }
 
 /**
