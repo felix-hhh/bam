@@ -2,7 +2,7 @@
 .cursor/
 .idea/
 .cloudbase/
-**/.DS_Store
+.DS_Store
 **/node_modules/
 **/miniprogram_npm/
 build/
