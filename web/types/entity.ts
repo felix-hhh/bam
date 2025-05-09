@@ -1,3 +1,5 @@
+import { RawRouteComponent } from "vue-router";
+
 /**
  * 登录数据
  */
@@ -117,7 +119,7 @@ export interface SysMenu {
    */
   typeStr: string;
 
-  component?: "MainFrame" | "TableView";
+  component?: "MainFrame" | "TableView" | RawRouteComponent;
 }
 
 

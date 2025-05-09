@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, Router, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RawRouteComponent, RouteRecordRaw } from "vue-router";
 import { SysMenu } from "#/entity.ts";
 import useAxios from "@/api";
 import TableView from "@/views/TableView.vue";
@@ -36,6 +36,48 @@ const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: "/medical",
+    name: "medical",
+    component: MainFrame,
+    meta: {
+      title: "医护",
+    },
+    children: [
+      {
+        path: "/patient",
+        name: "patient",
+        meta: {
+          title: "患者",
+        },
+        component: () => import("@/views/medical/PatientView.vue"),
+      },
+      {
+        path: "/hospital",
+        name: "hospital",
+        meta: {
+          title: "医院",
+        },
+        component: () => import("@/views/medical/PatientView.vue"),
+      },
+      {
+        path: "/doctor",
+        name: "doctor",
+        meta: {
+          title: "医生",
+        },
+        component: () => import("@/views/medical/PatientView.vue"),
+      },
+      {
+        path: "/queue",
+        name: "queue",
+        meta: {
+          title: "预约号",
+        },
+        component: () => import("@/views/medical/PatientView.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
@@ -43,27 +85,59 @@ const router = createRouter({
   routes: constantRoutes,
 });
 
-const getComponent = (componentName?: "MainFrame" | "TableView") => {
-  switch (componentName) {
+const getComponent = (component?: "MainFrame" | "TableView" | RawRouteComponent) => {
+  switch (component) {
     case "TableView":
       return TableView;
     case "MainFrame":
       return MainFrame;
     default:
-      return MainFrame;
+      return component;
   }
 };
 
+/**
+ * 初始化路由
+ */
 const initRouter = async () => {
   const store = useStore();
-  let menuList = store.getMenuList();
-  if (menuList === undefined) {
-    menuList = await sendGet<SysMenu[]>("/system/manage/menu/list")
-      .then((req) => {
-        store.setMenuList(req);
-        return req;
+  const menuList: SysMenu[] = await sendGet<SysMenu[]>("/system/manage/menu/list")
+    .then((req: SysMenu[]) => {
+      constantRoutes.forEach(menu => {
+        console.log("menu", menu);
+        if (menu.name !== undefined) {
+          const children: RouteRecordRaw[] = menu.children;
+          if ((children !== undefined && children.length > 0) && (menu.meta !== undefined && !menu.meta.hidden)) {
+            const newMenu: SysMenu = {
+              name: menu.meta.title,
+              path: menu.path,
+              type: "S_M_T_FIRST",
+              component: menu.component,
+              children: [],
+            };
+
+
+            children.forEach(childMenu => {
+              if (childMenu.meta !== undefined && !childMenu.meta.hidden) {
+                const newChildrenMenu: SysMenu = {
+                  name: childMenu.meta.title,
+                  path: childMenu.path,
+                  component: childMenu.component,
+                  type: "S_M_T_CHILD",
+                };
+                newMenu.children.push(newChildrenMenu);
+              }
+            });
+
+            req.push(newMenu);
+          }
+        }
       });
-  }
+      console.log("menuList", req);
+      store.setMenuList(req);
+      return req;
+    });
+
 
   menuList?.map((menu) => {
     const newRouter: RouteRecordRaw = {
