@@ -3,6 +3,7 @@ import { SysMenu } from "#/entity.ts";
 import useAxios from "@/api";
 import TableView from "@/views/TableView.vue";
 import MainFrame from "@/components/MainFrame.vue";
+import useStore from "@/stores";
 
 const { sendGet } = useAxios();
 
@@ -58,6 +59,7 @@ const getComponent = (componentName?: "MainFrame" | "TableView") => {
  * 初始化路由
  */
 const initRouter = async () => {
+  const store = useStore();
   const menuList: SysMenu[] = await sendGet<SysMenu[]>("/system/manage/menu/list")
     .then((req: SysMenu[]) => {
       constantRoutes.forEach(menu => {
@@ -89,6 +91,7 @@ const initRouter = async () => {
         }
       });
       console.log("menuList", req);
+      store.setMenuList(req);
       return req;
     });
 

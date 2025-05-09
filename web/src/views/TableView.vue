@@ -400,6 +400,19 @@ onUnmounted(() => {
                 </el-icon>
               </el-upload>
             </template>
+            <template v-if="item.type==='select'">
+              <el-select
+                  v-model="addFormData[item.prop]"
+                  placeholder="请选择"
+              >
+                <el-option
+                    v-for="option in options"
+                    :key="option.id"
+                    :label="option.label"
+                    :value="option.value"
+                />
+              </el-select>
+            </template>
             <template v-else>
               <el-input :type="item.type" v-model="addFormData[item.prop]" />
             </template>
