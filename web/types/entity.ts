@@ -86,17 +86,9 @@ export interface ToolsFile {
    */
   origFileName: string;
   /**
-   * 文件类型
-   */
-  fileType: string;
-  /**
    * 文件路径
    */
   filePath: string;
-  /**
-   * 文件大小
-   */
-  fileSize: number;
 }
 
 export interface OssSts {
@@ -123,7 +115,7 @@ export interface SysMenu {
   /**
    * 序号
    */
-  id: number;
+  id?: number;
   /**
    * 菜单名字
    */

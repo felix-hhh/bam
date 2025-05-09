@@ -42,7 +42,178 @@ const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
-const gridColumn = ref<TableColumn[]>([]);
+const gridColumn: TableColumn[] = [
+  {
+    "id": 19,
+    "viewId": 2,
+    "columnName": "username",
+    "columnLabel": "用户名",
+    "columnOrder": 1,
+    "ruleRequired": true,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": 150,
+    "showFixed": "left",
+    "showColumn": true,
+    "addHandle": true,
+    "editHandle": false,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 27,
+    "viewId": 2,
+    "columnName": "password",
+    "columnLabel": "密码",
+    "columnOrder": 2,
+    "ruleRequired": true,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": null,
+    "showFixed": null,
+    "showColumn": false,
+    "addHandle": true,
+    "editHandle": false,
+    "dataType": "password",
+    "dataSource": null
+  },
+  {
+    "id": 28,
+    "viewId": 2,
+    "columnName": "repassword",
+    "columnLabel": "确认密码",
+    "columnOrder": 3,
+    "ruleRequired": true,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": null,
+    "showFixed": null,
+    "showColumn": false,
+    "addHandle": true,
+    "editHandle": false,
+    "dataType": "password",
+    "dataSource": null
+  },
+  {
+    "id": 20,
+    "viewId": 2,
+    "columnName": "nickname",
+    "columnLabel": "昵称",
+    "columnOrder": 4,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": 200,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": true,
+    "editHandle": true,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 21,
+    "viewId": 2,
+    "columnName": "phone",
+    "columnLabel": "手机号",
+    "columnOrder": 5,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": 150,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": true,
+    "editHandle": true,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 22,
+    "viewId": 2,
+    "columnName": "remark",
+    "columnLabel": "备注",
+    "columnOrder": 6,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": null,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": true,
+    "editHandle": true,
+    "dataType": "textarea",
+    "dataSource": null
+  },
+  {
+    "id": 23,
+    "viewId": 2,
+    "columnName": "createDatetime",
+    "columnLabel": "创建时间",
+    "columnOrder": 99,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": "datetimeFormat",
+    "showWidth": 200,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": false,
+    "editHandle": false,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 24,
+    "viewId": 2,
+    "columnName": "lastLoginDatetime",
+    "columnLabel": "最后登录时间",
+    "columnOrder": 99,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": "datetimeFormat",
+    "showWidth": 200,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": false,
+    "editHandle": false,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 25,
+    "viewId": 2,
+    "columnName": "statusStr",
+    "columnLabel": "状态",
+    "columnOrder": 99,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": 100,
+    "showFixed": null,
+    "showColumn": true,
+    "addHandle": false,
+    "editHandle": false,
+    "dataType": null,
+    "dataSource": null
+  },
+  {
+    "id": 26,
+    "viewId": 2,
+    "columnName": "status",
+    "columnLabel": "状态",
+    "columnOrder": 99,
+    "ruleRequired": false,
+    "ruleRegular": null,
+    "showFormat": null,
+    "showWidth": null,
+    "showFixed": null,
+    "showColumn": false,
+    "addHandle": false,
+    "editHandle": false,
+    "dataType": null,
+    "dataSource": null
+  }
+];
 const addFormRef = ref();
 const addFormData = ref({
   imageView: null,
@@ -99,66 +270,6 @@ const getViewColumnConfig = (viewId: number) => {
     });
 };
 
-/**
- * 初始化视图表头
- */
-const initViewColumns = () => {
-  if (viewColumnConfig.value) {
-    viewColumnConfig.value.map(viewColumn => {
-      if (viewColumn.showColumn) {
-        const tableColumn: TableColumn = {
-          label: viewColumn.columnLabel,
-          prop: viewColumn.columnName,
-          width: viewColumn.showWidth,
-          fixed: viewColumn.showFixed,
-          type: viewColumn.dataType === "image" ? viewColumn.dataType : null,
-          sortable: viewColumn.sortable,
-          format: getColumnFormat(viewColumn.showFormat),
-        };
-        gridColumn.value.push(tableColumn);
-      }
-    });
-
-    const optLine: TableColumn = {
-      label: "操作",
-      width: 120,
-      type: "handle",
-      fixed: "right",
-      handles: [],
-    };
-
-    //按钮显示
-    const value = viewConfig.value;
-    if (value) {
-      const optAddShowRegion = value.optAddShowRegion;
-      if (value.optAdd && (optAddShowRegion === "S_V_R_LINE" || optAddShowRegion === "S_V_R_BOTH")) {
-
-      }
-
-      //编辑按钮
-      const optEditShowRegion = value.optEditShowRegion;
-      if (value.optEdit && (optEditShowRegion === "S_V_R_LINE" || optEditShowRegion === "S_V_R_BOTH")) {
-        optLine.handles?.push({
-          label: value.optEditLabel || "编辑",
-          handleFun: showEditDialog,
-          type: "primary",
-        });
-      }
-
-      //删除按钮
-      const optDeleteShowRegion = value.optDeleteShowRegion;
-      if (value.optDelete && (optDeleteShowRegion === "S_V_R_LINE" || optDeleteShowRegion === "S_V_R_BOTH")) {
-        optLine.handles?.push({
-          label: value.optDeleteLabel || "删除",
-          handleFun: delHandle,
-          type: "danger",
-        });
-      }
-    }
-
-    gridColumn.value.push(optLine);
-  }
-};
 
 /**
  * 初始化表格
@@ -340,18 +451,6 @@ const getViewData = () => {
 onMounted(() => {
   getViewConfig();
 });
-
-onUnmounted(() => {
-  // 清理数据
-  viewConfig.value = null;
-  viewColumnConfig.value = null;
-  viewData.value = [];
-  viewPageData.value = null;
-  optButtons.value = [];
-  gridColumn.value = [];
-  addFormItems.value = [];
-  addFormRules.value = {};
-});
 </script>
 
 <template>
@@ -417,28 +516,4 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss">
-.avatar-uploader {
-  .el-upload {
-    border: 1px dashed var(--el-border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: var(--el-transition-duration-fast);
-  }
-
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
-}
 </style>

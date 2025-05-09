@@ -3,7 +3,6 @@ import { OssSts } from "#/entity.ts";
 import OSS from "ali-oss";
 import useAxios from "@/api";
 
-let client;
 
 const { sendPut, sendGet, sendPost } = useAxios();
 
@@ -11,7 +10,7 @@ const getSTSCredentials = async () => {
   return await sendGet<OssSts>("tools/front/file/sts");
 };
 
-const getOssClient = async (): OSS => {
+const getOssClient = async () => {
   const sts: OssSts = await getSTSCredentials();
 
   return new OSS({
