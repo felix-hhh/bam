@@ -1,8 +1,8 @@
 package com.kelaker.kcommon.tools.vo;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 文件上传记录(ToolsFileUpload)表实体类
@@ -16,7 +16,7 @@ public class ToolsFileVo {
     /**
      * id
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 真实文件名

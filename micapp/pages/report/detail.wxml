@@ -1,0 +1,125 @@
+<!--pages/report/detail.wxml-->
+<view class="report">
+  <!-- 排队中 -->
+  <view class="report_status queuing" wx:if="{{reportDetail.status === 'M_Q_S_QUEUING' || reportDetail.status === 'M_Q_S_IN_PROGRESS'}}">
+    <view class="report_status_icon">
+      <van-image src="/images/wait.svg" width="20" height="20" />
+    </view>
+    <view class="report_status_label">
+      {{reportDetail.statusStr}}
+    </view>
+  </view>
+  <!-- 已完成 -->
+  <view class="report_status completed" wx:if="{{reportDetail.status === 'M_Q_S_COMPLETED'}}">
+    <view class="report_status_icon">
+      <van-image src="/images/finish.svg" width="20" height="20" />
+    </view>
+    <view class="report_status_label">
+      {{reportDetail.statusStr}}
+    </view>
+  </view>
+  <!-- 已过期 -->
+  <view class="report_status expired" wx:if="{{reportDetail.status === 'M_Q_S_EXPIRED' || reportDetail.status === 'M_Q_S_CANCELLED'}}">
+    <view class="report_status_icon">
+      <van-image src="/images/expired.svg" width="20" height="20" />
+    </view>
+    <view class="report_status_label">
+      {{reportDetail.statusStr}}
+    </view>
+  </view>
+  <view class="report_info report_item">
+    <view class="report_item_header">
+      <view class="report_item_header_title">
+        订单号：{{reportDetail.queueNum}}
+      </view>
+    </view>
+    <view class="report_info_doctor">
+      <view class="report_info_doctor_pic">
+        <van-image src="/images/nanren.png" round width="48" height="48" />
+      </view>
+      <view class="report_info_doctor_info">
+        <view class="report_info_doctor_info_name">{{reportDetail.doctorName}}</view>
+        <view class="report_info_doctor_info_hospital">{{reportDetail.hospitalName}}</view>
+      </view>
+    </view>
+    <view class="report_info_partners">
+      <view class="report_info_partners_name">
+        <text class="secondary">康复卡：</text>{{reportDetail.patientName}}
+      </view>
+      <view wx:if="{{item.status == 'M_Q_S_IN_PROGRESS' || item.status == 'M_Q_S_COMPLETED'}}" class="report_info_partners_name">
+        <text class="secondary">康复时间：</text>
+        {{reportDetail.diagnosticTime}}
+      </view>
+      <view class="report_info_partners_name">
+        <text class="secondary">康复项目：</text>
+        {{reportDetail.patientName}}
+      </view>
+    </view>
+  </view>
+  <view class="report_file report_item" wx:if="{{reportDetail.status === 'M_Q_S_COMPLETED'}}">
+    <view class="report_item_header">
+      <view class="report_item_header_title">
+        评估记录
+      </view>
+      <view class="report_item_header_tips" wx:if="{{!reportDetail.record&&!reportDetail.report&&!reportDetail.video}}">生成中</view>
+    </view>
+    <view class="report_file_list">
+      <van-grid column-num="3" border="{{false}}">
+        <van-grid-item use-slot wx:if="{{reportDetail.record}}">
+          <image class="report_file_list_icon" src="/images/report.png" />
+          <text>就诊报告</text>
+        </van-grid-item>
+        <van-grid-item use-slot wx:if="{{reportDetail.report}}">
+          <image class="report_file_list_icon" src="/images/report.png" />
+          <text>评估报告</text>
+        </van-grid-item>
+        <van-grid-item use-slot wx:if="{{reportDetail.video}}">
+          <image class="report_file_list_icon" src="/images/video.png" />
+          <text>运动视频</text>
+        </van-grid-item>
+      </van-grid>
+    </view>
+  </view>
+  <view class="report_voucher report_item">
+    <view class="report_item_header">
+      <view class="report_item_header_title">
+        取号凭证
+      </view>
+    </view>
+    <view class="report_voucher_body">
+      <view>
+        <text class="secondary">排队编号：</text>
+        <text class="warning" wx:if="{{reportDetail.status === 'M_Q_S_EXPIRED'}}">请重新取号</text>
+        <text wx:else>{{reportDetail.currentNum}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="report_hospital report_item">
+    <view class="report_item_header">
+      <view class="report_item_header_title">
+        服务中心
+      </view>
+    </view>
+    <view class="report_hospital_body">
+      <view class="report_hospital_body_info">
+        <view class="report_hospital_body_info_label">
+          <text class="secondary">地址：</text>
+          {{reportDetail.hospitalName}}
+        </view>
+      </view>
+      <view class="report_hospital_body_info">
+        <view class="report_hospital_body_info_label">
+          <text class="secondary">联系电话：</text>
+          {{reportDetail.hospitalPhone}}
+        </view>
+        <view class="report_hospital_body_info_link">
+          <van-image bind:tap="callPhone" width="20" height="20" src="/images/phone.svg" />
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="report_opt">
+    <van-button round type="danger" plain size="small">删除订单</van-button>
+    <van-button round plain size="small">取消排队</van-button>
+  </view>
+</view>

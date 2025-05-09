@@ -1,0 +1,95 @@
+/* pages/my/patientList.wxss */
+.patient_header {
+  height: 336rpx;
+  margin-bottom: -336rpx;
+  background: linear-gradient(180deg, #E6FCF4 0%, #F6F6F6 100%);
+}
+
+.patient_tips {
+  text-align: center;
+  height: 40rpx;
+  line-height: 40rpx;
+  margin: 20rpx 0;
+}
+
+.patient_list {
+  padding: 0 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+
+  &_item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    border-radius: 20rpx;
+    align-items: center;
+    padding: 0 24rpx;
+    height: 152rpx;
+
+    &_icon {}
+
+    &_info {
+      flex: 1;
+      padding-left: 20rpx;
+
+      &_base {
+        gap: 16rpx;
+        display: flex;
+        align-items: center;
+
+        &_name,
+        &_age {
+          font-size: 32rpx;
+          font: 500;
+        }
+
+        &_gender {
+          border: 2rpx solid #DEDEDE;
+          width: 56rpx;
+          height: 34rpx;
+          border-radius: 8rpx;
+          font-size: 24rpx;
+          text-align: center;
+          background-color: #ECECEC;
+        }
+
+        &_relation {
+          width: 64rpx;
+          height: 34rpx;
+          background: #ECECEC;
+          border-radius: 8rpx;
+          border: 2rpx solid #DEDEDE;
+          text-align: center;
+          font-size: 24rpx;
+        }
+      }
+
+      &_number {
+        display: flex;
+        justify-content: space-between;
+        font-size: 28rpx;
+        color: #8C9099;
+      }
+    }
+  }
+
+  &_opt {
+    background-color: #07c160;
+    width: 65px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100%;
+    color: #FFF;
+  }
+}
+.patient_add_tips{
+  color: #8C9099;
+  font-size: 24rpx;
+  margin: 24rpx 40rpx;
+}
+
+.patient_add_button{
+  margin: 0 40rpx;
+}

@@ -8,13 +8,18 @@ export default defineConfig({
     vue(),
     tsconfigPaths(),
   ],
-  build:{
-    target:["es2022"]
+  css: {
+    preprocessorOptions: {
+      scss: "@import \"@/styles/index.scss\";",
+    },
+  },
+  build: {
+    target: ["es2022"],
   },
   resolve: {
     alias: {
       "@": "/src",
-      "#": "/types"
+      "#": "/types",
     },
   },
   server: {

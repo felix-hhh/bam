@@ -1,0 +1,120 @@
+/* pages/report/detail.wxss */
+.report {
+  .secondary {
+    color: #8C9099;
+  }
+.warning{
+  color: #FF5F00;
+  font-size: 36rpx;
+}
+
+  &_status {
+    height: 120rpx;
+    padding: 0 40rpx;
+    align-items: center;
+    display: flex;
+    gap: 16rpx;
+
+    &_label {
+      font-size: 36rpx;
+      font-weight: bold;
+    }
+  }
+
+  .completed {
+    background-color: #EDFAF5;
+  }
+  
+  .expired{
+    background-color: #EFEFEF;
+  }
+
+  .queuing{
+    background-color: #FFF3E1;
+  }
+
+  &_item {
+    background-color: #FFFFFF;
+    margin-bottom: 24rpx;
+    padding: 24rpx 40rpx;
+
+    &_header {
+      height: 56rpx;
+      border-bottom: 2rpx solid #F9F9F9;
+      font-weight: bold;
+      font-size: 28rpx;
+      display: flex;
+      gap: 6rpx;
+
+      &_tips {
+        font-size: 24rpx;
+        line-height: 34rpx;
+        text-align: center;
+        color: #FF5B3A;
+        width: 88rpx;
+        height: 34rpx;
+        background: #FFE5E0;
+        border-radius: 8rpx;
+      }
+    }
+  }
+
+  &_info {
+    &_doctor {
+      display: flex;
+      gap: 18rpx;
+      height: 144rpx;
+      align-items: center;
+
+      &_info {
+        display: flex;
+      flex-direction: column;
+      gap: 12rpx;
+        &_name {
+          font-weight: bold;
+          font-size: 32rpx;
+
+        }
+
+        &_hospital {
+          font-size: 26rpx;
+          color: #8C9099;
+        }
+      }
+    }
+
+    &_partners {
+      line-height: 30px;
+
+    }
+  }
+
+  &_hospital {
+    &_body {
+      line-height: 30px;
+      &_info{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  &_file {
+    &_list {
+      &_icon {
+        width: 80rpx;
+        height: 80rpx;
+      }
+    }
+  }
+  &_opt{
+    background-color: #FFFFFF;
+    height: 112rpx;
+    padding: 0 40rpx;
+    display: flex;
+    align-items: center;
+    gap: 24rpx;
+    flex-direction: row-reverse;
+  }
+}

@@ -13,15 +13,14 @@ import {
 } from "#/conponent.ts";
 import { ElMessage, ElMessageBox, Sort, UploadFile } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
-import { booleanFormat, datetimeFormat, depthCopy } from "@/utils/util";
+import { booleanFormat, datetimeFormat, depthCopy, filePathFormat, getOssClient } from "@/utils/util";
 import { useRouter } from "vue-router";
 import Base64 from "crypto-js/enc-base64";
 import Utf8 from "crypto-js/enc-utf8";
-import OSS from 'ali-oss';
-import { OssSts } from "#/entity.ts";
+import OSS from "ali-oss";
+import { ToolsFile } from "#/entity.ts";
 
 const router = useRouter();
-const ossSts = ref<OssSts>();
 const { sendPut, sendGet, sendPost } = useAxios();
 //页面配置
 const displayControl = reactive({
@@ -38,7 +37,7 @@ const searchItem = ref<SearchItem[]>([
   },
 ]);
 
-const viewConfig = ref<ViewConfig>({});
+const viewConfig = ref<ViewConfig>({} as ViewConfig);
 const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
@@ -56,12 +55,8 @@ const searchData = reactive({
 });
 const sort: Sort = { prop: "createDatetime", order: "descending" };
 
-const getOssSts=()=>{
-  sendGet("tools/front/file/sts").then((res) => {
-    ossSts.value = res;
-    console.log(res);
-  })
-}
+//阿里云客户端
+let client: OSS = null;
 
 /**
  * 取回页面配置
@@ -114,6 +109,7 @@ const initViewColumns = () => {
           prop: viewColumn.columnName,
           width: viewColumn.showWidth,
           fixed: viewColumn.showFixed,
+          type: viewColumn.dataType,
           sortable: viewColumn.sortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
@@ -270,37 +266,33 @@ const delHandle = () => {
     });
 };
 
-const handleImageUpload:UploadProps['onSuccess'] = (uploadFile) => {
-  addFormData.value.imageView = URL.createObjectURL(uploadFile.raw!);
+const handleImageUploadBefore = (uploadFile) => {
+  fileUpload(uploadFile);
 };
 
-const handleImageUploadBefore= (uploadFile) => {
-  fileUpload(uploadFile);
-}
-
 const fileUpload = async (file: UploadFile) => {
-  if(!file){
+  if (!file) {
     console.log("请选择文件");
     return;
   }
-  const fileName = file.name;
-  console.log("fileName", fileName);
-  const client:OSS = await new OSS({
-    region: 'oss-cn-shenzhen',
-    accessKeyId: ossSts.value.accessKeyId,
-    accessKeySecret: ossSts.value.accessKeySecret,
-    bucket: 'kld-image',
-    stsToken: ossSts.value.securityToken
+  const fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
+  const fileName = crypto.randomUUID() + "." + fileType;
+  const postData: ToolsFile = {
+    realFileName: fileName,
+    origFileName: file.name,
+    filePath: `sts_temp/${fileName}`,
+  };
+
+  const client: OSS = await getOssClient();
+
+  const result: OSS.PutObjectResult = await client.put(postData.filePath, file.raw);
+  console.log("文件上传成功", result);
+  addFormData.value.imageView = URL.createObjectURL(file.raw!);
+
+  await sendPost("/tools/manage/file/add", postData).then(req => {
+    console.log(req);
   });
-
-  const signatureFileName =  await client.signatureUrlV4('PUT', 3600, {
-    headers: {} // 请根据实际发送的请求头设置此处的请求头
-  }, fileName);
-
-  console.log(signatureFileName);
-  const result = await client.put(fileName, file.raw);
-  console.log("文件上传成功",result);
-}
+};
 
 /**
  * 添加处理器
@@ -345,7 +337,6 @@ const getViewData = () => {
 
 onMounted(() => {
   getViewConfig();
-  getOssSts();
 });
 
 onUnmounted(() => {
@@ -401,7 +392,10 @@ onUnmounted(() => {
                 :on-change="handleImageUploadBefore"
               >
                 <el-image v-if="addFormData.imageView" :src="addFormData.imageView" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                <el-image v-else-if="addFormData[item.prop]" :src="addFormData[item.prop]" class="avatar" />
+                <el-icon v-else class="avatar-uploader-icon">
+                  <Plus />
+                </el-icon>
               </el-upload>
             </template>
             <template v-else>
@@ -420,6 +414,29 @@ onUnmounted(() => {
   </el-drawer>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+.avatar-uploader {
+  .el-upload {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+  }
 
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
 </style>

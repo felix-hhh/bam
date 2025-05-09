@@ -2,6 +2,7 @@ package com.kelaker.kcommon.tools.api.manage;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.kelaker.kcommon.tools.dto.ToolsFileDto;
 import com.kelaker.kcommon.tools.dto.ToolsFileSearchDto;
 import com.kelaker.kcommon.tools.service.ToolsFileService;
 import com.kelaker.kcommon.tools.vo.ToolsFileVo;
@@ -44,6 +45,11 @@ public class ToolsFileManageApi extends BaseApi {
     @PostMapping("/upload")
     public void fileUpload(MultipartFile file) {
         this.toolsFileService.uploadFile(file);
+    }
+
+    @PostMapping("/add")
+    public ToolsFileVo addFile(@RequestBody ToolsFileDto toolsFileDto) {
+        return this.toolsFileService.addToolsFile(toolsFileDto);
     }
 }
 

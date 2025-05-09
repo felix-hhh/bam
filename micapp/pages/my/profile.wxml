@@ -1,0 +1,33 @@
+<!--pages/my/profile.wxml-->
+<view>
+  <van-cell-group class="cell_group">
+    <van-cell custom-class="cell_item" title-class="cell_title" bind:click="gotoProfile" title="头像">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/header.svg" />
+      </view>
+      <van-image src="/images/nanren.png" custom-class="header_icon" slot="right-icon"/>
+    </van-cell>
+    <van-cell custom-class="cell_item" title-class="cell_title" title="昵称" value="{{profile.nickname}}">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/nickname.svg" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group class="cell_group">
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="隐私政策">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/privacy.svg" />
+      </view>
+    </van-cell>
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="法律声明">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/law.svg" />
+      </view>
+    </van-cell>
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="注销账号">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/write_off.svg" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+</view>

@@ -21,7 +21,9 @@ public class ToolsConfigProperties {
      * 阿里云oss endpoint
      */
     private String aliyunOssEndpoint;
+
     private String aliyunOssRegionId;
+    private String aliyunOssRegion;
 
     /**
      * 阿里云oss bucketName

@@ -1,4 +1,37 @@
 import moment from "moment";
+import { OssSts } from "#/entity.ts";
+import OSS from "ali-oss";
+import useAxios from "@/api";
+
+let client;
+
+const { sendPut, sendGet, sendPost } = useAxios();
+
+const getSTSCredentials = async () => {
+  return await sendGet<OssSts>("tools/front/file/sts");
+};
+
+const getOssClient = async (): OSS => {
+  const sts: OssSts = await getSTSCredentials();
+
+  return new OSS({
+    region: sts.region,
+    accessKeyId: sts.accessKeyId,
+    accessKeySecret: sts.accessKeySecret,
+    bucket: sts.bucketName,
+    stsToken: sts.securityToken,
+    refreshSTSToken: async () => {
+      const newCredentials = await getSTSCredentials();
+      return {
+        accessKeyId: newCredentials.accessKeyId,
+        accessKeySecret: newCredentials.accessKeySecret,
+        stsToken: newCredentials.securityToken,
+      };
+    },
+    refreshSTSTokenInterval: 300000
+  });
+
+};
 
 /**
  * 时间戳格式化
@@ -54,6 +87,24 @@ const booleanFormat = (row, obj, data) => {
 };
 
 /**
+ * 文件路径转换器
+ * @param row
+ * @param obj
+ * @param data
+ */
+const filePathFormat = async (row, obj, data) => {
+  const ossClient: OSS = await getOssClient();
+ const signature =  await ossClient.asyncSignatureUrl(
+    data,
+    {
+      method: "GET",
+      expires: 3600,
+    },
+  );
+ return signature;
+};
+
+/**
  * 深度拷贝
  * @param data 数据
  * @returns {any}
@@ -82,4 +133,13 @@ const createSearchModel = (searchItem, limit, page, sort, dir) => {
 
 export default {};
 
-export { duration, datetimeFormat, moneyFormat, booleanFormat, createSearchModel, depthCopy };
+export {
+  duration,
+  datetimeFormat,
+  moneyFormat,
+  booleanFormat,
+  createSearchModel,
+  depthCopy,
+  filePathFormat,
+  getOssClient,
+};

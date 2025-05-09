@@ -1,0 +1,32 @@
+<!--pages/my/setting.wxml-->
+<view>
+  <van-cell-group class="cell_group">
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" bind:click="gotoProfile" title="账户设置">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/profile.svg" />
+      </view>
+    </van-cell>
+    <van-cell custom-class="cell_item" bind:click="gotoPatientList" is-link title-class="cell_title" title="常用健康卡">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/card.svg" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+  <van-cell-group class="cell_group">
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="隐私政策">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/privacy.svg" />
+      </view>
+    </van-cell>
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="法律声明">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/law.svg" />
+      </view>
+    </van-cell>
+    <van-cell custom-class="cell_item" is-link title-class="cell_title" title="关于我们">
+      <view slot="icon">
+        <van-image custom-class="cell_icon" fit="contain" src="/images/about.svg" />
+      </view>
+    </van-cell>
+  </van-cell-group>
+</view>

@@ -36,11 +36,12 @@ ktools:
 
 bam:
   tools:
-    wxMicAppId:
-    wxMicSecret:
+    wxMicAppId: wx2ecd3a0ec2002c20
+    wxMicSecret: 78fa51300dbc3a242df06a0a3f661865
     aliyunOssRegionId: cn-shenzhen
-    aliyunOssEndpoint: oss-cn-shenzhen
-    aliyunOssBucketName: kld-image
+    aliyunOssRegion: oss-cn-shenzhen
+    aliyunOssEndpoint: oss-cn-shenzhen.aliyuncs.com
+    aliyunOssBucketName: kld-data
     aliyunOssAccessKeyId:
     aliyunOssAccessKeySecret:
     aliyunOssArn: acs:ram::1057999219938374:role/oss-manager
