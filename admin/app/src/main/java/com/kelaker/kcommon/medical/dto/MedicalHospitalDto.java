@@ -16,7 +16,7 @@ public class MedicalHospitalDto {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 名称
@@ -46,7 +46,7 @@ public class MedicalHospitalDto {
     /**
      * 医生数量
      */
-    private Integer doctorCount;
+    private Long doctorCount;
 
     /**
      * 备注
@@ -61,7 +61,7 @@ public class MedicalHospitalDto {
     /**
      * 科室
      */
-    private Integer room;
+    private Long room;
 
     /**
      * 创建时间

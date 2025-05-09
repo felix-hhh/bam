@@ -16,12 +16,12 @@ public class MedicalDoctorDto {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 医院ID
      */
-    private Integer hospitalId;
+    private Long hospitalId;
 
     /**
      * 医生姓名
