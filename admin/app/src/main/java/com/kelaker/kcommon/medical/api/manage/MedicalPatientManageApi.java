@@ -78,6 +78,17 @@ public class MedicalPatientManageApi extends BaseApi {
     }
 
     /**
+     * 更新病人状态
+     *
+     * @param id 病人ID
+     */
+    @HasAction(actionCode = "MEDICAL_PATIENT:CHANGE", actionName = "更新病人状态")
+    @PutMapping("/status/change/{id}")
+    public void changeMedicalPatientStatus(@PathVariable("id") @NotNull(message = "病人ID不能为空") Long id) {
+        this.medicalPatientService.changeMedicalPatientStatus(id);
+    }
+
+    /**
      * 获取病人信息
      *
      * @param id 病人ID

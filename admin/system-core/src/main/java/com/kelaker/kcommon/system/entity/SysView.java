@@ -18,7 +18,7 @@ public class SysView extends Model<SysView> {
      * 序号
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 页面名字
@@ -109,6 +109,14 @@ public class SysView extends Model<SysView> {
      * 按钮显示方式（O_S_R_OPT 操作区, O_S_R_LINE 行）
      */
     private String optDeleteShowRegion;
+
+    private Boolean optChange;
+
+    private String optChangeUrl;
+
+    private String optChangeLabel;
+
+    private String optChangeShowRegion;
 
     /**
      * 备注

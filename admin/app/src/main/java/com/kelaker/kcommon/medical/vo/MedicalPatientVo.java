@@ -16,7 +16,7 @@ public class MedicalPatientVo {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 姓名
@@ -46,7 +46,7 @@ public class MedicalPatientVo {
     /**
      * 数据归属用户ID
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 备注

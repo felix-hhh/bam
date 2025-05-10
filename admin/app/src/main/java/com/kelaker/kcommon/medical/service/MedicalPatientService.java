@@ -8,8 +8,10 @@ import com.kelaker.kcommon.medical.entity.MedicalPatient;
 import com.kelaker.kcommon.medical.vo.MedicalPatientVo;
 import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -102,7 +104,21 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
         if (existingPatient == null) {
             throw new BusinessException("病人信息不存在");
         }
-        super.removeById(id);
+        existingPatient.setStatus(MedicalPatient.Status.DELETE);
+        super.updateById(existingPatient);
+    }
+
+    /**
+     * 变更状态
+     * @param id 数据ID
+     */
+    public void changeMedicalPatientStatus(@NotNull(message = "病人ID不能为空") Long id) {
+        MedicalPatient existingPatient = super.getById(id);
+        if (ValidateUtil.isBlank(existingPatient)) {
+            throw new BusinessException("病人信息不存在");
+        }
+        existingPatient.setStatus(MedicalPatient.Status.ENABLE.equals(existingPatient.getStatus()) ? MedicalPatient.Status.DISABLE : MedicalPatient.Status.ENABLE);
+        super.updateById(existingPatient);
     }
 
     /**
@@ -114,4 +130,6 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
         vo.setRelationStr(medicalPatient.getRelation().getRemark());
         return vo;
     }
+
+
 }

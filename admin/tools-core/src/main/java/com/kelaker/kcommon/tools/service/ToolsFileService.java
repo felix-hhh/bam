@@ -174,7 +174,6 @@ public class ToolsFileService extends BaseService<ToolsFileUploadDao, ToolsFile>
             //移动
             ossClient.copyObject(aliyunOssBucketName, filename, aliyunOssBucketName, newPath);
             ossClient.deleteObject(aliyunOssBucketName, filename);
-            return newPath;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new BusinessException("文件上传失败");

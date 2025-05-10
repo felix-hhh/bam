@@ -22,7 +22,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
      * 序号
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 姓名
@@ -37,7 +37,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
     /**
      * 性别
      */
-    private int gender;
+    private Integer gender;
 
     /**
      * 手机号码
@@ -72,7 +72,7 @@ public class MedicalPatient extends Model<MedicalPatient> {
     /**
      * 就诊次数
      */
-    private int treatCount;
+    private Integer treatCount;
 
     /**
      * 与账户人关系
