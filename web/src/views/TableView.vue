@@ -21,7 +21,7 @@ import OSS from "ali-oss";
 import { ToolsFile } from "#/entity.ts";
 
 const router = useRouter();
-const { sendPut, sendGet, sendPost } = useAxios();
+const { sendPut, sendGet, sendPost, sendDel } = useAxios();
 //页面配置
 const displayControl = reactive({
   loading: false,
@@ -44,7 +44,9 @@ const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
 const gridColumn = ref<TableColumn[]>([]);
 const addFormRef = ref();
-const addFormData = ref({});
+const addFormData = ref({
+  imageView: null,
+});
 const addFormItems = ref<FormColumn[]>([]);
 const addFormRules = ref({});
 const searchData = reactive({
@@ -109,7 +111,7 @@ const initViewColumns = () => {
           prop: viewColumn.columnName,
           width: viewColumn.showWidth,
           fixed: viewColumn.showFixed,
-          type: viewColumn.dataType,
+          type: viewColumn.dataType === "image" ? viewColumn.dataType : null,
           sortable: viewColumn.sortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
@@ -245,7 +247,8 @@ const hideDialog = () => {
 /**
  * 删除处理器
  */
-const delHandle = () => {
+const delHandle = (index, row) => {
+  const id: number = row.id;
   ElMessageBox.confirm(
     "确认要删除本条数据么？",
     "再次确认",
@@ -256,13 +259,11 @@ const delHandle = () => {
     },
   )
     .then(() => {
-      ElMessage({
-        type: "success",
-        message: "Delete completed",
-      });
-    })
-    .catch(() => {
-
+      sendDel(`${viewConfig.value.optDeleteUrl}/${id}`)
+        .then(() => {
+          getViewData();
+          ElMessage.success("操作成功");
+        });
     });
 };
 

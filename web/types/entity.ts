@@ -1,4 +1,4 @@
-import { RawRouteComponent } from "vue-router";
+import { RouteComponent } from "vue-router";
 
 /**
  * 登录数据
@@ -88,17 +88,9 @@ export interface ToolsFile {
    */
   origFileName: string;
   /**
-   * 文件类型
-   */
-  fileType: string;
-  /**
    * 文件路径
    */
   filePath: string;
-  /**
-   * 文件大小
-   */
-  fileSize: number;
 }
 
 export interface OssSts {
@@ -121,11 +113,11 @@ export interface SysMenu {
   /**
    * 是否隐藏
    */
-  hide: boolean;
+  hide?: boolean;
   /**
    * 序号
    */
-  id: number;
+  id?: number;
   /**
    * 菜单名字
    */
@@ -133,7 +125,7 @@ export interface SysMenu {
   /**
    * 排序
    */
-  orderNum: number;
+  orderNum?: number;
   /**
    * 路径
    */
@@ -145,9 +137,9 @@ export interface SysMenu {
   /**
    * 类型字符串
    */
-  typeStr: string;
+  typeStr?: string;
 
-  component?: "MainFrame" | "TableView" | RawRouteComponent;
+  component?: "MainFrame" | "TableView" | RouteComponent;
 }
 
 

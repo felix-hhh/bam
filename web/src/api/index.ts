@@ -102,7 +102,7 @@ const useAxios = () => {
    * @param url 请求地址
    * @param params 请求参数
    */
-  const sendDel = (url: string, params: object | undefined) => {
+  const sendDel = (url: string, params?: object) => {
     if (params == null) {
       params = {};
     }

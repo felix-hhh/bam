@@ -11,7 +11,7 @@ const getSTSCredentials = async () => {
   return await sendGet<OssSts>("tools/front/file/sts");
 };
 
-const getOssClient = async (): OSS => {
+const getOssClient = async (): Promise<OSS> => {
   const sts: OssSts = await getSTSCredentials();
 
   return new OSS({

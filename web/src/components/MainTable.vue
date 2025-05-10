@@ -147,7 +147,7 @@ onMounted(() => {
         <div class="search-bar-form">
           <el-row class="search-bar-form-item">
             <template v-for="item in searchItem" :key="item.key">
-              <el-col :xl="6" :lg="12" :md="12">
+              <el-col :xl="4" :lg="6" :md="12">
                 <el-form-item :label="item.label" style="width: 100%">
                   <el-input :placeholder="'请输入' + item.label" v-model="item.value" />
                 </el-form-item>

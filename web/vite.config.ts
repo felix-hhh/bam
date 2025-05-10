@@ -10,7 +10,6 @@ export default defineConfig({
   ],
   css: {
     preprocessorOptions: {
-      scss: "@import \"@/styles/index.scss\";",
     },
   },
   build: {

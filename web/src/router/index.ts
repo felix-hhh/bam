@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RawRouteComponent, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, RouteComponent, RouteRecordRaw } from "vue-router";
 import { SysMenu } from "#/entity.ts";
 import useAxios from "@/api";
 import TableView from "@/views/TableView.vue";
@@ -45,7 +45,7 @@ const constantRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "/patient",
+        path: "/hospital",
         name: "patient",
         meta: {
           title: "患者",
@@ -85,7 +85,7 @@ const router = createRouter({
   routes: constantRoutes,
 });
 
-const getComponent = (component?: "MainFrame" | "TableView" | RawRouteComponent) => {
+const getComponent = (component?: "MainFrame" | "TableView" | RouteComponent) => {
   switch (component) {
     case "TableView":
       return TableView;
@@ -109,7 +109,7 @@ const initRouter = async () => {
           const children: RouteRecordRaw[] = menu.children;
           if ((children !== undefined && children.length > 0) && (menu.meta !== undefined && !menu.meta.hidden)) {
             const newMenu: SysMenu = {
-              name: menu.meta.title,
+              name: typeof menu.meta.title !== "string" ? "" : menu.meta.title,
               path: menu.path,
               type: "S_M_T_FIRST",
               component: menu.component,
@@ -120,7 +120,7 @@ const initRouter = async () => {
             children.forEach(childMenu => {
               if (childMenu.meta !== undefined && !childMenu.meta.hidden) {
                 const newChildrenMenu: SysMenu = {
-                  name: childMenu.meta.title,
+                  name: typeof childMenu.meta.title !== "string" ? "" : childMenu.meta.title,
                   path: childMenu.path,
                   component: childMenu.component,
                   type: "S_M_T_CHILD",

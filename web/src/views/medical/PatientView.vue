@@ -1,13 +1,19 @@
 <script setup lang="ts">
-
 import { onMounted, reactive, ref } from "vue";
 import useAxios from "@/api";
-import { FormColumn, PageResult, SearchItem, TableOptButton, ViewColumnConfig } from "#/conponent.ts";
+import {
+  FormColumn,
+  PageResult,
+  SearchItem,
+  TableColumn,
+  TableOptButton,
+  ViewColumnConfig,
+  ViewConfig,
+} from "#/conponent.ts";
 import { ElMessage, ElMessageBox, Sort } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
 import { datetimeFormat, depthCopy } from "@/utils/util";
 import { useRouter } from "vue-router";
-
 
 /**
  * 显示添加窗口
@@ -25,6 +31,31 @@ const showEditDialog = (index: number, data: any) => {
   displayControl.addDialog = true;
   displayControl.isEdit = true;
 };
+
+/**
+ * 删除处理器
+ */
+const delHandle = () => {
+  ElMessageBox.confirm(
+    "确认要删除本条数据么？",
+    "再次确认",
+    {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning",
+    },
+  )
+    .then(() => {
+      ElMessage({
+        type: "success",
+        message: "Delete completed",
+      });
+    })
+    .catch(() => {
+
+    });
+};
+
 
 /**
  * 关闭添加窗口
@@ -45,20 +76,30 @@ const displayControl = reactive({
 
 const searchItem = ref<SearchItem[]>([
   {
-    label: "关键字",
-    key: "keyword",
+    label: "姓名",
+    key: "name",
+    value: "",
+  },
+  {
+    label: "手机号码",
+    key: "phone",
+    value: "",
+  },
+  {
+    label: "状态",
+    key: "status",
     value: "",
   },
 ]);
 
-const viewConfig = {
+const viewConfig = ref<ViewConfig>({
   initDataUrl: "/medical/manage/patient/page",
-};
+} as ViewConfig);
 const viewColumnConfig = ref<ViewColumnConfig[]>();
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
-const gridColumn = [
+const gridColumn = ref<TableColumn[]>([
   {
     label: "序号",
     prop: "id",
@@ -118,11 +159,18 @@ const gridColumn = [
         handleFun: showEditDialog,
         type: "primary",
       },
+      {
+        label: "删除",
+        handleFun: delHandle,
+        type: "danger",
+      },
     ],
   },
-];
+]);
 const addFormRef = ref();
-const addFormData = ref({});
+const addFormData = ref({
+  imageView: null,
+});
 const addFormItems = ref<FormColumn[]>([]);
 const addFormRules = ref({});
 const searchData = reactive({
@@ -132,31 +180,6 @@ const searchData = reactive({
   dir: "ASC",
 });
 const sort: Sort = { prop: "createDatetime", order: "descending" };
-
-
-/**
- * 删除处理器
- */
-const delHandle = () => {
-  ElMessageBox.confirm(
-    "确认要删除本条数据么？",
-    "再次确认",
-    {
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
-      type: "warning",
-    },
-  )
-    .then(() => {
-      ElMessage({
-        type: "success",
-        message: "Delete completed",
-      });
-    })
-    .catch(() => {
-
-    });
-};
 
 
 /**
@@ -190,7 +213,7 @@ const saveHandle = () => {
  */
 const getViewData = () => {
   if (viewConfig) {
-    sendPost(viewConfig.initDataUrl, searchData)
+    sendPost(viewConfig.value.initDataUrl, searchData)
       .then((rep: any) => {
         viewPageData.value = rep;
         viewData.value = viewPageData.value ? viewPageData.value.records : [];
@@ -237,19 +260,6 @@ onMounted(() => {
                         :label="item.label" :prop="item.prop">
             <template v-if="item.type==='switch'">
               <el-switch v-model="addFormData[item.prop]" />
-            </template>
-            <template v-else-if="item.type==='image'">
-              <el-upload
-                class="avatar-uploader"
-                :auto-upload="false"
-                :show-file-list="false"
-                :on-change="handleImageUploadBefore"
-              >
-                <el-image v-if="addFormData.imageView" :src="addFormData.imageView" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon">
-                  <Plus />
-                </el-icon>
-              </el-upload>
             </template>
             <template v-else>
               <el-input :type="item.type" v-model="addFormData[item.prop]" />
