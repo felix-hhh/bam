@@ -5,11 +5,12 @@ import useAxios from "@/api";
 import {
   FormColumn,
   PageResult,
-  SearchItem,
+  SearchData,
   TableColumn,
   TableOptButton,
   ViewColumnConfig,
   ViewConfig,
+  ViewSearchConfig,
 } from "#/conponent.ts";
 import { ElMessage, ElMessageBox, Sort, UploadFile } from "element-plus";
 import MainTable from "@/components/MainTable.vue";
@@ -26,19 +27,13 @@ const { sendPut, sendGet, sendPost, sendDel } = useAxios();
 const displayControl = reactive({
   loading: false,
   addDialog: false,
+  detailDialog: false,
   isEdit: false,
 });
 
-const searchItem = ref<SearchItem[]>([
-  {
-    label: "关键字",
-    key: "keyword",
-    value: "",
-  },
-]);
-
 const viewConfig = ref<ViewConfig>({} as ViewConfig);
 const viewColumnConfig = ref<ViewColumnConfig[]>();
+const viewSearchConfig = ref<ViewSearchConfig[]>([] as ViewSearchConfig[]);
 const viewData = ref<object[]>([]);
 const viewPageData = ref<PageResult>();
 const optButtons = ref<TableOptButton[]>([]);
@@ -49,22 +44,19 @@ const addFormData = ref({
 });
 const addFormItems = ref<FormColumn[]>([]);
 const addFormRules = ref({});
-const searchData = reactive({
+const searchData = ref<SearchData>({
   limit: 20,
   page: 1,
   data: {},
-  dir: "ASC",
+  dir: "DESC",
 });
 const sort: Sort = { prop: "createDatetime", order: "descending" };
 
-//阿里云客户端
-let client: OSS = null;
 
 /**
  * 取回页面配置
  */
 const getViewConfig = () => {
-  console.log("viewConfig:", viewConfig.value);
   try {
     const path = Base64.stringify(Utf8.parse(router.currentRoute.value.fullPath));
     sendGet<ViewConfig>(`/system/manage/view/path/${path}`)
@@ -91,11 +83,24 @@ const getViewColumnConfig = (viewId: number) => {
     .then(req => {
       viewColumnConfig.value = req;
       initViewColumns();
+      getViewSearchConfig(viewId);
       initForm();
       // 列配置初始化完成后再获取数据
       if (viewConfig.value.initData) {
         getViewData();
       }
+    });
+};
+
+/**
+ * 取回页面检索配置
+ * @param viewId 页面ID
+ *
+ */
+const getViewSearchConfig = (viewId: number) => {
+  sendGet<ViewSearchConfig[]>(`/system/manage/view/search/get/${viewId}`)
+    .then(req => {
+      viewSearchConfig.value = req;
     });
 };
 
@@ -121,7 +126,7 @@ const initViewColumns = () => {
 
     const optLine: TableColumn = {
       label: "操作",
-      width: 120,
+      width: 180,
       type: "handle",
       fixed: "right",
       handles: [],
@@ -133,6 +138,15 @@ const initViewColumns = () => {
       const optAddShowRegion = value.optAddShowRegion;
       if (value.optAdd && (optAddShowRegion === "S_V_R_LINE" || optAddShowRegion === "S_V_R_BOTH")) {
 
+      }
+
+      const optViewShowRegion = value.optViewShowRegion;
+      if (value.optView && (optViewShowRegion === "S_V_R_LINE" || optViewShowRegion === "S_V_R_BOTH")) {
+        optLine.handles?.push({
+          label: value.optViewLabel || "查看",
+          handleFun: showViewDialog,
+          type: "primary",
+        });
       }
 
       //编辑按钮
@@ -220,6 +234,13 @@ const initOptButton = () => {
 };
 
 /**
+ * 显示详情页面
+ */
+const showViewDialog = () => {
+  displayControl.detailDialog = true;
+};
+
+/**
  * 显示添加窗口
  */
 const showAddDialog = () => {
@@ -242,6 +263,7 @@ const showEditDialog = (index: number, data: any) => {
 const hideDialog = () => {
   addFormRef.value.resetFields();
   displayControl.addDialog = false;
+  displayControl.detailDialog = false;
 };
 
 /**
@@ -325,9 +347,15 @@ const saveHandle = () => {
  * 取回数据
  */
 const getViewData = () => {
+  console.log(searchData.value);
+  viewSearchConfig.value.forEach((item) => {
+    if (item.value !== undefined && item.value !== null && item.value.length > 0) {
+      searchData.data[item.key] = item.value;
+    }
+  });
   if (viewConfig.value) {
     const config = viewConfig.value;
-    sendPost(config.initDataUrl, searchData)
+    sendPost(config.initDataUrl, searchData.value)
       .then((rep: any) => {
         viewPageData.value = rep;
         viewData.value = viewPageData.value ? viewPageData.value.records : [];
@@ -358,7 +386,7 @@ onUnmounted(() => {
     :grid-column="gridColumn"
     :grid-data="viewData"
     :page-data="viewPageData"
-    :search-item="searchItem"
+    :search-data="searchData"
     :button-item="optButtons"
     :multi-select="true"
     :loading="displayControl.loading"
@@ -366,7 +394,19 @@ onUnmounted(() => {
     :default-sort="sort"
     :page="true"
   />
-
+  <el-drawer
+    v-model="displayControl.detailDialog"
+    title="详情"
+    direction="rtl"
+    :before-close="hideDialog"
+    size="600"
+  >
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="hideDialog">关闭</el-button>
+      </div>
+    </template>
+  </el-drawer>
   <el-drawer
     v-model="displayControl.addDialog"
     :title="(displayControl.isEdit ? '编辑' : '添加') + viewConfig.name"

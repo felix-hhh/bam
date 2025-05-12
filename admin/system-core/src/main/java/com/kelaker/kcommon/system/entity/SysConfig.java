@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 
 /**
  * 系统配置表(SysConfig)表实体类
@@ -29,7 +30,6 @@ public class SysConfig extends Model<SysConfig> {
      * 配置名称
      */
     private String configKeyName;
-
 
     /**
      * 配置值
@@ -92,13 +92,15 @@ public class SysConfig extends Model<SysConfig> {
 
         private final String remark;
 
-
         @Override
         public String toString() {
             return this.value;
         }
 
         public static Status toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Status status : values()) {
                 if (status.getValue().equals(value)) {
                     return status;
@@ -130,6 +132,9 @@ public class SysConfig extends Model<SysConfig> {
         private final String remark;
 
         public static Type toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Type type : values()) {
                 if (type.getValue().equals(value)) {
                     return type;
@@ -143,6 +148,5 @@ public class SysConfig extends Model<SysConfig> {
             return this.value;
         }
     }
-
 
 }

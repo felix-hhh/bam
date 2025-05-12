@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.kelaker.kcommon.user.constant.MemberType;
 import com.kelaker.ktools.common.populator.ConvertUtils;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -85,7 +86,8 @@ public class UserMember extends Model<UserMember> implements Comparable<UserMemb
      * 取回评分
      */
     public Long getScore() {
-        return ConvertUtils.convertToLong((MemberType.SVIP.equals(memberType) ? "1" : "2") + ConvertUtils.convertToString(createDatetime.getTime()));
+        return ConvertUtils.convertToLong((MemberType.SVIP.equals(memberType) ? "1" : "2")
+                + ConvertUtils.convertToString(createDatetime.getTime()));
     }
 
     @Override
@@ -121,6 +123,9 @@ public class UserMember extends Model<UserMember> implements Comparable<UserMemb
         private final String remark;
 
         public static Status toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Status status : values()) {
                 if (value.equals(status.getValue())) {
                     return status;
@@ -135,4 +140,3 @@ public class UserMember extends Model<UserMember> implements Comparable<UserMemb
         }
     }
 }
-

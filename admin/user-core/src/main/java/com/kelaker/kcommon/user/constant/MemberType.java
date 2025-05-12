@@ -1,6 +1,7 @@
 package com.kelaker.kcommon.user.constant;
 
 import com.baomidou.mybatisplus.annotation.IEnum;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,6 +26,9 @@ public enum MemberType implements IEnum<String> {
     private final String remark;
 
     public static MemberType toEnum(String value) {
+        if (ValidateUtil.isBlank(value)) {
+            return null;
+        }
         for (MemberType memberType : values()) {
             if (value.equals(memberType.getValue())) {
                 return memberType;

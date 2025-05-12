@@ -3,6 +3,7 @@ package com.kelaker.kcommon.user.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.kelaker.ktools.web.helper.SecurityTypeHelper;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -89,6 +90,9 @@ public class UserLoginLog extends Model<UserLoginLog> {
         private final String remark;
 
         public static Type toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Type type : values()) {
                 if (value.equals(type.getValue())) {
                     return type;
@@ -103,4 +107,3 @@ public class UserLoginLog extends Model<UserLoginLog> {
         }
     }
 }
-

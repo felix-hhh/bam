@@ -114,6 +114,14 @@ public class SysViewVo {
 
     private String optChangeShowRegion;
 
+    private Boolean optView;
+
+    private String optViewUrl;
+
+    private String optViewLabel;
+
+    private String optViewShowRegion;
+
     /**
      * 备注
      */

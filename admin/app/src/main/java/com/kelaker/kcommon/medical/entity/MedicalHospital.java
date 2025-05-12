@@ -2,6 +2,7 @@ package com.kelaker.kcommon.medical.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -98,6 +99,9 @@ public class MedicalHospital extends Model<MedicalHospital> {
         private final String remark;
 
         public static Status toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Status status : values()) {
                 if (value.equals(status.getValue())) {
                     return status;

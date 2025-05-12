@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 
 import java.util.Date;
 
@@ -76,6 +77,9 @@ public class ToolsFile extends Model<ToolsFile> {
         private final String remark;
 
         public static Platform toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Platform platform : values()) {
                 if (value.equals(platform.getValue())) {
                     return platform;
@@ -101,6 +105,9 @@ public class ToolsFile extends Model<ToolsFile> {
         private final String remark;
 
         public static Status toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Status status : values()) {
                 if (value.equals(status.getValue())) {
                     return status;

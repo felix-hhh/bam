@@ -4,7 +4,7 @@ import { ArrowDown } from "@element-plus/icons-vue";
 import { ElMessageBox, Sort } from "element-plus";
 import * as XLSX from "xlsx";
 import fs from "file-saver";
-import { ColumnData, PageResult, TableColumn, TableOptButton, TableSearch } from "#/conponent.ts";
+import { ColumnData, PageResult, SearchData, TableColumn, TableOptButton, ViewSearchConfig } from "#/conponent.ts";
 import { ElMessageBoxOptions } from "element-plus/es/components/message-box/src/message-box.type";
 
 const props = defineProps<{
@@ -12,7 +12,7 @@ const props = defineProps<{
   pageData?: PageResult;
   gridColumn: TableColumn[];
   defaultSort: Sort;
-  searchItem?: TableSearch[];
+  searchItem?: ViewSearchConfig[];
   buttonItem?: TableOptButton[];
   loading: boolean;
   page: boolean;
@@ -148,8 +148,23 @@ onMounted(() => {
           <el-row class="search-bar-form-item">
             <template v-for="item in searchItem" :key="item.key">
               <el-col :xl="4" :lg="6" :md="12">
-                <el-form-item :label="item.label" style="width: 100%">
-                  <el-input :placeholder="'请输入' + item.label" v-model="item.value" />
+                <el-form-item :label="item.searchLabel" v-if="item.dataType==='input'" style="width: 100%">
+                  <el-input :placeholder="'请输入' + item.searchLabel" v-model="item.searchValue" />
+                </el-form-item>
+                <el-form-item :label="item.label" v-if="item.type==='select'" style="width: 100%">
+                  <el-select
+                    clearable
+                    v-model="item.value"
+                    :placeholder="'请选择' + item.label"
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="data in item.datasource"
+                      :key="data.key"
+                      :label="data.value"
+                      :value="data.key"
+                    />
+                  </el-select>
                 </el-form-item>
               </el-col>
             </template>
@@ -188,7 +203,8 @@ onMounted(() => {
           </template>
           <template v-else>
             <el-button v-if="item.selectHandler" :disabled="multipleSelection.length <= 0" :type="item.type"
-                       @click="item.handle">{{ item.label }}
+                       @click="item.handle">
+              {{ item.label }}
             </el-button>
             <el-button v-else :type="item.type" @click="item.handle">{{ item.label }}</el-button>
           </template>

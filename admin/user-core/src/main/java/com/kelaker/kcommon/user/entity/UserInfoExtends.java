@@ -3,6 +3,7 @@ package com.kelaker.kcommon.user.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.kelaker.kcommon.user.constant.MemberType;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -55,7 +56,6 @@ public class UserInfoExtends extends Model<UserInfoExtends> {
      * 签名
      */
     private String signature;
-
 
     /**
      * 性别
@@ -117,7 +117,6 @@ public class UserInfoExtends extends Model<UserInfoExtends> {
      */
     private Date memberTime;
 
-
     @Getter
     @AllArgsConstructor
     public enum UserRole implements IEnum<String> {
@@ -132,6 +131,9 @@ public class UserInfoExtends extends Model<UserInfoExtends> {
         private final String remark;
 
         public static UserRole toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (UserRole userRole : values()) {
                 if (value.equals(userRole.getValue())) {
                     return userRole;

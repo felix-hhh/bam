@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import com.kelaker.ktools.common.utils.ValidateUtil;
 
 /**
  * 组织架构(SystemOrganization)表实体类
@@ -66,6 +67,9 @@ public class SystemOrganization extends Model<SystemOrganization> {
         private final String remark;
 
         public static Status toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Status status : values()) {
                 if (value.equals(status.getValue())) {
                     return status;
@@ -92,6 +96,9 @@ public class SystemOrganization extends Model<SystemOrganization> {
         private final String remark;
 
         public static Type toEnum(String value) {
+            if (ValidateUtil.isBlank(value)) {
+                return null;
+            }
             for (Type type : values()) {
                 if (value.equals(type.getValue())) {
                     return type;
@@ -106,4 +113,3 @@ public class SystemOrganization extends Model<SystemOrganization> {
         }
     }
 }
-

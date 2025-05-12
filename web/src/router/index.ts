@@ -36,7 +36,7 @@ const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
-  {
+  /*{
     path: "/medical",
     name: "medical",
     component: MainFrame,
@@ -45,7 +45,7 @@ const constantRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: "/hospital",
+        path: "/patient",
         name: "patient",
         meta: {
           title: "患者",
@@ -77,7 +77,7 @@ const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/medical/PatientView.vue"),
       },
     ],
-  },
+  },*/
 ];
 
 const router = createRouter({
@@ -104,7 +104,6 @@ const initRouter = async () => {
   const menuList: SysMenu[] = await sendGet<SysMenu[]>("/system/manage/menu/list")
     .then((req: SysMenu[]) => {
       constantRoutes.forEach(menu => {
-        console.log("menu", menu);
         if (menu.name !== undefined) {
           const children: RouteRecordRaw[] = menu.children;
           if ((children !== undefined && children.length > 0) && (menu.meta !== undefined && !menu.meta.hidden)) {
@@ -133,7 +132,6 @@ const initRouter = async () => {
           }
         }
       });
-      console.log("menuList", req);
       store.setMenuList(req);
       return req;
     });

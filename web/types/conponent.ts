@@ -50,6 +50,15 @@ export interface ViewColumnConfig {
   showColumn: boolean;
 }
 
+export interface ViewSearchConfig {
+  id: number;
+  viewId: number;
+  searchLabel: string;
+  searchKey: string;
+  searchValue: string;
+  dataType: "input" | "select";
+}
+
 /**
  * 页面配置
  */
@@ -83,6 +92,10 @@ export interface ViewConfig {
   optEditLabel: string;
   optEditShowRegion: string;
   optEditUrl: string;
+  optView: boolean;
+  optViewLabel: string;
+  optViewShowRegion: string;
+  optViewUrl: string;
   remark: string;
   tips: string;
 }
@@ -128,38 +141,35 @@ export interface TableOptButton {
 }
 
 /**
- * 表格搜索
- */
-export interface TableSearch {
-  label: string;
-  key: string;
-  value: string;
-}
-
-/**
  * 表格配置
  */
 export interface FormColumn {
   label: string;
   prop: string;
-  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select"|"image";
+  type: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select" | "image";
   addHandle: boolean;
   editHandle: boolean;
   dataSource?: string;
   selectData?: object[];
 }
 
-/**
- * 查询ITEM
- */
-export interface SearchItem {
-  label: string;
-  key: string;
-  value: string;
+export interface SearchData {
+  limit: number;
+  page: number;
+  data: object;
+  dir: "ASC" | "DESC";
 }
 
 export interface ColumnData {
   column: any;
   prop: string;
   order: any;
+}
+
+/**
+ * 下拉菜单选项
+ */
+export interface SelectItem {
+  key: string;
+  value: string;
 }

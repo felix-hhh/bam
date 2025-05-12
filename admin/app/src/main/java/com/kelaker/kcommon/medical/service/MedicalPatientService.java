@@ -34,6 +34,7 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
     public IPage<MedicalPatientVo> queryPage(RequestPage<MedicalPatientSearchDto> searchDto) {
         MedicalPatientSearchDto searchDtoData = searchDto.getData();
         MedicalPatient empty = super.objectConvert(searchDtoData, MedicalPatient.class);
+        empty.setStatus(MedicalPatient.Status.toEnum(searchDtoData.getStatus()));
         IPage<MedicalPatient> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
         return mapPageToTarget(page, this::convertToVo);
     }

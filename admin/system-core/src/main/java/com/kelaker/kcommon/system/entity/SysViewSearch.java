@@ -1,16 +1,20 @@
-package com.kelaker.kcommon.system.dto;
+package com.kelaker.kcommon.system.entity;
 
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 /**
- * 页面搜索功能(SysViewSearch)查询实体类
+ * 页面搜索功能(SysViewSearch)表实体类
  *
  * @author Felix Huang
  * @since 2025-05-12 15:45:05
  */
 @Data
-public class SysViewSearchDto {
+@TableName("sys_view_search")
+public class SysViewSearch extends Model<SysViewSearch> {
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**

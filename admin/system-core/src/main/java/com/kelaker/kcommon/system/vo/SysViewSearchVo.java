@@ -1,22 +1,22 @@
-package com.kelaker.kcommon.system.dto;
+package com.kelaker.kcommon.system.vo;
 
 import lombok.Data;
 
 /**
- * 页面搜索功能(SysViewSearch)查询实体类
+ * 页面搜索功能(SysViewSearch)表实体类
  *
  * @author Felix Huang
  * @since 2025-05-12 15:45:05
  */
 @Data
-public class SysViewSearchDto {
+public class SysViewSearchVo {
 
-    private Integer id;
+    private Long id;
 
     /**
      * 页面ID
      */
-    private Integer viewId;
+    private Long viewId;
 
     /**
      * 检索label

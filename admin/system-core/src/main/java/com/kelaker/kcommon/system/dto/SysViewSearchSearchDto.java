@@ -9,7 +9,7 @@ import lombok.Data;
  * @since 2025-05-12 15:45:05
  */
 @Data
-public class SysViewSearchDto {
+public class SysViewSearchSearchDto {
 
     private Integer id;
 
