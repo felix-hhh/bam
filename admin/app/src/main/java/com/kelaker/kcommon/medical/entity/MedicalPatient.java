@@ -26,6 +26,11 @@ public class MedicalPatient extends Model<MedicalPatient> {
     private Long id;
 
     /**
+     * 队列号码
+     */
+    private Long queueNum;
+
+    /**
      * 诊断编号
      */
     private String medicalNum;

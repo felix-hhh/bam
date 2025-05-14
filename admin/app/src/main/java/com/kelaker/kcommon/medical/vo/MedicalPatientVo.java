@@ -19,6 +19,11 @@ public class MedicalPatientVo {
     private Long id;
 
     /**
+     * 队列号码
+     */
+    private Long queueNum;
+
+    /**
      * 问诊编号
      */
     private String medicalNum;
