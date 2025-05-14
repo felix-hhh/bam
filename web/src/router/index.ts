@@ -85,14 +85,18 @@ const router = createRouter({
   routes: constantRoutes,
 });
 
-const getComponent = (component?: "MainFrame" | "TableView" | RouteComponent) => {
+const getComponent = (component?: "MainFrame" | "TableView" | RouteComponent | string) => {
   switch (component) {
     case "TableView":
       return TableView;
     case "MainFrame":
       return MainFrame;
     default:
-      return component;
+      if (typeof component === "string") {
+        return () => import(`/src/${component}.vue`);
+      } else {
+        return component;
+      }
   }
 };
 

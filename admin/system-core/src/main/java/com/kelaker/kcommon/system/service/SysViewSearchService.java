@@ -58,12 +58,14 @@ public class SysViewSearchService extends BaseService<SysViewSearchDao, SysViewS
      * 对象转换
      */
     private SysViewSearchVo convertToVo(SysViewSearch sysViewSearch) {
-        return super.objectConvert(sysViewSearch, SysViewSearchVo.class);
+        SysViewSearchVo sysViewSearchVo = super.objectConvert(sysViewSearch, SysViewSearchVo.class);
+        sysViewSearchVo.setDataSource(sysViewSearch.getDataSource());
+        return sysViewSearchVo;
     }
 
     public List<SysViewSearchVo> getSysViewSearchByView(Long viewId) {
         List<SysViewSearch> list = super.lambdaQuery().eq(SysViewSearch::getViewId, viewId).list();
-        return super.mapListToTarget(list, SysViewSearchVo.class);
+        return super.mapListToTarget(list, this::convertToVo);
     }
 }
 

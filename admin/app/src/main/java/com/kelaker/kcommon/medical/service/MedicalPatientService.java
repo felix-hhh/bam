@@ -1,6 +1,7 @@
 package com.kelaker.kcommon.medical.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.kelaker.kcommon.medical.dao.MedicalPatientDao;
 import com.kelaker.kcommon.medical.dto.MedicalPatientDto;
 import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
@@ -75,6 +76,7 @@ public class MedicalPatientService extends BaseService<MedicalPatientDao, Medica
         medicalPatient.setUserId(super.getUserId());
         medicalPatient.setStatus(MedicalPatient.Status.ENABLE);
         medicalPatient.setRelation(MedicalPatient.Relation.toEnum(dto.getRelation()));
+        medicalPatient.setMedicalNum(IdWorker.getIdStr());
         super.save(medicalPatient);
     }
 

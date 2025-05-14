@@ -21,6 +21,10 @@ import Utf8 from "crypto-js/enc-utf8";
 import OSS from "ali-oss";
 import { ToolsFile } from "#/entity.ts";
 
+const props = defineProps<{
+  viewFun: (index,row)=>void;
+}>();
+
 const router = useRouter();
 const { sendPut, sendGet, sendPost, sendDel } = useAxios();
 //页面配置
@@ -141,10 +145,10 @@ const initViewColumns = () => {
       }
 
       const optViewShowRegion = value.optViewShowRegion;
-      if (value.optView && (optViewShowRegion === "S_V_R_LINE" || optViewShowRegion === "S_V_R_BOTH")) {
+      if (props.viewFun) {
         optLine.handles?.push({
           label: value.optViewLabel || "查看",
-          handleFun: showViewDialog,
+          handleFun: props.viewFun,
           type: "primary",
         });
       }
@@ -347,10 +351,9 @@ const saveHandle = () => {
  * 取回数据
  */
 const getViewData = () => {
-  console.log(searchData.value);
   viewSearchConfig.value.forEach((item) => {
-    if (item.value !== undefined && item.value !== null && item.value.length > 0) {
-      searchData.data[item.key] = item.value;
+    if (item.searchValue !== undefined && item.searchValue !== null && item.searchValue.length > 0) {
+      searchData.value.data[item.searchKey] = item.searchValue;
     }
   });
   if (viewConfig.value) {
@@ -386,7 +389,7 @@ onUnmounted(() => {
     :grid-column="gridColumn"
     :grid-data="viewData"
     :page-data="viewPageData"
-    :search-data="searchData"
+    :search-config="viewSearchConfig"
     :button-item="optButtons"
     :multi-select="true"
     :loading="displayControl.loading"

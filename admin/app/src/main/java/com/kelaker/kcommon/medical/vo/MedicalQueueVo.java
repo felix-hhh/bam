@@ -60,6 +60,11 @@ public class MedicalQueueVo {
     private String patientName;
 
     /**
+     * 患者电话
+     */
+    private String patientPhone;
+
+    /**
      * 患者性别
      */
     private int patientGender;

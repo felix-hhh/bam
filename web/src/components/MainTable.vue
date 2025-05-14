@@ -12,7 +12,7 @@ const props = defineProps<{
   pageData?: PageResult;
   gridColumn: TableColumn[];
   defaultSort: Sort;
-  searchItem?: ViewSearchConfig[];
+  searchConfig?: ViewSearchConfig[];
   buttonItem?: TableOptButton[];
   loading: boolean;
   page: boolean;
@@ -143,23 +143,23 @@ onMounted(() => {
       </div>
     </template>
     <div class="search-bar" v-if="displayControl.searchbar">
-      <el-form v-if="searchItem" label-width="100" :inline="true" :model="searchItem">
+      <el-form v-if="searchConfig" label-width="100" :inline="true" :model="searchConfig">
         <div class="search-bar-form">
           <el-row class="search-bar-form-item">
-            <template v-for="item in searchItem" :key="item.key">
+            <template v-for="item in searchConfig" :key="item.key">
               <el-col :xl="4" :lg="6" :md="12">
                 <el-form-item :label="item.searchLabel" v-if="item.dataType==='input'" style="width: 100%">
                   <el-input :placeholder="'请输入' + item.searchLabel" v-model="item.searchValue" />
                 </el-form-item>
-                <el-form-item :label="item.label" v-if="item.type==='select'" style="width: 100%">
+                <el-form-item :label="item.searchLabel" v-if="item.dataType==='select'" style="width: 100%">
                   <el-select
                     clearable
-                    v-model="item.value"
-                    :placeholder="'请选择' + item.label"
+                    v-model="item.searchValue"
+                    :placeholder="'请选择' + item.searchLabel"
                     style="width: 100%"
                   >
                     <el-option
-                      v-for="data in item.datasource"
+                      v-for="data in item.dataSource"
                       :key="data.key"
                       :label="data.value"
                       :value="data.key"
@@ -217,7 +217,7 @@ onMounted(() => {
         <el-tooltip content="全屏" placement="top">
           <el-button icon="FullScreen" @click="fullscreen" plain link />
         </el-tooltip>
-        <el-tooltip v-if="searchItem" content="查询" placement="top">
+        <el-tooltip v-if="searchConfig" content="查询" placement="top">
           <el-button icon="Search" @click="searchBarTagger" plain link />
         </el-tooltip>
         <el-tooltip content="下载" placement="top">

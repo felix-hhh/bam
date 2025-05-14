@@ -2,6 +2,9 @@ package com.kelaker.kcommon.system.vo;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 页面搜索功能(SysViewSearch)表实体类
  *
@@ -32,5 +35,11 @@ public class SysViewSearchVo {
      * 数据类型
      */
     private String dataType;
+
+    /**
+     * 数据源
+     */
+    private List<Map<String,String>> dataSource;
+
 }
 

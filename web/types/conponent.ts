@@ -56,6 +56,7 @@ export interface ViewSearchConfig {
   searchLabel: string;
   searchKey: string;
   searchValue: string;
+  dataSource: SelectItem[];
   dataType: "input" | "select";
 }
 
