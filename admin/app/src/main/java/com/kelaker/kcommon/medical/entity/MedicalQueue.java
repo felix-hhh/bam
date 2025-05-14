@@ -131,7 +131,8 @@ public class MedicalQueue extends Model<MedicalQueue> {
         IN_PROGRESS("M_Q_S_IN_PROGRESS", "就诊中"),
         COMPLETED("M_Q_S_COMPLETED", "已完成"),
         EXPIRED("M_Q_S_EXPIRED", "已过期"),
-        CANCELLED("M_Q_S_CANCELLED", "已取消");
+        CANCELLED("M_Q_S_CANCELLED", "已取消"),
+        WAIT("M_Q_S_WAIT", "待取号");
 
         private final String value;
 

@@ -123,10 +123,10 @@ export interface TableColumn {
 }
 
 export interface TableColumnHandle {
-  label: string;
-  handleFun: (index: number, data: any) => void;
-  format?: (data: any) => void;
-  type: "group" | "primary" | "success" | "warning" | "danger";
+  label?: string;
+  handleFun?: (index: number, row: any) => void;
+  format?: (data: any) => string;
+  type?: "group" | "primary" | "success" | "warning" | "danger";
   items?: TableColumnHandle[];
 }
 

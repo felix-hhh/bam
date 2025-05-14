@@ -7,6 +7,7 @@ import {
   PageResult,
   SearchData,
   TableColumn,
+  TableColumnHandle,
   TableOptButton,
   ViewColumnConfig,
   ViewConfig,
@@ -22,7 +23,13 @@ import OSS from "ali-oss";
 import { ToolsFile } from "#/entity.ts";
 
 const props = defineProps<{
-  viewFun: (index,row)=>void;
+  viewFun: (index, row) => void;
+  /**
+   * 行按钮
+   * @param index
+   * @param row
+   */
+  rowBtns?: TableColumnHandle[];
 }>();
 
 const router = useRouter();
@@ -136,6 +143,13 @@ const initViewColumns = () => {
       handles: [],
     };
 
+    const rowBtns = props.rowBtns;
+    if (rowBtns) {
+      rowBtns.forEach((btn) => {
+        optLine.handles.push(btn);
+      });
+    }
+
     //按钮显示
     const value = viewConfig.value;
     if (value) {
@@ -173,6 +187,7 @@ const initViewColumns = () => {
         });
       }
     }
+    console.log("optLine", optLine);
 
     gridColumn.value.push(optLine);
   }

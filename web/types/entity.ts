@@ -76,6 +76,31 @@ export interface UserData {
 }
 
 /**
+ * 队列内容
+ */
+export interface MedicalQueue {
+  /**
+   * 血压（高）
+   */
+  height: number;
+  /**
+   * 血压（低）
+   */
+  low: number;
+  /**
+   * 血糖
+   */
+  bloodGlucose: number;
+  surgicalHistory: string;
+  previousHistory: string;
+  /**
+   * 康复项目
+   */
+  program: string;
+  doctor: string;
+}
+
+/**
  * 文件
  */
 export interface ToolsFile {

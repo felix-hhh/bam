@@ -9,11 +9,16 @@ import com.kelaker.kcommon.medical.vo.MedicalDoctorVo;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
 import com.kelaker.ktools.cache.annotation.CacheIt;
 import com.kelaker.ktools.common.exception.BusinessException;
+import com.kelaker.ktools.common.populator.ConvertUtils;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 医生信息(MedicalDoctor)表服务
@@ -45,13 +50,29 @@ public class MedicalDoctorService extends BaseService<MedicalDoctorDao, MedicalD
      *
      * @param id 对象ID
      */
-    @CacheIt(key="MEDICAL_DOCTOR",paramKey = true)
+    @CacheIt(key = "MEDICAL_DOCTOR", paramKey = true)
     public MedicalDoctorVo getMedicalDoctor(Long id) {
         MedicalDoctor medicalDoctor = super.getById(id);
         if (ValidateUtil.isBlank(medicalDoctor)) {
             throw new BusinessException("医生信息不存在");
         }
         return this.convertToVo(medicalDoctor);
+    }
+
+    /**
+     * 取回医生列表
+     */
+    public List<Map<String, String>> getDoctorOptionList() {
+        return super.lambdaQuery()
+                .eq(MedicalDoctor::getStatus, MedicalDoctor.Status.ENABLE)
+                .list()
+                .stream()
+                .map(obj -> {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("key", ConvertUtils.convertToString(obj.getId()));
+                    map.put("value", obj.getName());
+                    return map;
+                }).toList();
     }
 
     /**

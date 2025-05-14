@@ -117,7 +117,7 @@ public class MedicalQueueVo {
     /**
      * 队列号码
      */
-    private String queueNum;
+    private String medicalNum;
 
     /**
      * 当前号码

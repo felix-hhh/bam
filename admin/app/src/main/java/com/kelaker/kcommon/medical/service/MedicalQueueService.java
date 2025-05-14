@@ -2,7 +2,9 @@ package com.kelaker.kcommon.medical.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kelaker.kcommon.medical.dao.MedicalQueueDao;
+import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueSearchDto;
 import com.kelaker.kcommon.medical.entity.MedicalQueue;
@@ -64,6 +66,20 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         MedicalQueue empty = super.objectConvert(searchDtoData, MedicalQueue.class);
         IPage<MedicalQueue> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
         return mapPageToTarget(page, this::convertToVo);
+    }
+
+
+    /**
+     * 分页查询排队的患者
+     *
+     * @param searchDto 查询DTO
+     */
+    public IPage<MedicalQueueVo> queryPatientPage(RequestPage<MedicalPatientSearchDto> searchDto) {
+        IPage<MedicalPatientVo> medicalPatientPage = this.medicalPatientService.queryPage(searchDto);
+        IPage<MedicalQueueVo> resultPage = new Page<>(medicalPatientPage.getCurrent(), medicalPatientPage.getSize(), medicalPatientPage.getTotal(), medicalPatientPage.searchCount());
+        List<MedicalQueueVo> list = medicalPatientPage.getRecords().stream().map(this::convertToVo).toList();
+        resultPage.setRecords(list);
+        return resultPage;
     }
 
     /**
@@ -212,6 +228,29 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
         vo.setDoctorName(medicalDoctorVo.getName());
         return vo;
+    }
+
+    private MedicalQueueVo convertToVo(MedicalPatientVo medicalPatientVo) {
+        Long queueNum = medicalPatientVo.getQueueNum();
+        MedicalQueueVo vo = new MedicalQueueVo();
+        vo.setId(medicalPatientVo.getId());
+        vo.setPatientName(medicalPatientVo.getName());
+        vo.setPatientPhone(medicalPatientVo.getPhone());
+        vo.setPatientGender(medicalPatientVo.getGender());
+        vo.setPatientRelation(medicalPatientVo.getRelation());
+        vo.setPatientRelationStr(medicalPatientVo.getRelationStr());
+        vo.setMedicalNum(medicalPatientVo.getMedicalNum());
+        if (ValidateUtil.isBlank(queueNum)) {
+            vo.setStatus(MedicalQueue.Status.WAIT.getValue());
+            vo.setStatusStr(MedicalQueue.Status.WAIT.getRemark());
+            return vo;
+        } else {
+            MedicalQueue medicalQueue = this.getById(queueNum);
+            vo.setStatus(medicalQueue.getStatus().getValue());
+            vo.setStatus(medicalQueue.getStatus().getRemark());
+            vo.setCreateDatetime(medicalQueue.getCreateDatetime());
+        }
+        return null;
     }
 
     public List<MedicalQueueVo> listMyQueueCompleted() {

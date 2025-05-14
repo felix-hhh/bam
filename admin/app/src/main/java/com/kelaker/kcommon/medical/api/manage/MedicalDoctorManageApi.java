@@ -14,6 +14,9 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 医生信息(MedicalDoctor)表控制层
  *
@@ -87,5 +90,11 @@ public class MedicalDoctorManageApi extends BaseApi {
     @GetMapping("/get/{id}")
     public MedicalDoctorVo getMedicalDoctor(@PathVariable("id") @NotNull(message = "医生ID不能为空") Long id) {
         return this.medicalDoctorService.getMedicalDoctor(id);
+    }
+
+
+    @GetMapping("/list/option")
+    public List<Map<String,String>> getMedicalDoctorOptionList(){
+        return this.medicalDoctorService.getDoctorOptionList();
     }
 }
