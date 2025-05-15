@@ -1,8 +1,10 @@
 package com.kelaker.kcommon.medical.dto;
 
-import java.util.Date;
-
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 队列(MedicalQueue)查询实体类
@@ -16,32 +18,29 @@ public class MedicalQueueDto {
     /**
      * 序号
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 用户ID
      */
-    private Integer userId;
-
-    /**
-     * 医院ID
-     */
-    private Integer hospitalId;
+    private Long userId;
 
     /**
      * 医生ID
      */
-    private Integer doctorId;
+    @NotNull(message = "医生ID不能为空")
+    private Long doctorId;
 
     /**
      * 患者ID
      */
-    private Integer patientId;
+    @NotNull(message = "患者ID不能为空")
+    private Long patientId;
 
     /**
      * 患者信息
      */
-    private Object patientInfo;
+    private Map<String,String> patientInfo;
 
     /**
      * 检查项目

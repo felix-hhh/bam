@@ -7,6 +7,8 @@ import com.kelaker.kcommon.medical.dao.MedicalQueueDao;
 import com.kelaker.kcommon.medical.dto.MedicalPatientSearchDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueDto;
 import com.kelaker.kcommon.medical.dto.MedicalQueueSearchDto;
+import com.kelaker.kcommon.medical.entity.MedicalDoctor;
+import com.kelaker.kcommon.medical.entity.MedicalPatient;
 import com.kelaker.kcommon.medical.entity.MedicalQueue;
 import com.kelaker.kcommon.medical.vo.MedicalDoctorVo;
 import com.kelaker.kcommon.medical.vo.MedicalHospitalVo;
@@ -20,6 +22,7 @@ import com.kelaker.ktools.common.utils.ValidateUtil;
 import com.kelaker.ktools.common.vo.RequestPage;
 import com.kelaker.ktools.web.base.service.BaseService;
 import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -152,10 +155,31 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
      *
      * @param dto 对象
      */
+    @Transactional(rollbackOn = Exception.class)
     public void addMedicalQueue(MedicalQueueDto dto) {
+        //数据检查
+        List<MedicalQueue> medicalQueueList = this.getMedicalQueueByPatientId(dto.getPatientId());
+        if (ValidateUtil.isNotBlank(medicalQueueList)) {
+            throw new BusinessException("存在未完结状态的订单");
+        }
+
         MedicalQueue medicalQueue = super.objectConvert(dto, MedicalQueue.class);
         medicalQueue.setCurrentNum(this.getCurrentNum());
+        //检查患者
+        Long patientId = dto.getPatientId();
+        MedicalPatient medicalPatient = this.medicalPatientService.getOptById(patientId).orElseThrow(() -> new BusinessException("患者信息异常"));
+        medicalQueue.setUserId(medicalPatient.getUserId());
+        //检查医生
+        Long doctorId = dto.getDoctorId();
+        MedicalDoctor medicalDoctor = this.medicalDoctorService.getOptById(doctorId).orElseThrow(() -> new BusinessException("医生信息异常"));
+        medicalQueue.setHospitalId(medicalDoctor.getHospitalId());
+
+        String checkItem = dto.getCheckItem();
+        medicalQueue.setCheckItem(MedicalQueue.CheckItem.toEnum(checkItem));
+        medicalQueue.setStatus(MedicalQueue.Status.QUEUING);
         super.save(medicalQueue);
+        medicalPatient.setQueueNum(medicalQueue.getId());
+        medicalPatient.updateById();
     }
 
     /**
@@ -196,6 +220,27 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         return cacheManager.incr(CURRENT_NUM_KEY);
     }
 
+    /**
+     * 列表查询队列
+     */
+    public List<MedicalQueueVo> listMyQueueCompleted() {
+        List<MedicalQueue> medicalQueueList = super.lambdaQuery()
+                .eq(MedicalQueue::getUserId, super.getUserId())
+                .eq(MedicalQueue::getStatus, MedicalQueue.Status.COMPLETED)
+                .orderByDesc(MedicalQueue::getCreateDatetime)
+                .list();
+        return super.mapListToTarget(medicalQueueList, this::convertToVo);
+    }
+
+    private List<MedicalQueue> getMedicalQueueByPatientId(Long patientId) {
+        return super.lambdaQuery()
+                .eq(MedicalQueue::getPatientId, patientId)
+                .ne(MedicalQueue::getStatus, MedicalQueue.Status.CANCELLED)
+                .ne(MedicalQueue::getStatus, MedicalQueue.Status.EXPIRED)
+                .ne(MedicalQueue::getStatus, MedicalQueue.Status.COMPLETED)
+                .list();
+    }
+
     private void checkIncrementId() {
         Integer incrementDate = (Integer) cacheManager.getValue(INCREMENT_DATE_KEY);
         Integer currentDate = ConvertUtils.convertToInteger(StringUtil.getCurrentDate("yyyyMMdd"));
@@ -233,12 +278,15 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
     private MedicalQueueVo convertToVo(MedicalPatientVo medicalPatientVo) {
         Long queueNum = medicalPatientVo.getQueueNum();
         MedicalQueueVo vo = new MedicalQueueVo();
-        vo.setId(medicalPatientVo.getId());
+        vo.setPatientId(medicalPatientVo.getId());
         vo.setPatientName(medicalPatientVo.getName());
         vo.setPatientPhone(medicalPatientVo.getPhone());
         vo.setPatientGender(medicalPatientVo.getGender());
+        vo.setPatientGenderStr(medicalPatientVo.getGender() == 1 ? "男" : "女");
+        vo.setPatientAge(medicalPatientVo.getAge());
         vo.setPatientRelation(medicalPatientVo.getRelation());
         vo.setPatientRelationStr(medicalPatientVo.getRelationStr());
+
         vo.setMedicalNum(medicalPatientVo.getMedicalNum());
         if (ValidateUtil.isBlank(queueNum)) {
             vo.setStatus(MedicalQueue.Status.WAIT.getValue());
@@ -246,19 +294,27 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
             return vo;
         } else {
             MedicalQueue medicalQueue = this.getById(queueNum);
+            vo.setId(medicalQueue.getId());
             vo.setStatus(medicalQueue.getStatus().getValue());
-            vo.setStatus(medicalQueue.getStatus().getRemark());
+            vo.setStatusStr(medicalQueue.getStatus().getRemark());
             vo.setCreateDatetime(medicalQueue.getCreateDatetime());
+            vo.setCheckItem(medicalQueue.getCheckItem().getValue());
+            vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
+            MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
+            vo.setDoctorName(medicalDoctorVo.getName());
+            return vo;
         }
-        return null;
     }
 
-    public List<MedicalQueueVo> listMyQueueCompleted() {
-        List<MedicalQueue> medicalQueueList = super.lambdaQuery()
-                .eq(MedicalQueue::getUserId, super.getUserId())
-                .eq(MedicalQueue::getStatus, MedicalQueue.Status.COMPLETED)
-                .orderByDesc(MedicalQueue::getCreateDatetime)
-                .list();
-        return super.mapListToTarget(medicalQueueList, this::convertToVo);
+
+    /**
+     * 取消订单
+     *
+     * @param id
+     */
+    public void cancelMedicalQueue(String id) {
+        MedicalQueue medicalQueue = super.getOptById(id).orElseThrow(() -> new BusinessException("订单ID不存在"));
+        medicalQueue.setStatus(MedicalQueue.Status.CANCELLED);
+        super.updateById(medicalQueue);
     }
 }

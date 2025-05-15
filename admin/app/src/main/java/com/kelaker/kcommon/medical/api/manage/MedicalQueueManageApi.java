@@ -80,9 +80,18 @@ public class MedicalQueueManageApi extends BaseApi {
      * @param dto 队列信息
      */
     @HasAction(actionCode = "MEDICAL_QUEUE:UPDATE", actionName = "更新队列信息")
-    @PostMapping("/update")
+    @PutMapping("/update")
     public void updateMedicalQueue(@RequestBody @Valid MedicalQueueDto dto) {
         this.medicalQueueService.updateMedicalQueue(dto);
+    }
+
+    /**
+     * 取消订单
+     * @param id 订单ID
+     */
+    @PutMapping("/cancel/{id}")
+    public void cancelMedicalQueue(@PathVariable("id") String id) {
+        this.medicalQueueService.cancelMedicalQueue(id);
     }
 
     /**

@@ -70,10 +70,12 @@ const columnBtns: TableColumnHandle[] = [
     format: (row): string => {
       const status = row["status"];
       if (status === "M_Q_S_WAIT" || status === "M_Q_S_CANCELLED" || status === "M_Q_S_EXPIRED" || status === "M_Q_S_COMPLETED") {
-        return "开始检查";
+        return "排队取号";
       } else {
         return "取消排队";
       }
+
+
     },
     handleFun: (index: number, row: any) => {
       const status = row["status"];

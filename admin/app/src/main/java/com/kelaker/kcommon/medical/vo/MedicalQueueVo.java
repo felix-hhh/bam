@@ -70,6 +70,11 @@ public class MedicalQueueVo {
     private int patientGender;
 
     /**
+     * 患者年龄
+     */
+    private int patientAge;
+
+    /**
      * 患者性别说明
      */
     private String patientGenderStr;
