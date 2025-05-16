@@ -23,7 +23,7 @@ import OSS from "ali-oss";
 import { ToolsFile } from "#/entity.ts";
 
 const props = defineProps<{
-  viewFun: (index, row) => void;
+  viewFun?: (index, row) => void;
   /**
    * 行按钮
    * @param index
@@ -381,6 +381,9 @@ const getViewData = () => {
   }
 };
 
+defineExpose({
+  getViewData
+})
 
 onMounted(() => {
   getViewConfig();

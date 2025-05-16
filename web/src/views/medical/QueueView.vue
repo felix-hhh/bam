@@ -12,15 +12,12 @@ const displayControl = reactive({
   viewDialog: false,
   addDialog: false,
 });
+const tableView = ref();
 const currentView = ref({});
 const addForm = ref<MedicalQueue>({
   patientInfo: {},
 } as MedicalQueue);
 
-const showViewDialog = (index, row) => {
-  displayControl.viewDialog = true;
-  currentView.value = row;
-};
 const doctorOptions = ref<SelectItem[]>([]);
 
 /**
@@ -51,7 +48,7 @@ const cancelQueue = (row: any) => {
       sendPut(`/medical/manage/queue/cancel/${queueNum}`)
         .then((res) => {
           ElMessage.success("操作成功");
-          //TODO 取消订单的回应
+          tableView.value.getViewData();
         });
     });
 };
@@ -61,7 +58,7 @@ const addQueue = () => {
   sendPost("/medical/manage/queue/add", addForm.value)
     .then((res) => {
       hideDialog();
-      console.log(res);
+      tableView.value.getViewData();
     });
 };
 
@@ -70,7 +67,7 @@ const columnBtns: TableColumnHandle[] = [
     format: (row): string => {
       const status = row["status"];
       if (status === "M_Q_S_WAIT" || status === "M_Q_S_CANCELLED" || status === "M_Q_S_EXPIRED" || status === "M_Q_S_COMPLETED") {
-        return "开始检查";
+        return "排队取号";
       } else {
         return "取消排队";
       }
@@ -101,8 +98,8 @@ onMounted(() => {
 
 <template>
   <TableView
-    :view-fun="showViewDialog"
     :row-btns="columnBtns"
+    ref="tableView"
   >
 
   </TableView>

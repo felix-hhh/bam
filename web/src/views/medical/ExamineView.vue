@@ -10,53 +10,30 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const { sendGet, sendPost, sendPut } = useAxios();
 const displayControl = reactive({
   viewDialog: false,
-  addDialog: false,
+  checkDialog: false,
 });
 const currentView = ref({});
 const addForm = ref<MedicalQueue>({
   patientInfo: {},
 } as MedicalQueue);
 
-const showViewDialog = (index, row) => {
-  displayControl.viewDialog = true;
-  currentView.value = row;
-};
 const doctorOptions = ref<SelectItem[]>([]);
 
 /**
  * 显示添加窗口哦
  */
-const showAddDialog = (row: any) => {
-  displayControl.addDialog = true;
+const showCheckDialog = (row: any) => {
+  displayControl.checkDialog = true;
   currentView.value = row;
 };
 
 const hideDialog = () => {
   displayControl.viewDialog = false;
-  displayControl.addDialog = false;
+  displayControl.checkDialog = false;
 };
 
-const cancelQueue = (row: any) => {
-  console.log(row);
-  const queueNum: number = row.id;
-  ElMessageBox.confirm(
-    "是否取消排队",
-    {
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
-      type: "warning",
-    },
-  )
-    .then(() => {
-      sendPut(`/medical/manage/queue/cancel/${queueNum}`)
-        .then((res) => {
-          ElMessage.success("操作成功");
-          //TODO 取消订单的回应
-        });
-    });
-};
 
-const addQueue = () => {
+const addCheck = () => {
   addForm.value.patientId = currentView.value.patientId;
   sendPost("/medical/manage/queue/add", addForm.value)
     .then((res) => {
@@ -69,21 +46,16 @@ const columnBtns: TableColumnHandle[] = [
   {
     format: (row): string => {
       const status = row["status"];
-      if (status === "M_Q_S_WAIT" || status === "M_Q_S_CANCELLED" || status === "M_Q_S_EXPIRED" || status === "M_Q_S_COMPLETED") {
-        return "排队取号";
+      if (status === "M_Q_S_QUEUING") {
+        return "开始检查";
       } else {
-        return "取消排队";
+        return "";
       }
 
 
     },
     handleFun: (index: number, row: any) => {
-      const status = row["status"];
-      if (status === "M_Q_S_WAIT" || status === "M_Q_S_CANCELLED" || status === "M_Q_S_EXPIRED" || status === "M_Q_S_COMPLETED") {
-        showAddDialog(row);
-      } else {
-        cancelQueue(row);
-      }
+        showCheckDialog(row);
     },
   },
 ];
@@ -103,17 +75,16 @@ onMounted(() => {
 
 <template>
   <TableView
-    :view-fun="showViewDialog"
     :row-btns="columnBtns"
   >
 
   </TableView>
   <el-drawer
-    v-model="displayControl.addDialog"
-    title="排队取号"
+    v-model="displayControl.checkDialog"
+    title="诊断报告"
     direction="rtl"
     :before-close="hideDialog"
-    size="400"
+    size="800"
   >
     <el-row class="queue">
       <el-row class="queue_info">
@@ -195,7 +166,7 @@ onMounted(() => {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="hideDialog">关闭</el-button>
-        <el-button @click="addQueue" type="primary">提交</el-button>
+        <el-button @click="addCheck" type="primary">提交</el-button>
       </div>
     </template>
   </el-drawer>
