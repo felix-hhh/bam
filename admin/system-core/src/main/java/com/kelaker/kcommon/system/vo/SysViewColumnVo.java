@@ -1,5 +1,6 @@
 package com.kelaker.kcommon.system.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -9,17 +10,18 @@ import lombok.Data;
  * @since 2024-12-17 11:42:01
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SysViewColumnVo {
 
     /**
      * id
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 页面ID
      */
-    private Integer viewId;
+    private Long viewId;
 
     /**
      * 列表名
@@ -35,6 +37,11 @@ public class SysViewColumnVo {
      * 字段排序
      */
     private Integer columnOrder;
+
+    /**
+     * 字段排序
+     */
+    private Boolean columnSortable;
 
     /**
      * 是否必填

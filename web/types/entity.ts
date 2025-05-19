@@ -114,7 +114,7 @@ export interface MedicalQueue {
   /**
    * 患者ID
    */
-  patientId: Long;
+  patientId: number;
 }
 
 /**

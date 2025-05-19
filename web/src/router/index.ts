@@ -4,6 +4,7 @@ import useAxios from "@/api";
 import TableView from "@/views/TableView.vue";
 import MainFrame from "@/components/MainFrame.vue";
 import useStore from "@/stores";
+import MainTable from "@/components/MainTable.vue";
 
 const { sendGet } = useAxios();
 
@@ -89,6 +90,8 @@ const getComponent = (component?: "MainFrame" | "TableView" | RouteComponent | s
   switch (component) {
     case "TableView":
       return TableView;
+    case "MainTable":
+      return MainTable;
     case "MainFrame":
       return MainFrame;
     default:

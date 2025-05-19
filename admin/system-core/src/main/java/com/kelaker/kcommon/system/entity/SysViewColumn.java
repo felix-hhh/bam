@@ -18,12 +18,12 @@ public class SysViewColumn extends Model<SysViewColumn> {
      * id
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 页面ID
      */
-    private Integer viewId;
+    private Long viewId;
 
     /**
      * 列表名
@@ -39,6 +39,11 @@ public class SysViewColumn extends Model<SysViewColumn> {
      * 字段排序
      */
     private Integer columnOrder;
+
+    /**
+     * 字段排序
+     */
+    private Boolean columnSortable;
 
     /**
      * 是否必填

@@ -60,7 +60,7 @@ const searchData = ref<SearchData>({
   page: 1,
   data: {},
   dir: "DESC",
-});
+}as SearchData);
 const sort: Sort = { prop: "createDatetime", order: "descending" };
 
 
@@ -128,7 +128,7 @@ const initViewColumns = () => {
           width: viewColumn.showWidth,
           fixed: viewColumn.showFixed,
           type: viewColumn.dataType === "image" ? viewColumn.dataType : null,
-          sortable: viewColumn.sortable,
+          sortable: viewColumn.columnSortable,
           format: getColumnFormat(viewColumn.showFormat),
         };
         gridColumn.value.push(tableColumn);

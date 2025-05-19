@@ -6,6 +6,7 @@ import { SelectItem, TableColumnHandle } from "#/conponent.ts";
 import { MedicalQueue } from "#/entity.ts";
 import useAxios from "@/api";
 import { ElMessage, ElMessageBox } from "element-plus";
+import MainTable from "@/components/MainTable.vue";
 
 const { sendGet, sendPost, sendPut } = useAxios();
 const displayControl = reactive({
@@ -55,7 +56,7 @@ const columnBtns: TableColumnHandle[] = [
 
     },
     handleFun: (index: number, row: any) => {
-        showCheckDialog(row);
+      showCheckDialog(row);
     },
   },
 ];
@@ -74,11 +75,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <TableView
+  <MainTable
     :row-btns="columnBtns"
   >
 
-  </TableView>
+  </MainTable>
   <el-drawer
     v-model="displayControl.checkDialog"
     title="诊断报告"
@@ -86,83 +87,434 @@ onMounted(() => {
     :before-close="hideDialog"
     size="800"
   >
-    <el-row class="queue">
-      <el-row class="queue_info">
-        <el-descriptions
-          title="基础信息"
-          :column="3"
-          class="queue_info_desc"
-        >
-          <el-descriptions-item label="姓名">{{ currentView["patientName"] }}</el-descriptions-item>
-          <el-descriptions-item label="性别">{{ currentView["patientGenderStr"] }}</el-descriptions-item>
-          <el-descriptions-item label="年龄">{{ currentView["patientAge"] }}</el-descriptions-item>
-          <el-descriptions-item label="手机号">{{ currentView["patientPhone"] }}</el-descriptions-item>
-        </el-descriptions>
-      </el-row>
-      <el-row class="queue_details">
-        <el-row class="queue_details_title">
-          患者情况
+    <el-form
+      ref="formRef"
+      label-width="auto"
+      class="demo-dynamic"
+    >
+      <el-form-item label="职业">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="运动习惯">
+        <el-checkbox value="Simple brand exposure" name="type">
+          规律运动
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          偶尔运动
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          基本不动
+        </el-checkbox>
+      </el-form-item>
+      <el-form-item label="手术史">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="既往史">
+        <el-checkbox value="Simple brand exposure" name="type">
+          心脏病
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          高血压
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          哮喘
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          慢性肺病
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          骨质疏松
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          糖尿病
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          甲亢
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          甲减
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          贫血
+        </el-checkbox>
+      </el-form-item>
+      <el-form-item label="症状部位">
+        <el-checkbox value="Simple brand exposure" name="type">
+          头
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          颈
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          胸
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          肩
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          肘
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          腕
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          手
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          腰
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          骨盆
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          髋
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          膝
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          踝
+        </el-checkbox>
+        <el-checkbox value="Simple brand exposure" name="type">
+          脚
+        </el-checkbox>
+      </el-form-item>
+      <el-form-item label="持续时间">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="疼痛VAS评分">
+        <el-input />
+      </el-form-item>
+      <el-form-item label="现病史">
+        <el-input type="textarea" />
+      </el-form-item>
+      <el-row>2.关节活动度ROM</el-row>
+      <el-row>肩关节</el-row>
+      <el-form-item label="屈曲">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
         </el-row>
-        <el-row class="queue_details_item">
-          <el-form :model="addForm" label-width="80" style="width: 100%">
-            <el-form-item label="血压">
-              <el-col :span="11">
-                高压
-                <el-input v-model="addForm.patientInfo.height"
-                          class="queue_details_item_input" />
-              </el-col>
-              <el-col :span="2"></el-col>
-              <el-col :span="11">
-                低压
-                <el-input v-model="addForm.patientInfo.low"
-                          class="queue_details_item_input" />
-              </el-col>
-            </el-form-item>
-            <el-form-item label="血糖值">
-              <el-input v-model="addForm.patientInfo.bloodGlucose"
-                        placeholder="请填写血糖值"
-                        type="number" />
-            </el-form-item>
-            <el-form-item label="手术史">
-              <el-input v-model="addForm.patientInfo.surgicalHistory"
-                        placeholder="请填写手术史"
-                        type="textarea"
-                        :rows="4" />
-            </el-form-item>
-            <el-form-item label="既往史">
-              <el-input v-model="addForm.patientInfo.previousHistory"
-                        placeholder="请填写既往史"
-                        type="textarea"
-                        :rows="4" />
-            </el-form-item>
-            <el-form-item label="康复项目">
-              <el-select v-model="addForm.checkItem"
-                         placeholder="请选择康复项目">
-                <el-option
-                  key="M_Q_C_POSTURE_FUSION"
-                  label="体位融合"
-                  value="M_Q_C_POSTURE_FUSION"
-                />
-                <el-option
-                  key="M_Q_C_CHRONIC_PAIN_ASSESSMENT"
-                  label="慢性疼痛评估"
-                  value="M_Q_C_CHRONIC_PAIN_ASSESSMENT"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="医生">
-              <el-select placeholder="请选择医生" v-model="addForm.doctorId">
-                <el-option v-for="item in doctorOptions"
-                           :key="item.key"
-                           :label="item.value"
-                           :value="item.key"
-                />
-              </el-select>
-            </el-form-item>
-          </el-form>
+      </el-form-item>
+      <el-form-item label="伸展">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
         </el-row>
-      </el-row>
-    </el-row>
+      </el-form-item>
+      <el-form-item label="内旋">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="外旋">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="内收">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="外展">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-row>肘关节</el-row>
+      <el-form-item label="屈曲">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="伸展">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-row>腕关节</el-row>
+      <el-form-item label="掌屈">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="背伸">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="桡偏">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="尺偏">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="旋前">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="旋后">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-row>髋关节</el-row>
+      <el-form-item label="屈曲">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="伸展">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="外展">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="内收">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="内旋">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+      <el-form-item label="外旋">
+        <el-row class="report">
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+          <el-row class="report_item">
+            <el-row class="report_item_label">左</el-row>
+            <el-row class="report_item_input">
+              <el-input />
+            </el-row>
+          </el-row>
+        </el-row>
+      </el-form-item>
+    </el-form>
+
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="hideDialog">关闭</el-button>
@@ -173,30 +525,16 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.queue {
-  &_info {
-    width: 100%;
+.report_item {
 
-    &_desc {
-      width: 100%;
-    }
+  &_label {
+    width: 50px;
+    padding-right: 10px;
+    justify-content: flex-end;
   }
 
-  &_details {
-    width: 100%;
-
-    &_title {
-      font-weight: bold;
-      margin: 20px 0;
-    }
-
-    &_item {
-      width: 100%;
-
-      &_input {
-        width: 90px;
-      }
-    }
+  &_input {
+    flex: 1;
   }
 }
-</style>
+</style>t

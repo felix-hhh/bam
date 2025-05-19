@@ -36,6 +36,7 @@ export interface ViewColumnConfig {
   addHandle: boolean;
   columnLabel: string;
   columnName: string;
+  columnSortable?: boolean | "custom";
   dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select" | "image";
   editHandle: boolean;
   dataSource?: string;
@@ -46,7 +47,6 @@ export interface ViewColumnConfig {
   showFormat?: string;
   showWidth?: number;
   viewId: number;
-  sortable?: "custom";
   showColumn: boolean;
 }
 
@@ -155,9 +155,22 @@ export interface FormColumn {
 }
 
 export interface SearchData {
+  /**
+   * 页大小
+   */
   limit: number;
+  /**
+   * 当前页
+   */
   page: number;
   data: object;
+  /**
+   * 排序字段
+   */
+  sort: string;
+  /**
+   * 排序方式
+   */
   dir: "ASC" | "DESC";
 }
 

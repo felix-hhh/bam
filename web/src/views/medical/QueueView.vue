@@ -6,6 +6,7 @@ import { SelectItem, TableColumnHandle } from "#/conponent.ts";
 import { MedicalQueue } from "#/entity.ts";
 import useAxios from "@/api";
 import { ElMessage, ElMessageBox } from "element-plus";
+import MainTable from "@/components/MainTable.vue";
 
 const { sendGet, sendPost, sendPut } = useAxios();
 const displayControl = reactive({
@@ -97,12 +98,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <TableView
+  <MainTable
     :row-btns="columnBtns"
     ref="tableView"
   >
-
-  </TableView>
+    <template #descriptions>
+    </template>
+  </MainTable>
   <el-drawer
     v-model="displayControl.addDialog"
     title="排队取号"
