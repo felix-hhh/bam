@@ -75,6 +75,8 @@ export interface UserData {
   username: string;
 }
 
+export interface MedicalReport {}
+
 /**
  * 队列内容
  */
