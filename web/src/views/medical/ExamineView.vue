@@ -17,6 +17,183 @@ const currentView = ref({});
 
 const formSetting = ref([
   {
+    title: "基本情况",
+    children: [
+      {
+        label: "个人资料",
+        children: [
+          {
+            label: "职业",
+            type: "input",
+            value: "",
+          },
+          {
+            label: "运动习惯",
+            children: [
+              {
+                label: "规律运动",
+                value: "",
+              },
+              {
+                label: "偶尔运动",
+                value: "",
+              },
+              {
+                label: "基本不动",
+                value: "",
+              },
+            ],
+          },
+          {
+            label: "手术史",
+            type: "input",
+            value: "",
+          },
+          {
+            label: "既往史",
+            children: [
+              {
+                label: "心脏病",
+                value: "",
+              },
+              {
+                label: "高血压",
+                value: "",
+              },
+              {
+                label: "哮喘",
+                value: "",
+              },
+              {
+                label: "慢性肺病",
+                value: "",
+              },
+              {
+                label: "骨质疏松",
+                value: "",
+              },
+              {
+                label: "糖尿病",
+                value: "",
+              },
+              {
+                label: "甲亢",
+                value: "",
+              },
+              {
+                label: "甲减",
+                value: "",
+              },
+              {
+                label: "贫血",
+                value: "",
+              },
+            ],
+          },
+          {
+            label: "症状部位",
+            children: [
+              {
+                label: "头",
+                value: "",
+              },
+              {
+                label: "颈",
+                value: "",
+              },
+              {
+                label: "胸",
+                value: "",
+              },
+              {
+                label: "肩",
+                value: "",
+              },
+              {
+                label: "肘",
+                value: "",
+              },
+              {
+                label: "腕",
+                value: "",
+              },
+              {
+                label: "手",
+                value: "",
+              },
+              {
+                label: "腰",
+                value: "",
+              },
+              {
+                label: "骨盆",
+                value: "",
+              },
+              {
+                label: "髋",
+                value: "",
+              },
+              {
+                label: "膝",
+                value: "",
+              },
+              {
+                label: "踝",
+                value: "",
+              },
+              {
+                label: "脚",
+                value: "",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: "肿胀程度",
+        children: [
+          {
+            children: [
+              {
+                label: "无",
+                value: "",
+              },
+              {
+                label: "轻度",
+                value: "",
+              },
+              {
+                label: "中度",
+                value: "",
+              },
+              {
+                label: "重度",
+                value: "",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: "瘢痕情况",
+        children: [
+          {
+            children: [
+              {
+                label: "无",
+                value: "",
+              },
+              {
+                label: "有（红肿/硬结/疼痛）",
+                value: "",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "损伤相关",
     children: [
       {
@@ -1811,703 +1988,19 @@ onMounted(() => {
             <el-input v-if="detail.type==='input'" />
             <el-row v-else-if="detail.type==='inputGroup'">
               <template v-for="opt in detail.children">
-               <el-col :span="4">{{opt.label}}</el-col>
-                <el-col :span="8"><el-input /></el-col>
+                <el-col :span="4">{{ opt.label }}</el-col>
+                <el-col :span="8">
+                  <el-input />
+                </el-col>
               </template>
             </el-row>
             <el-radio-group v-else v-model="addReportForm.elbowStability.varus">
-              <el-radio label="positive" v-for="opt in detail.children">{{ opt.label }}</el-radio>
+              <el-radio :value="opt.value" v-for="opt in detail.children">{{ opt.label }}</el-radio>
             </el-radio-group>
           </div>
         </el-form-item>
       </template>
     </el-form>
-    <!--    <el-form
-          ref="formRef"
-          :model="addReportForm"
-          label-width="200px"
-          class="examine-form"
-        >
-          &lt;!&ndash; 基本信息 &ndash;&gt;
-          <el-divider>基本信息</el-divider>
-          <el-form-item label="姓名">
-            <el-input v-model="addReportForm.name" />
-          </el-form-item>
-          <el-form-item label="性别">
-            <el-select v-model="addReportForm.gender">
-              <el-option label="男" value="male" />
-              <el-option label="女" value="female" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="年龄">
-            <el-input v-model="addReportForm.age" type="number" />
-          </el-form-item>
-          <el-form-item label="手机号">
-            <el-input v-model="addReportForm.phone" />
-          </el-form-item>
-          <el-form-item label="职业">
-            <el-input v-model="addReportForm.occupation" />
-          </el-form-item>
-          <el-form-item label="运动习惯">
-            <el-checkbox-group v-model="addReportForm.exerciseHabits">
-              <el-checkbox
-                v-for="item in exerciseHabitsOptions"
-                :key="item.value"
-                :label="item.value"
-              >
-                {{ item.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="手术史">
-            <el-input v-model="addReportForm.surgeryHistory" type="textarea" />
-          </el-form-item>
-          <el-form-item label="既往史">
-            <el-checkbox-group v-model="addReportForm.medicalHistory">
-              <el-checkbox
-                v-for="item in medicalHistoryOptions"
-                :key="item.value"
-                :label="item.value"
-              >
-                {{ item.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          &lt;!&ndash; 症状信息 &ndash;&gt;
-          <el-divider>症状信息</el-divider>
-          <el-form-item label="症状部位">
-            <el-checkbox-group v-model="addReportForm.symptomLocation">
-              <el-checkbox
-                v-for="item in symptomLocationOptions"
-                :key="item.value"
-                :label="item.value"
-              >
-                {{ item.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="持续时间">
-            <div>
-              <el-input v-model="addReportForm.duration" />
-            </div>
-          </el-form-item>
-          <el-form-item label="疼痛VAS评分">
-            <div>
-              <el-input-number
-                v-model="addReportForm.painVAS"
-                :min="0"
-                :max="10"
-                :step="1"
-              />
-            </div>
-          </el-form-item>
-          <el-form-item label="现病史">
-            <div>
-              <el-input
-                v-model="addReportForm.currentHistory"
-                type="textarea"
-                :rows="4"
-              />
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 关节活动度 &ndash;&gt;
-          <el-divider>关节活动度(ROM)</el-divider>
-
-          &lt;!&ndash; 肩关节 &ndash;&gt;
-          <el-form-item label="肩关节">
-            <div class="joint-movement">
-              <div class="movement-label">屈曲</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.flexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.flexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">伸展</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.extension.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.extension.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内旋</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.internalRotation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.internalRotation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外旋</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.externalRotation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.externalRotation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内收</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.adduction.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.adduction.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外展</div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.abduction.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.shoulder.abduction.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 肘关节 &ndash;&gt;
-          <el-form-item label="肘关节">
-            <div class="joint-movement">
-              <div class="movement-label">屈曲</div>
-              <div>
-                <el-input v-model="addReportForm.elbow.flexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.elbow.flexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">伸展</div>
-              <div>
-                <el-input v-model="addReportForm.elbow.extension.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.elbow.extension.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 腕关节 &ndash;&gt;
-          <el-form-item label="腕关节">
-            <div class="joint-movement">
-              <div class="movement-label">掌屈</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.palmarFlexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.palmarFlexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">背伸</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.dorsiflexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.dorsiflexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">桡偏</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.radialDeviation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.radialDeviation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">尺偏</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.ulnarDeviation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.ulnarDeviation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">旋前</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.pronation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.pronation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">旋后</div>
-              <div>
-                <el-input v-model="addReportForm.wrist.supination.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.wrist.supination.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 髋关节 &ndash;&gt;
-          <el-form-item label="髋关节">
-            <div class="joint-movement">
-              <div class="movement-label">屈曲</div>
-              <div>
-                <el-input v-model="addReportForm.hip.flexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.flexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">伸展</div>
-              <div>
-                <el-input v-model="addReportForm.hip.extension.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.extension.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内旋</div>
-              <div>
-                <el-input v-model="addReportForm.hip.internalRotation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.internalRotation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外旋</div>
-              <div>
-                <el-input v-model="addReportForm.hip.externalRotation.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.externalRotation.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内收</div>
-              <div>
-                <el-input v-model="addReportForm.hip.adduction.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.adduction.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外展</div>
-              <div>
-                <el-input v-model="addReportForm.hip.abduction.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.hip.abduction.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 膝关节 &ndash;&gt;
-          <el-form-item label="膝关节">
-            <div class="joint-movement">
-              <div class="movement-label">屈曲</div>
-              <div>
-                <el-input v-model="addReportForm.knee.flexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.knee.flexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">伸展</div>
-              <div>
-                <el-input v-model="addReportForm.knee.extension.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.knee.extension.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 踝关节 &ndash;&gt;
-          <el-form-item label="踝关节">
-            <div class="joint-movement">
-              <div class="movement-label">背屈</div>
-              <div>
-                <el-input v-model="addReportForm.ankle.dorsiflexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.ankle.dorsiflexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">跖屈</div>
-              <div>
-                <el-input v-model="addReportForm.ankle.plantarflexion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.ankle.plantarflexion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内翻</div>
-              <div>
-                <el-input v-model="addReportForm.ankle.inversion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.ankle.inversion.right" placeholder="右" />
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外翻</div>
-              <div>
-                <el-input v-model="addReportForm.ankle.eversion.left" placeholder="左" />
-              </div>
-              <div>
-                <el-input v-model="addReportForm.ankle.eversion.right" placeholder="右" />
-              </div>
-            </div>
-          </el-form-item>
-
-          <el-divider>关节稳定性测试</el-divider>
-
-          &lt;!&ndash; 肩关节稳定性测试 &ndash;&gt;
-          <el-form-item label="肩关节">
-            <div class="joint-movement">
-              <div class="movement-label">前侧</div>
-              <div>
-                <el-radio-group v-model="addReportForm.shoulderStability.anterior">
-                  <el-radio label="positive">阳性</el-radio>
-                  <el-radio label="negative">阴性</el-radio>
-                </el-radio-group>
-              </div>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">后侧</div>
-              <el-radio-group v-model="addReportForm.shoulderStability.posterior">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">下侧</div>
-              <el-radio-group v-model="addReportForm.shoulderStability.inferior">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 肘关节稳定性测试 &ndash;&gt;
-          <el-form-item label="肘关节">
-            <div class="joint-movement">
-              <div class="movement-label">外翻应力</div>
-              <el-radio-group v-model="addReportForm.elbowStability.valgus">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内翻应力</div>
-              <el-radio-group v-model="addReportForm.elbowStability.varus">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 腕关节稳定性测试 &ndash;&gt;
-          <el-form-item label="腕关节">
-            <div class="joint-movement">
-              <div class="movement-label">尺侧应力</div>
-              <el-radio-group v-model="addReportForm.wristStability.ulnar">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">桡侧应力</div>
-              <el-radio-group v-model="addReportForm.wristStability.radial">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 髋关节稳定性测试 &ndash;&gt;
-          <el-form-item label="髋关节">
-            <div class="joint-movement">
-              <div class="movement-label">前侧</div>
-              <el-radio-group v-model="addReportForm.hipStability.anterior">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">后侧</div>
-              <el-radio-group v-model="addReportForm.hipStability.posterior">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 膝关节稳定性测试 &ndash;&gt;
-          <el-form-item label="膝关节">
-            <div class="joint-movement">
-              <div class="movement-label">前抽屉试验</div>
-              <el-radio-group v-model="addReportForm.kneeStability.anteriorDrawer">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">后抽屉试验</div>
-              <el-radio-group v-model="addReportForm.kneeStability.posteriorDrawer">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内翻应力</div>
-              <el-radio-group v-model="addReportForm.kneeStability.varus">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外翻应力</div>
-              <el-radio-group v-model="addReportForm.kneeStability.valgus">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          &lt;!&ndash; 踝关节稳定性测试 &ndash;&gt;
-          <el-form-item label="踝关节">
-            <div class="joint-movement">
-              <div class="movement-label">前抽屉试验</div>
-              <el-radio-group v-model="addReportForm.ankleStability.anteriorDrawer">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">内翻应力</div>
-              <el-radio-group v-model="addReportForm.ankleStability.inversion">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">外翻应力</div>
-              <el-radio-group v-model="addReportForm.ankleStability.eversion">
-                <el-radio label="positive">阳性</el-radio>
-                <el-radio label="negative">阴性</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          <el-divider>静态姿势（背面）</el-divider>
-          <el-form-item label="跟骨内外侧是否平均着地">
-            <div class="joint-movement">
-              <div class="movement-label">左侧</div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>外</el-radio>
-                <el-radio>内</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">右侧</div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>外</el-radio>
-                <el-radio>内</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="脚掌有无外旋">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>左侧</el-radio>
-                <el-radio>右侧</el-radio>
-                <el-radio>双侧</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="双侧臀大肌宽度是否对称">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>左宽</el-radio>
-                <el-radio>右宽</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="左右肋骨下缘是否一致">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>左侧低</el-radio>
-                <el-radio>右侧低</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="体前屈下观看脊柱有没有正常弧度">
-            <div class="joint-movement">
-              <div class="movement-label">颈椎</div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>变曲</el-radio>
-                <el-radio>变直</el-radio>
-                <el-radio>左凸</el-radio>
-                <el-radio>右凸</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">胸椎</div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>变曲</el-radio>
-                <el-radio>变直</el-radio>
-                <el-radio>左凸</el-radio>
-                <el-radio>右凸</el-radio>
-              </el-radio-group>
-            </div>
-            <div class="joint-movement">
-              <div class="movement-label">腰椎</div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>变曲</el-radio>
-                <el-radio>变直</el-radio>
-                <el-radio>左凸</el-radio>
-                <el-radio>右凸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="脊柱有无异常弧度">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>颈胸交界处过曲</el-radio>
-                <el-radio>胸腰交界处过曲</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          <el-divider>静态姿势（侧面）</el-divider>
-          <el-form-item label="肋骨有没有前倾">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>有</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="肋骨有没有前倾">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>有</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          <el-divider>关节稳定性测试</el-divider>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-
-          <el-divider>动态评估（站立体前屈）</el-divider>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-          <el-form-item label="呼吸方式">
-            <div class="joint-movement">
-              <div class="movement-label"></div>
-              <el-radio-group>
-                <el-radio>正常</el-radio>
-                <el-radio>无明显起伏</el-radio>
-                <el-radio>单腹部起伏</el-radio>
-                <el-radio>耸肩呼吸</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-        </el-form>-->
-
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="hideDialog">关闭</el-button>
