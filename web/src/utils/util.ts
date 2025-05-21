@@ -51,6 +51,18 @@ const datetimeFormat = (row, obj, data) => {
   return moment(date).utc(true).format("YYYY-MM-DD HH:mm:ss");
 };
 
+const datetimeFormatHandler = (data):string => {
+  let date = data;
+  if (date === undefined || date == null) {
+    return "";
+  }
+  if (date.toString().length === 10) {
+    date = date * 1000;
+  }
+  console.log("date",date)
+  return moment(date).utc(true).format("YYYY-MM-DD HH:mm:ss");
+}
+
 /**
  *
  * @param row
@@ -136,6 +148,7 @@ export default {};
 export {
   duration,
   datetimeFormat,
+  datetimeFormatHandler,
   moneyFormat,
   booleanFormat,
   createSearchModel,

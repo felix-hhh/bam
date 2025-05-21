@@ -36,7 +36,7 @@ export interface ViewColumnConfig {
   addHandle: boolean;
   columnLabel: string;
   columnName: string;
-  columnSortable?: boolean | "custom";
+  columnSortable?: boolean;
   dataType: "text" | "textarea" | "password" | "button" | "checkbox" | "file" | "number" | "switch" | "select" | "image";
   editHandle: boolean;
   dataSource?: string;
@@ -93,10 +93,10 @@ export interface ViewConfig {
   optEditLabel: string;
   optEditShowRegion: string;
   optEditUrl: string;
-  optView: boolean;
-  optViewLabel: string;
-  optViewShowRegion: string;
-  optViewUrl: string;
+  optChange: boolean;
+  optChangeLabel: string;
+  optChangeShowRegion: string;
+  optChangeUrl: string;
   remark: string;
   tips: string;
 }
@@ -167,11 +167,11 @@ export interface SearchData {
   /**
    * 排序字段
    */
-  sort: string;
+  sort?: string;
   /**
    * 排序方式
    */
-  dir: "ASC" | "DESC";
+  dir?: "ASC" | "DESC";
 }
 
 export interface ColumnData {

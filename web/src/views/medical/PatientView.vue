@@ -2,6 +2,9 @@
 
 import TableView from "@/views/TableView.vue";
 import { reactive, ref } from "vue";
+import MainTable from "@/components/MainTable.vue";
+import { TableColumnHandle } from "#/conponent.ts";
+import { datetimeFormatHandler } from "@/utils/util.ts";
 
 const displayControl = reactive({
   viewDialog: false,
@@ -16,14 +19,28 @@ const showViewDialog = (index,row) => {
 const hideViewDialog = () => {
   displayControl.viewDialog = false;
 };
+
+const columnBtns: TableColumnHandle[] = [
+  {
+    format: (row): string => {
+      return "查看";
+    },
+    handleFun: (index: number, row: any) => {
+      showViewDialog(index, row);
+    },
+  },
+];
+
 </script>
 
+
+
 <template>
-  <TableView
-    :view-fun="showViewDialog"
+  <MainTable
+    :row-btns="columnBtns"
   >
 
-  </TableView>
+  </MainTable>
   <el-drawer
     v-model="displayControl.viewDialog"
     title="患者详情"
@@ -106,7 +123,7 @@ const hideViewDialog = () => {
             创建时间
           </div>
         </template>
-        {{ currentView['createDatetime'] }}
+        {{ datetimeFormatHandler(currentView['createDatetime']) }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>
@@ -161,7 +178,7 @@ const hideViewDialog = () => {
             诊断报告
           </div>
         </template>
-        男
+        点击查看
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>

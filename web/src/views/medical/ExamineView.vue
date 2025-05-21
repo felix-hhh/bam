@@ -18,9 +18,11 @@ const currentView = ref({});
 const formSetting = ref([
   {
     title: "基本情况",
+    value: "",
     children: [
       {
         label: "个人资料",
+        value: "",
         children: [
           {
             label: "职业",
@@ -29,18 +31,19 @@ const formSetting = ref([
           },
           {
             label: "运动习惯",
+            value: "",
             children: [
               {
                 label: "规律运动",
-                value: "",
+                value: "0",
               },
               {
                 label: "偶尔运动",
-                value: "",
+                value: "1",
               },
               {
                 label: "基本不动",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -51,143 +54,133 @@ const formSetting = ref([
           },
           {
             label: "既往史",
+            value: "",
             children: [
               {
                 label: "心脏病",
-                value: "",
+                value: "0",
               },
               {
                 label: "高血压",
-                value: "",
+                value: "1",
               },
               {
                 label: "哮喘",
-                value: "",
+                value: "2",
               },
               {
                 label: "慢性肺病",
-                value: "",
+                value: "3",
               },
               {
                 label: "骨质疏松",
-                value: "",
+                value: "4",
               },
               {
                 label: "糖尿病",
-                value: "",
+                value: "5",
               },
               {
                 label: "甲亢",
-                value: "",
+                value: "6",
               },
               {
                 label: "甲减",
-                value: "",
+                value: "7",
               },
               {
                 label: "贫血",
-                value: "",
+                value: "8",
               },
             ],
           },
           {
             label: "症状部位",
+            value: "",
             children: [
               {
                 label: "头",
-                value: "",
+                value: "0",
               },
               {
                 label: "颈",
-                value: "",
+                value: "1",
               },
               {
                 label: "胸",
-                value: "",
+                value: "2",
               },
               {
                 label: "肩",
-                value: "",
+                value: "3",
               },
               {
                 label: "肘",
-                value: "",
+                value: "4",
               },
               {
                 label: "腕",
-                value: "",
+                value: "5",
               },
               {
                 label: "手",
-                value: "",
+                value: "6",
               },
               {
                 label: "腰",
-                value: "",
+                value: "7",
               },
               {
                 label: "骨盆",
-                value: "",
+                value: "8",
               },
               {
                 label: "髋",
-                value: "",
+                value: "9",
               },
               {
                 label: "膝",
-                value: "",
+                value: "10",
               },
               {
                 label: "踝",
-                value: "",
+                value: "11",
               },
               {
                 label: "脚",
-                value: "",
+                value: "12",
               },
             ],
           },
         ],
       },
       {
-        label: "肿胀程度",
+        label: "持续时间",
+        value: "",
         children: [
           {
-            children: [
-              {
-                label: "无",
-                value: "",
-              },
-              {
-                label: "轻度",
-                value: "",
-              },
-              {
-                label: "中度",
-                value: "",
-              },
-              {
-                label: "重度",
-                value: "",
-              },
-            ],
+            type: "input",
+            value:""
           },
         ],
       },
       {
-        label: "瘢痕情况",
+        label: "疼痛评分",
+        value: "",
         children: [
           {
-            children: [
-              {
-                label: "无",
-                value: "",
-              },
-              {
-                label: "有（红肿/硬结/疼痛）",
-                value: "",
-              },
-            ],
+            type: "input",
+            value:""
+          },
+        ],
+      },
+      {
+        label: "现病史",
+        value: "",
+        children: [
+          {
+            type: "input",
+            value:""
           },
         ],
       },
@@ -195,27 +188,29 @@ const formSetting = ref([
   },
   {
     title: "损伤相关",
+    value: "",
     children: [
       {
         label: "手术情况",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "无手术史",
-                value: "",
+                value: "0",
               },
               {
                 label: "无支具",
-                value: "",
+                value: "1",
               },
               {
                 label: "内固定",
-                value: "",
+                value: "2",
               },
               {
                 label: "外固定",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -223,24 +218,25 @@ const formSetting = ref([
       },
       {
         label: "肿胀程度",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "无",
-                value: "",
+                value: "0",
               },
               {
                 label: "轻度",
-                value: "",
+                value: "1",
               },
               {
                 label: "中度",
-                value: "",
+                value: "2",
               },
               {
                 label: "重度",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -248,16 +244,17 @@ const formSetting = ref([
       },
       {
         label: "瘢痕情况",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "无",
-                value: "",
+                value: "0",
               },
               {
                 label: "有（红肿/硬结/疼痛）",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -267,13 +264,16 @@ const formSetting = ref([
   },
   {
     title: "关节活动度ROM",
+    value: "",
     children: [
       {
         label: "肩关节",
+        value: "",
         children: [
           {
             label: "屈曲",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -288,6 +288,7 @@ const formSetting = ref([
           {
             label: "伸展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -302,6 +303,7 @@ const formSetting = ref([
           {
             label: "内旋",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -316,6 +318,7 @@ const formSetting = ref([
           {
             label: "外旋",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -330,6 +333,7 @@ const formSetting = ref([
           {
             label: "内收",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -344,6 +348,7 @@ const formSetting = ref([
           {
             label: "外展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -359,10 +364,12 @@ const formSetting = ref([
       },
       {
         label: "肘关节",
+        value: "",
         children: [
           {
             label: "屈曲",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -377,6 +384,7 @@ const formSetting = ref([
           {
             label: "伸展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -392,10 +400,12 @@ const formSetting = ref([
       },
       {
         label: "腕关节",
+        value: "",
         children: [
           {
             label: "掌屈",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -410,6 +420,7 @@ const formSetting = ref([
           {
             label: "背伸",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -424,6 +435,7 @@ const formSetting = ref([
           {
             label: "桡偏",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -438,6 +450,7 @@ const formSetting = ref([
           {
             label: "尺偏",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -452,6 +465,7 @@ const formSetting = ref([
           {
             label: "旋前",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -466,6 +480,7 @@ const formSetting = ref([
           {
             label: "旋后",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -481,10 +496,12 @@ const formSetting = ref([
       },
       {
         label: "髋关节",
+        value: "",
         children: [
           {
             label: "屈曲",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -499,6 +516,7 @@ const formSetting = ref([
           {
             label: "伸展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -513,6 +531,7 @@ const formSetting = ref([
           {
             label: "内旋",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -527,6 +546,7 @@ const formSetting = ref([
           {
             label: "外旋",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -541,6 +561,7 @@ const formSetting = ref([
           {
             label: "内收",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -555,6 +576,7 @@ const formSetting = ref([
           {
             label: "外展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -570,10 +592,12 @@ const formSetting = ref([
       },
       {
         label: "膝关节",
+        value: "",
         children: [
           {
             label: "屈曲",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -588,6 +612,7 @@ const formSetting = ref([
           {
             label: "伸展",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -603,10 +628,12 @@ const formSetting = ref([
       },
       {
         label: "踝关节",
+        value: "",
         children: [
           {
             label: "背伸",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -621,6 +648,7 @@ const formSetting = ref([
           {
             label: "跖屈",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -635,6 +663,7 @@ const formSetting = ref([
           {
             label: "内翻",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -649,6 +678,7 @@ const formSetting = ref([
           {
             label: "外翻",
             type: "inputGroup",
+            value: "",
             children: [
               {
                 label: "左",
@@ -666,46 +696,51 @@ const formSetting = ref([
   },
   {
     title: "关节稳定性测试",
+    value: "",
     children: [
       {
         label: "肩关节",
+        value: "",
         children: [
           {
             label: "前侧",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "下侧",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "后侧",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -713,152 +748,163 @@ const formSetting = ref([
       },
       {
         label: "肘关节",
+        value: "",
         children: [
           {
             label: "内侧稳定试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "外侧稳定试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
-
         ],
       },
       {
         label: "腕关节",
+        value: "",
         children: [
           {
             label: "琴键试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "尺腕应力试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
-
         ],
       },
       {
         label: "髋关节",
+        value: "",
         children: [
           {
             label: "长腿牵拉试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "关节面擦抹测试",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
-
         ],
       },
       {
         label: "膝关节",
+        value: "",
         children: [
           {
             label: "前抽屉试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "后抽屉试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "内侧稳定试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "外侧稳定试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -866,75 +912,81 @@ const formSetting = ref([
       },
       {
         label: "踝关节",
+        value: "",
         children: [
           {
             label: "前抽屉试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "距骨倾斜试验",
+            value: "",
             children: [
               {
                 label: "阳性",
-                value: "",
+                value: "0",
               },
               {
                 label: "阴性",
-                value: "",
+                value: "1",
               },
             ],
           },
-
         ],
       },
     ],
   },
   {
     title: "静态姿势（背面）",
+    value: "",
     children: [
       {
         label: "跟骨内外侧是否平均着地",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "外",
-                value: "",
+                value: "1",
               },
               {
                 label: "内",
-                value: "",
+                value: "2",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "外",
-                value: "",
+                value: "1",
               },
               {
                 label: "内",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -942,16 +994,17 @@ const formSetting = ref([
       },
       {
         label: "脚掌有无外旋",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "有（右侧/左侧/双侧）",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -959,46 +1012,47 @@ const formSetting = ref([
       },
       {
         label: "双侧臀大肌宽度是否对称",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "左宽",
-                value: "",
+                value: "1",
               },
               {
                 label: "右宽",
-                value: "",
+                value: "2",
               },
-
             ],
           },
         ],
       },
       {
         label: "左右肋骨下缘是否一致",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "左侧低",
-                value: "",
+                value: "1",
               },
               {
                 label: "右侧低",
-                value: "",
+                value: "2",
               },
               {
                 label: "双侧",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -1006,79 +1060,83 @@ const formSetting = ref([
       },
       {
         label: "体前屈下观看脊柱有没有正常弧度",
+        value: "",
         children: [
           {
             label: "颈椎",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "变曲",
-                value: "",
+                value: "1",
               },
               {
                 label: "变直",
-                value: "",
+                value: "2",
               },
               {
                 label: "左凸",
-                value: "",
+                value: "3",
               },
               {
                 label: "凸",
-                value: "",
+                value: "4",
               },
             ],
           },
           {
             label: "胸椎",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "变曲",
-                value: "",
+                value: "1",
               },
               {
                 label: "变直",
-                value: "",
+                value: "2",
               },
               {
                 label: "左凸",
-                value: "",
+                value: "3",
               },
               {
                 label: "凸",
-                value: "",
+                value: "4",
               },
             ],
           },
           {
             label: "腰椎",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "变曲",
-                value: "",
+                value: "1",
               },
               {
                 label: "变直",
-                value: "",
+                value: "2",
               },
               {
                 label: "左凸",
-                value: "",
+                value: "3",
               },
               {
                 label: "凸",
-                value: "",
+                value: "4",
               },
             ],
           },
@@ -1086,20 +1144,21 @@ const formSetting = ref([
       },
       {
         label: "脊柱有无异常弧度",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "无",
-                value: "",
+                value: "0",
               },
               {
                 label: "颈胸交界处过曲",
-                value: "",
+                value: "1",
               },
               {
                 label: "胸腰交界处过曲",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1109,19 +1168,21 @@ const formSetting = ref([
   },
   {
     title: "静态姿势（侧面）",
+    value: "",
     children: [
       {
         label: "肋骨有没有前倾",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "有",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1129,16 +1190,17 @@ const formSetting = ref([
       },
       {
         label: "有没有大肚腩",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "有",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1148,6 +1210,7 @@ const formSetting = ref([
   },
   {
     title: "呼吸方式",
+    value: "",
     children: [
       {
         children: [
@@ -1155,19 +1218,19 @@ const formSetting = ref([
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "无明显起伏",
-                value: "",
+                value: "1",
               },
               {
                 label: "单腹部起伏",
-                value: "",
+                value: "2",
               },
               {
                 label: "耸肩呼吸",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -1177,63 +1240,65 @@ const formSetting = ref([
   },
   {
     title: "动态评估（站立体前屈）",
+    value: "",
     children: [
       {
         label: "下弯时上半身有无偏离中线",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "偏左",
-                value: "",
+                value: "1",
               },
               {
                 label: "偏右",
-                value: "",
+                value: "2",
               },
-
             ],
           },
         ],
       },
       {
         label: "下弯时骨盆有无变宽",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "左变宽",
-                value: "",
+                value: "1",
               },
               {
                 label: "右变宽",
-                value: "",
+                value: "2",
               },
-
             ],
           },
         ],
       },
       {
         label: "颈胸腰椎是否有联动",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "无",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1241,28 +1306,29 @@ const formSetting = ref([
       },
       {
         label: "下弯时有无过凸的部分",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "颈胸交界",
-                value: "",
+                value: "1",
               },
               {
                 label: "胸椎",
-                value: "",
+                value: "2",
               },
               {
                 label: "胸腰交界",
-                value: "",
+                value: "3",
               },
               {
                 label: "腰椎",
-                value: "",
+                value: "4",
               },
             ],
           },
@@ -1270,36 +1336,37 @@ const formSetting = ref([
       },
       {
         label: "下弯时双手指间可触及部分",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "大腿中段",
-                value: "",
+                value: "0",
               },
               {
                 label: "髌骨",
-                value: "",
+                value: "1",
               },
               {
                 label: "胫骨粗隆",
-                value: "",
+                value: "2",
               },
               {
                 label: "胫骨一半",
-                value: "",
+                value: "3",
               },
               {
                 label: "踝关节",
-                value: "",
+                value: "4",
               },
               {
                 label: "脚趾",
-                value: "",
+                value: "5",
               },
               {
                 label: "地面",
-                value: "",
+                value: "6",
               },
             ],
           },
@@ -1307,16 +1374,17 @@ const formSetting = ref([
       },
       {
         label: "下弯时肋骨是否能靠近大腿",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "不能",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1326,41 +1394,45 @@ const formSetting = ref([
   },
   {
     title: "动态评估（正面）",
+    value: "",
     children: [
       {
         label: "有无膝内/外翻",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "内翻",
-                value: "",
+                value: "1",
               },
               {
                 label: "外翻",
-                value: "",
+                value: "2",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "内翻",
-                value: "",
+                value: "1",
               },
               {
                 label: "外翻",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1368,24 +1440,25 @@ const formSetting = ref([
       },
       {
         label: "有无足外翻",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "左侧外翻",
-                value: "",
+                value: "1",
               },
               {
                 label: "右侧外翻",
-                value: "",
+                value: "2",
               },
               {
                 label: "双侧外翻",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -1395,19 +1468,21 @@ const formSetting = ref([
   },
   {
     title: "动态评估（侧面）",
+    value: "",
     children: [
       {
         label: "能否双侧足跟着地蹲到底",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "不能",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1415,24 +1490,25 @@ const formSetting = ref([
       },
       {
         label: "有没有上半身前倾",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "有在髋屈30°时",
-                value: "",
+                value: "1",
               },
               {
                 label: "有在髋屈60°时",
-                value: "",
+                value: "2",
               },
               {
                 label: "有在髋屈90°时",
-                value: "",
+                value: "3",
               },
             ],
           },
@@ -1442,41 +1518,45 @@ const formSetting = ref([
   },
   {
     title: "动态评估（背面）",
+    value: "",
     children: [
       {
         label: "跟骨是否垂直",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "内翻",
-                value: "",
+                value: "1",
               },
               {
                 label: "外翻",
-                value: "",
+                value: "2",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "内翻",
-                value: "",
+                value: "1",
               },
               {
                 label: "外翻",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1484,20 +1564,21 @@ const formSetting = ref([
       },
       {
         label: "蹲到底时骨盆有没有横移",
+        value: "",
         children: [
           {
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "向左",
-                value: "",
+                value: "1",
               },
               {
                 label: "向左右",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1507,9 +1588,11 @@ const formSetting = ref([
   },
   {
     title: "下肢",
+    value: "",
     children: [
       {
         label: "直腿上提",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1525,6 +1608,7 @@ const formSetting = ref([
       },
       {
         label: "髋屈",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1540,6 +1624,7 @@ const formSetting = ref([
       },
       {
         label: "髋内旋",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1555,6 +1640,7 @@ const formSetting = ref([
       },
       {
         label: "足跟到臀部距离",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1570,33 +1656,34 @@ const formSetting = ref([
       },
       {
         label: "足大脚趾背伸 ",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "45°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足45°",
-                value: "",
+                value: "1",
               },
-
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "45°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足45°",
-                value: "",
+                value: "1",
               },
-
             ],
           },
         ],
@@ -1605,41 +1692,45 @@ const formSetting = ref([
   },
   {
     title: "上肢",
+    value: "",
     children: [
       {
         label: "站立摸大椎",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "可以摸到但是有身体代偿",
-                value: "",
+                value: "1",
               },
               {
                 label: "不能完成",
-                value: "",
+                value: "2",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "可以摸到但是有身体代偿",
-                value: "",
+                value: "1",
               },
               {
                 label: "不能完成",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1647,38 +1738,41 @@ const formSetting = ref([
       },
       {
         label: "站立摸背后",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "可以摸到对侧肩胛骨下角但是有身体代偿",
-                value: "",
+                value: "1",
               },
               {
                 label: "不能完成",
-                value: "",
+                value: "2",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "正常",
-                value: "",
+                value: "0",
               },
               {
                 label: "可以摸到对侧肩胛骨下角但是有身体代偿",
-                value: "",
+                value: "1",
               },
               {
                 label: "不能完成",
-                value: "",
+                value: "2",
               },
             ],
           },
@@ -1686,6 +1780,7 @@ const formSetting = ref([
       },
       {
         label: "卧位肩内旋",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1701,6 +1796,7 @@ const formSetting = ref([
       },
       {
         label: "卧位肩外旋",
+        value: "",
         children: [
           {
             label: "左侧",
@@ -1716,30 +1812,33 @@ const formSetting = ref([
       },
       {
         label: "屈肘前臂旋前",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "90°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足90°",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "90°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足90°",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1747,30 +1846,33 @@ const formSetting = ref([
       },
       {
         label: "屈肘前臂旋后",
+        value: "",
         children: [
           {
             label: "左侧",
+            value: "",
             children: [
               {
                 label: "90°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足90°",
-                value: "",
+                value: "1",
               },
             ],
           },
           {
             label: "右侧",
+            value: "",
             children: [
               {
                 label: "90°",
-                value: "",
+                value: "0",
               },
               {
                 label: "不足90°",
-                value: "",
+                value: "1",
               },
             ],
           },
@@ -1780,127 +1882,8 @@ const formSetting = ref([
   },
 ]);
 
-const addReportForm = ref<MedicalReport>({
-  patientId: "",
-  name: "",
-  gender: "",
-  age: "",
-  phone: "",
-  occupation: "",
-  exerciseHabits: [] as string[],
-  surgeryHistory: "",
-  medicalHistory: [] as string[],
-  symptomLocation: [] as string[],
-  duration: "",
-  painVAS: "",
-  currentHistory: "",
-  doctorId: "",
-  examineDate: "",
-  // 关节活动度
-  shoulder: {
-    flexion: { left: "", right: "" },
-    extension: { left: "", right: "" },
-    internalRotation: { left: "", right: "" },
-    externalRotation: { left: "", right: "" },
-    adduction: { left: "", right: "" },
-    abduction: { left: "", right: "" },
-  },
-  elbow: {
-    flexion: { left: "", right: "" },
-    extension: { left: "", right: "" },
-  },
-  wrist: {
-    palmarFlexion: { left: "", right: "" },
-    dorsiflexion: { left: "", right: "" },
-    radialDeviation: { left: "", right: "" },
-    ulnarDeviation: { left: "", right: "" },
-    pronation: { left: "", right: "" },
-    supination: { left: "", right: "" },
-  },
-  hip: {
-    flexion: { left: "", right: "" },
-    extension: { left: "", right: "" },
-    abduction: { left: "", right: "" },
-    adduction: { left: "", right: "" },
-    internalRotation: { left: "", right: "" },
-    externalRotation: { left: "", right: "" },
-  },
-  knee: {
-    flexion: { left: "", right: "" },
-    extension: { left: "", right: "" },
-  },
-  ankle: {
-    dorsiflexion: { left: "", right: "" },
-    plantarflexion: { left: "", right: "" },
-    inversion: { left: "", right: "" },
-    eversion: { left: "", right: "" },
-  },
-  // 关节稳定性测试
-  shoulderStability: {
-    anterior: "",
-    posterior: "",
-    inferior: "",
-  },
-  elbowStability: {
-    valgus: "",
-    varus: "",
-  },
-  wristStability: {
-    ulnar: "",
-    radial: "",
-  },
-  hipStability: {
-    anterior: "",
-    posterior: "",
-  },
-  kneeStability: {
-    anteriorDrawer: "",
-    posteriorDrawer: "",
-    varus: "",
-    valgus: "",
-  },
-  ankleStability: {
-    anteriorDrawer: "",
-    inversion: "",
-    eversion: "",
-  },
-} as MedicalReport);
-
 const doctorOptions = ref<SelectItem[]>([]);
 
-const exerciseHabitsOptions = [
-  { label: "规律运动", value: "regular" },
-  { label: "偶尔运动", value: "occasional" },
-  { label: "基本不动", value: "sedentary" },
-];
-
-const medicalHistoryOptions = [
-  { label: "心脏病", value: "heart" },
-  { label: "高血压", value: "hypertension" },
-  { label: "哮喘", value: "asthma" },
-  { label: "慢性肺病", value: "lung" },
-  { label: "骨质疏松", value: "osteoporosis" },
-  { label: "糖尿病", value: "diabetes" },
-  { label: "甲亢", value: "hyperthyroidism" },
-  { label: "甲减", value: "hypothyroidism" },
-  { label: "贫血", value: "anemia" },
-];
-
-const symptomLocationOptions = [
-  { label: "头", value: "head" },
-  { label: "颈", value: "neck" },
-  { label: "胸", value: "chest" },
-  { label: "肩", value: "shoulder" },
-  { label: "肘", value: "elbow" },
-  { label: "腕", value: "wrist" },
-  { label: "手", value: "hand" },
-  { label: "腰", value: "waist" },
-  { label: "骨盆", value: "pelvis" },
-  { label: "髋", value: "hip" },
-  { label: "膝", value: "knee" },
-  { label: "踝", value: "ankle" },
-  { label: "脚", value: "foot" },
-];
 
 /**
  * 显示添加窗口哦
@@ -1916,27 +1899,17 @@ const hideDialog = () => {
 };
 
 const addReport = () => {
-  if (!addReportForm.value.patientId) {
-    ElMessage.error("请选择患者");
-    return;
-  }
-  if (!addReportForm.value.doctorId) {
-    ElMessage.error("请选择医生");
-    return;
-  }
-  if (!addReportForm.value.examineDate) {
-    ElMessage.error("请选择检查日期");
-    return;
-  }
 
-  sendPost("/medical/manage/report/add", addReportForm.value)
+  console.log("report",formSetting.value);
+
+  /*sendPost("/medical/manage/report/add", addReportForm.value)
     .then((res) => {
       ElMessage.success("提交成功");
       hideDialog();
     })
     .catch((err) => {
       ElMessage.error("提交失败：" + err.message);
-    });
+    });*/
 };
 
 const columnBtns: TableColumnHandle[] = [
@@ -1974,28 +1947,37 @@ onMounted(() => {
     :before-close="hideDialog"
     size="800"
   >
+    <el-descriptions
+      :column="4"
+      class="queue_info_desc"
+    >
+      <el-descriptions-item label="姓名">{{ currentView["patientName"] }}</el-descriptions-item>
+      <el-descriptions-item label="性别">{{ currentView["patientGenderStr"] }}</el-descriptions-item>
+      <el-descriptions-item label="年龄">{{ currentView["patientAge"] }}</el-descriptions-item>
+      <el-descriptions-item label="手机号">{{ currentView["patientPhone"] }}</el-descriptions-item>
+    </el-descriptions>
     <el-form
       ref="formRef"
-      :model="addReportForm"
+      :model="formSetting"
       label-width="200px"
       class="examine-form"
     >
       <template v-for="group in formSetting" key="id">
         <el-divider>{{ group.title }}</el-divider>
-        <el-form-item :label="item.label" v-for="item in group.children" key="id">
+        <el-form-item :label="item['label']" v-for="item in group.children" key="id">
           <div class="joint-movement" v-for="detail in item.children">
-            <div class="movement-label">{{ detail.label }}</div>
-            <el-input v-if="detail.type==='input'" />
-            <el-row v-else-if="detail.type==='inputGroup'">
-              <template v-for="opt in detail.children">
+            <div class="movement-label">{{ detail['label'] }}</div>
+            <el-input v-if="detail['type']==='input'" v-model="detail['value']" />
+            <el-row v-else-if="detail['type']==='inputGroup'">
+              <template v-for="opt in detail['children']">
                 <el-col :span="4">{{ opt.label }}</el-col>
                 <el-col :span="8">
-                  <el-input />
+                  <el-input v-model="opt.value" />
                 </el-col>
               </template>
             </el-row>
-            <el-radio-group v-else v-model="addReportForm.elbowStability.varus">
-              <el-radio :value="opt.value" v-for="opt in detail.children">{{ opt.label }}</el-radio>
+            <el-radio-group v-else v-model="detail['value']">
+              <el-radio :value="opt.value" v-for="opt in detail['children']">{{ opt.label }}</el-radio>
             </el-radio-group>
           </div>
         </el-form-item>

@@ -128,7 +128,7 @@ const initViewColumns = () => {
           width: viewColumn.showWidth,
           fixed: viewColumn.showFixed,
           type: viewColumn.dataType === "image" ? viewColumn.dataType : null,
-          sortable: viewColumn.columnSortable,
+          sortable: viewColumn.columnSortable?"custom":undefined,
           format: getColumnFormat(viewColumn.showFormat),
         };
         gridColumn.value.push(tableColumn);
@@ -156,15 +156,6 @@ const initViewColumns = () => {
       const optAddShowRegion = value.optAddShowRegion;
       if (value.optAdd && (optAddShowRegion === "S_V_R_LINE" || optAddShowRegion === "S_V_R_BOTH")) {
 
-      }
-
-      const optViewShowRegion = value.optViewShowRegion;
-      if (props.viewFun) {
-        optLine.handles?.push({
-          label: value.optViewLabel || "查看",
-          handleFun: props.viewFun,
-          type: "primary",
-        });
       }
 
       //编辑按钮

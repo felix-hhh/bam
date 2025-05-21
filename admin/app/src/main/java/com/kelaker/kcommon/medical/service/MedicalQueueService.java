@@ -71,6 +71,13 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         return mapPageToTarget(page, this::convertToVo);
     }
 
+    public IPage<MedicalQueueVo> queryMyPage(RequestPage<MedicalQueueSearchDto> searchDto) {
+        MedicalQueueSearchDto searchDtoData = searchDto.getData();
+        MedicalQueue empty = super.objectConvert(searchDtoData, MedicalQueue.class);
+        empty.setDoctorId(super.getUserId());
+        IPage<MedicalQueue> page = super.page(super.createPage(searchDto), super.createWrapper(empty));
+        return mapPageToTarget(page, this::convertToVo);
+    }
 
     /**
      * 分页查询排队的患者

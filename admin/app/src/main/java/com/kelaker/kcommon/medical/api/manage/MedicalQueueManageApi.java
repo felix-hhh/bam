@@ -46,6 +46,11 @@ public class MedicalQueueManageApi extends BaseApi {
         return this.medicalQueueService.queryPage(searchDto);
     }
 
+    @PostMapping("/page/my")
+    public IPage<MedicalQueueVo> pageMyMedicalQueue(@RequestBody RequestPage<MedicalQueueSearchDto> searchDto) {
+return this.medicalQueueService.queryMyPage(searchDto);
+    }
+
     @HasAction(actionCode = "MEDICAL_QUEUE:PAGE",actionName = "队列信息列表")
     @PostMapping("/patient/page")
     public IPage<MedicalQueueVo> pageMedicalPatientQueue(@RequestBody RequestPage<MedicalPatientSearchDto> searchDto) {

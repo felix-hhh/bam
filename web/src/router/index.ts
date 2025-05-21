@@ -86,10 +86,8 @@ const router = createRouter({
   routes: constantRoutes,
 });
 
-const getComponent = (component?: "MainFrame" | "TableView" | RouteComponent | string) => {
+const getComponent = (component?: "MainFrame" | "TableView"|"MainTable" | RouteComponent | string) => {
   switch (component) {
-    case "TableView":
-      return TableView;
     case "MainTable":
       return MainTable;
     case "MainFrame":

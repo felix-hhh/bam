@@ -55,7 +55,7 @@ const cancelQueue = (row: any) => {
 };
 
 const addQueue = () => {
-  addForm.value.patientId = currentView.value.patientId;
+  addForm.value.patientId = currentView.value["patientId"];
   sendPost("/medical/manage/queue/add", addForm.value)
     .then((res) => {
       hideDialog();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from "vue";
 import { ArrowDown } from "@element-plus/icons-vue";
-import { ElMessage, ElMessageBox, Sort } from "element-plus";
+import { ElMessage, ElMessageBox, Sort, UploadFile } from "element-plus";
 import * as XLSX from "xlsx";
 import fs from "file-saver";
 import {
@@ -22,7 +22,7 @@ import { useRouter } from "vue-router";
 import OSS from "ali-oss";
 import { ToolsFile } from "#/entity.ts";
 import useAxios from "@/api";
-import { booleanFormat, datetimeFormat } from "@/utils/util.ts";
+import { booleanFormat, datetimeFormat, depthCopy, getOssClient } from "@/utils/util.ts";
 
 const props = defineProps<{
   rowBtns?: TableColumnHandle[];
@@ -145,9 +145,9 @@ const getViewSearchConfig = (viewId: number) => {
 /**
  * 取回数据
  */
-const getViewData = (currentPage: number, pageSize: number, sort: string, dir: "ASC" | "DESC") => {
-  searchData.value.page = currentPage;
-  searchData.value.limit = pageSize;
+const getViewData = (currentPage?: number, pageSize?: number, sort?: string, dir?: "ASC" | "DESC") => {
+  searchData.value.page = currentPage | 1;
+  searchData.value.limit = pageSize | 20;
   searchData.value.dir = dir ? dir : "DESC";
   searchData.value.sort = sort ? sort : "createDatetime";
 
@@ -190,6 +190,29 @@ const hideDialog = () => {
   addFormRef.value.resetFields();
   displayControl.addDialog = false;
   displayControl.detailDialog = false;
+};
+
+/**
+ * 删除处理器
+ */
+const delHandle = (index, row) => {
+  const id: number = row.id;
+  ElMessageBox.confirm(
+    "确认要删除本条数据么？",
+    "再次确认",
+    {
+      confirmButtonText: "确认",
+      cancelButtonText: "取消",
+      type: "warning",
+    },
+  )
+    .then(() => {
+      sendDel(`${viewConfig.value.optDeleteUrl}/${id}`)
+        .then(() => {
+          getViewData();
+          ElMessage.success("操作成功");
+        });
+    });
 };
 
 
@@ -237,7 +260,7 @@ const initViewColumns = () => {
           width: viewColumn.showWidth,
           fixed: viewColumn.showFixed,
           type: viewColumn.dataType === "image" ? viewColumn.dataType : null,
-          sortable: viewColumn.columnSortable,
+          sortable: viewColumn.columnSortable ? "custom" : undefined,
           format: getColumnFormat(viewColumn.showFormat),
         };
         gridColumn.value.push(tableColumn);
@@ -267,15 +290,6 @@ const initViewColumns = () => {
 
       }
 
-      const optViewShowRegion = value.optViewShowRegion;
-      if (props.viewFun) {
-        optLine.handles?.push({
-          label: value.optViewLabel || "查看",
-          handleFun: props.viewFun,
-          type: "primary",
-        });
-      }
-
       //编辑按钮
       const optEditShowRegion = value.optEditShowRegion;
       if (value.optEdit && (optEditShowRegion === "S_V_R_LINE" || optEditShowRegion === "S_V_R_BOTH")) {
@@ -283,6 +297,16 @@ const initViewColumns = () => {
           label: value.optEditLabel || "编辑",
           handleFun: showEditDialog,
           type: "primary",
+        });
+      }
+
+      //变更状态按钮
+      const optChangeShowRegion = value.optChangeShowRegion;
+      if (value.optChange && (optChangeShowRegion === "S_V_R_LINE" || optChangeShowRegion === "S_V_R_BOTH")) {
+        optLine.handles?.push({
+          label: value.optChangeLabel || "禁用",
+          handleFun: delHandle,
+          type: "warning",
         });
       }
 
@@ -304,6 +328,34 @@ const initViewColumns = () => {
 const handleSelectionChange = (val) => {
   multipleSelection.value = val;
   $emit("selection-change", val);
+};
+
+const handleImageUploadBefore = (uploadFile) => {
+  fileUpload(uploadFile);
+};
+
+const fileUpload = async (file: UploadFile) => {
+  if (!file) {
+    console.log("请选择文件");
+    return;
+  }
+  const fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
+  const fileName = crypto.randomUUID() + "." + fileType;
+  const postData: ToolsFile = {
+    realFileName: fileName,
+    origFileName: file.name,
+    filePath: `sts_temp/${fileName}`,
+  };
+
+  const client: OSS = await getOssClient();
+
+  const result: OSS.PutObjectResult = await client.put(postData.filePath, file.raw);
+  console.log("文件上传成功", result);
+  addFormData.value.imageView = URL.createObjectURL(file.raw!);
+
+  await sendPost("/tools/manage/file/add", postData).then(req => {
+    console.log(req);
+  });
 };
 
 /**
@@ -385,16 +437,16 @@ const exportData = () => {
     //数据准备-表头
     const excelData = [];
     const excelHeadData = [];
-    props.gridColumn.forEach(column => {
+    gridColumn.value.forEach(column => {
       if (column.type !== "handle") {
         excelHeadData.push(column.label);
       }
     });
     excelData.push(excelHeadData);
 
-    gridData.forEach(item => {
+    viewData.value.forEach(item => {
       const excelDataTemp = [] as object[];
-      props.gridColumn?.forEach(column => {
+      gridColumn.value.forEach(column => {
         if (column.type !== "handle") {
           let itemData = item[column.prop];
           if (column.format) {
@@ -785,7 +837,9 @@ onUnmounted(() => {
   width: 50px;
   height: 50px;
 }
+</style>
 
+<style lang="scss">
 .avatar-uploader {
   .el-upload {
     border: 1px dashed var(--el-border-color);
