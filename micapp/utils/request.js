@@ -6,12 +6,9 @@ const authHeader = {};
 const handleUnauthorized = () => {
   const app = getApp();
   const currentPages = getCurrentPages();
-  console.log("currentPages", currentPages)
   // 清除用户token
   app.globalData.userToken = '';
   const currentPage = currentPages[currentPages.length - 1];
-  console.log("currentPage", currentPage);
-  console.log("pageName", currentPage.route);
   if (currentPage.route !== 'pages/my/login') {
     // 显示提示信息
     wx.showToast({
@@ -31,7 +28,6 @@ const handleUnauthorized = () => {
 const getToken = () => {
   const app = getApp();
   const token = app.globalData.userToken;
-  console.log("token:", token);
   if (token === null) {
     return false;
   }
@@ -91,6 +87,29 @@ const sendPost = (parmas) => {
   });
 }
 
+const sendPut = (parmas) => {
+  return new Promise((resolve, reject) => {
+    getToken();
+    wx.request({
+      url: baseUrl + parmas.url,
+      data: parmas.data,
+      method: "PUT",
+      header: {
+        'content-type': 'application/json',
+        ...authHeader
+      },
+      success: (res) => {
+        const statusCode = res.statusCode;
+        const repData = res.data;
+        checkStatusCode(statusCode, repData, resolve, reject);
+      },
+      fail: (err) => {
+        reject(err);
+      },
+    })
+  });
+}
+
 const sendGet = (parmas) => {
 
   return new Promise((resolve, reject) => {
@@ -126,5 +145,6 @@ const sendGet = (parmas) => {
 
 module.exports = {
   sendPost,
-  sendGet
+  sendGet,
+  sendPut
 }

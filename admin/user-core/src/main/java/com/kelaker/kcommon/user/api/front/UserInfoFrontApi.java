@@ -180,8 +180,7 @@ public class UserInfoFrontApi extends BaseApi {
      */
     @PutMapping("/bind/openid")
     public AuthCodeVo bindOpenId(@Validated @RequestBody BindOpenIdDto bindOpenIdDto) {
-        // return this.userInfoService.bindOpenId(bindOpenIdDto);
-        return null;
+        return this.userInfoService.bindOpenId(bindOpenIdDto);
     }
 
     /**

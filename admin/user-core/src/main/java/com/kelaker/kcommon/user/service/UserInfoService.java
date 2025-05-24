@@ -233,7 +233,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * }
      * String authCode = StringUtil.getRandomNumberString(6);
      * log.debug(">>>>>>>>>> 短信验证码：{}", authCode);
-     * 
+     *
      * SmsAuthCodeDto dto = new SmsAuthCodeDto();
      * dto.setPhone(phone);
      * dto.setSmsCode(authCode);
@@ -526,7 +526,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * @return token
      */
     protected String buildToken(UserInfo theUser, boolean rebuild, DeviceInfoDto deviceInfoDto,
-            UserLoginDto.LoginType loginType) {
+                                UserLoginDto.LoginType loginType) {
 
         // 生成token
         final TokenVo tokenVo = new TokenVo();
@@ -1011,6 +1011,24 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
     }
 
     /**
+     * 绑定openID
+     *
+     * @param bindOpenIdDto openIdDto
+     */
+    public AuthCodeVo bindOpenId(BindOpenIdDto bindOpenIdDto) {
+        UserInfo currentUserInfo = getCurrentUserInfo();
+        switch (bindOpenIdDto.getBindType()) {
+            case WECHAT -> {
+                String code = bindOpenIdDto.getAuthCode();
+                String openId = this.wxMicService.getOpenId(code);
+                currentUserInfo.setWxOpenId(openId);
+            }
+        }
+        super.updateById(currentUserInfo);
+        return null;
+    }
+
+    /**
      * 注册类型
      */
     public enum RegisterType {
@@ -1110,7 +1128,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
      * @param deviceInfoDto
      */
     private UserInfo userRegister(OtherLoginUserInfoDto otherLogin, UserLoginDto.LoginType loginType,
-            DeviceInfoDto deviceInfoDto) {
+                                  DeviceInfoDto deviceInfoDto) {
         super.checkNullParameter(otherLogin, loginType, deviceInfoDto);
 
         final String openId = otherLogin.getOpenId();
@@ -1294,6 +1312,8 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
         dataMap.put("phone", userInfo.getPhone());
         dataMap.put("nickname", userInfo.getNickname());
         dataMap.put("username", userInfo.getUsername());
+        dataMap.put("bindPhone", ValidateUtil.isNotBlank(userInfo.getPhone()));
+        dataMap.put("bindWX", ValidateUtil.isNotBlank(userInfo.getWxOpenId()));
         dataMap.put("clientType", Optional.ofNullable(userInfo.getClientType()).orElse(ClientType.FRONT.name()));
         UserInfoExtends userInfoExtends = this.userInfoExtendsService.getById(userInfo.getId());
         if (ValidateUtil.isNotBlank(userInfoExtends)) {
@@ -1303,6 +1323,7 @@ public class UserInfoService extends BaseService<UserInfoDao, UserInfo> {
                     userInfoExtends.getMemberType() != null ? userInfoExtends.getMemberType().getValue() : null);
             dataMap.put("authLevel", userInfoExtends.getAuthLevel());
         }
+        //是否设置拓展信息
         dataMap.put("extendsData", userInfo.isExtendsData());
         return dataMap;
     }

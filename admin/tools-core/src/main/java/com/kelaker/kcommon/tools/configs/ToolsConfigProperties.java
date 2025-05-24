@@ -39,5 +39,6 @@ public class ToolsConfigProperties {
      * aliyun oss accessKeySecret
      */
     private String aliyunOssAccessKeySecret;
+
     private String aliyunOssArn;
 }

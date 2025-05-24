@@ -331,9 +331,23 @@ Page({
         title: '添加成功',
         icon: 'success'
       });
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1500);
+      wx.requestSubscribeMessage({
+        tmplIds: [
+          "GXgApXdtlUTg8w5YLDy0jtKHctDZSlx5H-OLMX8BHNM",
+          "HmT5ZY1MS8D8UXt7oJog7xwqWnic4kM_bjt8ra7JIXc",
+          "E-WSpcIDUSFxFpI3oXtLrEPUZX3C11xTMzcpVAdKC8g",
+        ],
+        success (res) {
+          console.log("订阅成功：" + JSON.stringify(res))
+          setTimeout(() => {
+              wx.navigateBack();
+            }, 1500);
+        },
+      
+      })
+      // setTimeout(() => {
+      //   wx.navigateBack();
+      // }, 1500);
     }).catch(err => {
       wx.showToast({
         title: '添加失败',

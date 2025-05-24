@@ -22,7 +22,6 @@ public class BindOpenIdDto {
     /**
      * OpenId
      */
-    @NotBlank(message = "openId不能为空")
     private String openId;
 
     /**

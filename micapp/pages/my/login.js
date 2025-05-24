@@ -1,5 +1,6 @@
 const {
-  sendPost
+  sendPost,
+  sendPut
 } = require("../../utils/request")
 const {
   base64Decode
@@ -119,11 +120,31 @@ Page({
       const userInfoData = JSON.parse(base64Decode(dataArray[1]));
       const userData = JSON.parse(userInfoData.userData);
       app.globalData.userInfo = userData;
-      console.log(userData)
+
       wx.setStorageSync('userToken', dataArray[2]);
       wx.setStorageSync('userInfo', userInfoData.userData);
 
-      wx.navigateBack();
+      console.log("userInfoData",userInfoData);
+      console.log("userData",userData);
+      if(!userData.bindWX){
+        wx.login({
+          success: (res) => {
+            const code = res.code;
+            sendPut({
+              url: "/user/front/info/bind/openid",
+              data: {
+                "authCode": code,
+                "bindType": "WECHAT",
+                "deviceInfo": {}
+              }
+            }).then(res => {
+              wx.navigateBack();
+            })
+          },
+        });
+      }else{
+        wx.navigateBack();
+      }
     })
   },
   changeAgree(event) {

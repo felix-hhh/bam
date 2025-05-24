@@ -1,5 +1,6 @@
 package com.kelaker.kcommon.app;
 
+import com.kelaker.kcommon.app.configs.AppConfigProperties;
 import com.kelaker.kcommon.tools.configs.ToolsConfigProperties;
 import com.kelaker.kcommon.user.configs.UserConfigProperties;
 import org.mybatis.spring.annotation.MapperScan;
@@ -21,7 +22,11 @@ import org.springframework.stereotype.Repository;
         }
 )
 @MapperScan(basePackages = {"com.kelaker",}, annotationClass = Repository.class)
-@EnableConfigurationProperties({UserConfigProperties.class, ToolsConfigProperties.class})
+@EnableConfigurationProperties({
+        UserConfigProperties.class,
+        ToolsConfigProperties.class,
+        AppConfigProperties.class
+})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

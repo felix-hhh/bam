@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "kelaker.kcommon.user")
+@ConfigurationProperties(prefix = "bam.user")
 public class UserConfigProperties {
 
     /**
@@ -69,14 +69,4 @@ public class UserConfigProperties {
      * 最大登录数
      */
     private int maxToken;
-
-    /**
-     * 微信小程序密钥
-     */
-    private String wxMinAppSecret;
-
-    /**
-     * 微信小程序appid
-     */
-    private String wxMinAppId;
 }

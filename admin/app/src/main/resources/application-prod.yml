@@ -40,13 +40,6 @@ mybatis-plus:
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
     map-underscore-to-camel-case: true
 
-kelaker:
-  kcommon:
-    user:
-      wx-min-app-id: wx6697bbbe87185f6c
-      wx-min-app-secret: a68ffadd9ac4962aa69771730dda740a
-      max-token: 1
-      username-prefix: wx
 logging:
   level:
     root: info
@@ -72,3 +65,6 @@ bam:
     aliyunOssAccessKeyId: LTAI5tMyS1Vcwr6EzivnDnqt
     aliyunOssAccessKeySecret: WBa2tUPD7GgLzyF8X4mcAsX6ZblKp1
     aliyunOssArn: acs:ram::1057999219938374:role/oss-manager
+  user:
+    max-token: 1
+    username-prefix: wx
