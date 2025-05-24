@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    editModel:false,
     genderColumns: [{
         name: '男',
         value: 1
@@ -260,7 +261,7 @@ Page({
       });
       return false;
     }
-    if (!formData.genderValue) {
+    if (formData.genderValue===null) {
       wx.showToast({
         title: '请选择性别',
         icon: 'none'

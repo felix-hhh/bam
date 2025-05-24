@@ -50,13 +50,11 @@ const columnBtns: TableColumnHandle[] = [
   >
     <el-descriptions
       :title="'基础资料（'+currentView['id']+'）'"
-      :column="3 "
-      direction="vertical"
+      :column="2"
       border
     >
       <el-descriptions-item
-        :rowspan="4"
-        :width="140"
+        :rowspan="2"
         label="照片"
         align="center"
       >
@@ -76,18 +74,18 @@ const columnBtns: TableColumnHandle[] = [
       <el-descriptions-item>
         <template #label>
           <div class="cell-item">
-            性别
-          </div>
-        </template>
-        {{ currentView['name'] }}
-      </el-descriptions-item>
-      <el-descriptions-item>
-        <template #label>
-          <div class="cell-item">
             手机号
           </div>
         </template>
         {{ currentView['phone'] }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template #label>
+          <div class="cell-item">
+            性别
+          </div>
+        </template>
+        {{ currentView['name'] }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>
@@ -111,7 +109,7 @@ const columnBtns: TableColumnHandle[] = [
             注册时间
           </div>
         </template>
-        {{ currentView['createDatetime'] }}
+        {{ datetimeFormatHandler(currentView['createDatetime'])  }}
       </el-descriptions-item>
     </el-descriptions>
 

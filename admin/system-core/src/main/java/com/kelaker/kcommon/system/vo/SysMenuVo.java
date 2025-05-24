@@ -71,5 +71,10 @@ public class SysMenuVo {
      * 是否隐藏
      */
     private boolean hide;
+
+    /**
+     * 菜单权限代码
+     */
+    private String actionCode;
 }
 

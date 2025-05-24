@@ -115,7 +115,7 @@ const columnBtns: TableColumnHandle[] = [
             上次就诊时间
           </div>
         </template>
-        {{ currentView['lastTreatDatetime'] }}
+        {{ datetimeFormatHandler(currentView['lastTreatDatetime']) }}
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>

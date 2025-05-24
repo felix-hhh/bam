@@ -65,3 +65,10 @@ bam:
   tools:
     wxMicAppId: wx887bb611d3bbe4b9
     wxMicSecret: 51e3c0fa64e668faa7f24e3abaa06e89
+    aliyunOssRegionId: cn-shenzhen
+    aliyunOssRegion: oss-cn-shenzhen
+    aliyunOssEndpoint: oss-cn-shenzhen.aliyuncs.com
+    aliyunOssBucketName: kld-data
+    aliyunOssAccessKeyId: LTAI5tMyS1Vcwr6EzivnDnqt
+    aliyunOssAccessKeySecret: WBa2tUPD7GgLzyF8X4mcAsX6ZblKp1
+    aliyunOssArn: acs:ram::1057999219938374:role/oss-manager

@@ -28,7 +28,7 @@
     我已阅读并同意《康力得敏感个人信息授权书》
   </van-checkbox>
   <view class="button_view">
-    <van-button block custom-class="from_button" disabled="{{!formData.agree}}" type="danger" bind:click="submitForm">删除</van-button>
+    <van-button wx:if="{{editModel}}" block custom-class="from_button" disabled="{{!formData.agree}}" type="danger" bind:click="submitForm">删除</van-button>
     <van-button block custom-class="from_button" color="linear-gradient( 90deg, #129ADD 0%, #21C875 100%);" bind:click="submitForm" disabled="{{!formData.agree}}">保存</van-button>
   </view>
   <van-action-sheet show="{{ genderShow }}" actions="{{ genderColumns }}" bind:close="closePopup" title="请选择性别" bind:select="onSelectGender" />

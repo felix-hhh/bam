@@ -29,6 +29,8 @@ public class MedicalQueueVo {
      */
     private Long hospitalId;
 
+
+
     /**
      * 医院名字
      */
@@ -53,6 +55,11 @@ public class MedicalQueueVo {
      * 患者ID
      */
     private Long patientId;
+
+    /**
+     * 诊断编号
+     */
+    private String patientMedicalNum;
 
     /**
      * 患者名字

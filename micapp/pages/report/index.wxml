@@ -1,7 +1,7 @@
 <!--pages/report/index.wxml-->
 <view>
   <van-tabs active="{{ active }}" bind:change="tabChange" color="#116BB4">
-    <van-tab title="就诊记录">
+    <van-tab title="康复记录">
       <view class="record_list panel" wx:for="{{recordList}}" wx:key="id" bind:tap="gotoDetail" data-id="{{item.id}}">
         <view class="record_list_header">
           <view class="record_list_header_orderno secondary">
@@ -44,7 +44,7 @@
 
       </view>
     </van-tab>
-    <van-tab title="就诊报告">
+    <van-tab title="康复报告">
       <view class="report_list" wx:for="{{reportList}}" wx:key="id">
         <view class="report_list_header">
           <view class="report_list_header_icon">
@@ -90,6 +90,6 @@
         </view>
       </view>
     </van-tab>
-    <van-tab title="运动视频">内容 3</van-tab>
+    <van-tab title="运动视频"></van-tab>
   </van-tabs>
 </view>

@@ -66,6 +66,11 @@ public class SysMenu extends Model<SysMenu> {
      */
     private boolean hide;
 
+    /**
+     * 菜单权限代码
+     */
+    private String actionCode;
+
     @Getter
     public enum Type implements IEnum<String> {
         FIRST("S_M_T_FIRST","一级菜单"),

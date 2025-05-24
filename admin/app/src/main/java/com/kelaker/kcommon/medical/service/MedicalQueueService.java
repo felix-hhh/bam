@@ -267,6 +267,7 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
             vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
         }
         MedicalPatientVo medicalPatient = medicalPatientService.getMedicalPatient(medicalQueue.getPatientId());
+        vo.setPatientMedicalNum(medicalPatient.getMedicalNum());
         vo.setPatientName(medicalPatient.getName());
         vo.setPatientGender(medicalPatient.getGender());
         vo.setPatientGenderStr(medicalPatient.getGender() == 1 ? "男" : "女");

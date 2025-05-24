@@ -25,7 +25,6 @@ const useStore = defineStore("main", {
       const tokenInfoData = JSON.parse(Base64.parse(tokenData[1]).toString(Utf8));
       tokenInfoData.userData = JSON.parse(tokenInfoData.userData);
       this.tokenInfo = tokenInfoData;
-      console.log(this.tokenInfo);
     },
     setMenuList(menuList: SysMenu[]): void {
       this.menuList = menuList;
@@ -45,7 +44,6 @@ const useStore = defineStore("main", {
     init(){
       this.tokenInfo = undefined;
       this.token = undefined;
-      this.menuList = undefined;
     }
   },
 });

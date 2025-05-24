@@ -52,7 +52,7 @@ public class SysActionService extends BaseService<SysActionDao, SysAction> {
 
         findByActionCode(dto.getActionCode()).ifPresent((sysAction -> {
             log.error("======系统功能已存在{}", sysAction.getActionCode());
-            throw new BusinessException("系统功能已存在");
+            throw new BusinessException("系统功能已存在：" + sysAction.getActionCode());
         }));
 
         // save

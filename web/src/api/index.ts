@@ -45,7 +45,7 @@ const useAxios = () => {
       const response = error.response;
       if (response !== undefined && response.status === HttpStatusCode.Unauthorized) {
         ElMessage.error("无权限操作，请重新登录");
-        router.push("/login");
+        // router.push("/login");
         return;
       }
       if (response) {

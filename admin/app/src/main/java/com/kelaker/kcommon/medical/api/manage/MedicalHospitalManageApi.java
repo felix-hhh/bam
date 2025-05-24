@@ -11,7 +11,6 @@ import com.kelaker.ktools.web.annotation.InModule;
 import com.kelaker.ktools.web.base.api.BaseApi;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/medical/manage/hospital")
 @InModule(moduleCode = "MEDICAL")
-@Validated
 public class MedicalHospitalManageApi extends BaseApi {
 
     /**

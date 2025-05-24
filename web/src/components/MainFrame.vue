@@ -4,16 +4,17 @@ import { useRouter } from "vue-router";
 import { onMounted, reactive, ref } from "vue";
 import useStore from "@/stores";
 import useAxios from "@/api";
-import { SysMenu, TokenInfo } from "#/entity.ts";
+import { SysAction, SysMenu, TokenInfo } from "#/entity.ts";
 
 const store = useStore();
 const isShow = ref(true);
 const isCollapse = ref(false);
 const router = useRouter();
 const menuList = ref<SysMenu[]>();
+const actionList = ref<SysAction[]>();
 
 const username = ref();
-const { sendPut } = useAxios();
+const { sendPut, sendGet } = useAxios();
 const displayControl = reactive({
   changePwdDialog: false,
 });
@@ -37,17 +38,50 @@ const logout = () => {
  * 取回所有菜单列表
  */
 const getMenuList = () => {
-    menuList.value = store.getMenuList();
+  const menus = store.getMenuList();
+  console.log("menus", menus);
+  const menuCache: SysMenu[] = menus.map(item => {
+    const children = item.children;
+    if(children) {
+      const newChildren = children.filter(childrenItem =>{
+        if (!childrenItem.actionCode) {
+          return false;
+        }
+        return hasAction(childrenItem.actionCode);
+      })
+      console.log(newChildren)
+      item.children = newChildren;
+    }
+    return item;
+  });
+  console.log("menu",menuCache);
+  menuList.value = menuCache;
 };
 
 const showChangePwdDialog = () => {
   displayControl.changePwdDialog = true;
 };
 
+const hasAction = (actionCode: string): boolean => {
+  console.log("actionCode",actionCode);
+  return actionList.value.some(item => item.actionCode === actionCode);
+};
+
+/**
+ * 取回当前用户所有授权功能
+ */
+const getActionList = async () => {
+  await sendGet("/system/manage/admin/info/actions/list")
+    .then((res) => {
+      actionList.value = res;
+      getMenuList();
+    });
+};
+
 
 onMounted(() => {
-  getMenuList();
-  //getUsername();
+  getActionList();
+
 });
 </script>
 
@@ -74,59 +108,59 @@ onMounted(() => {
             <FullScreen />
           </el-icon>
         </div>
-        <el-divider direction="vertical" />
-        <div class="header-right-message">
-          <el-popover popper-class="message-panel" :width="300" trigger="click">
-            <template #reference>
-              <el-badge :value="3">
-                <el-icon size="larger">
-                  <ChatLineRound />
-                </el-icon>
-              </el-badge>
-            </template>
-            <template #default>
-              <div class="message-panel-header">
-                <div class="message-panel-header-title">
-                  <el-text size="large" tag="b" type="primary">消息</el-text>
+        <!--        <el-divider direction="vertical" />
+                <div class="header-right-message">
+                  <el-popover popper-class="message-panel" :width="300" trigger="click">
+                    <template #reference>
+                      <el-badge :value="3">
+                        <el-icon size="larger">
+                          <ChatLineRound />
+                        </el-icon>
+                      </el-badge>
+                    </template>
+                    <template #default>
+                      <div class="message-panel-header">
+                        <div class="message-panel-header-title">
+                          <el-text size="large" tag="b" type="primary">消息</el-text>
+                        </div>
+                        <div class="message-panel-header-opt">
+                          <el-button link>设置</el-button>
+                          <el-button link>全部已读</el-button>
+                        </div>
+                      </div>
+                      <div class="message-panel-body"></div>
+                      <div class="message-panel-footer">
+                        <el-button link>查看全部消息</el-button>
+                      </div>
+                    </template>
+                  </el-popover>
                 </div>
-                <div class="message-panel-header-opt">
-                  <el-button link>设置</el-button>
-                  <el-button link>全部已读</el-button>
-                </div>
-              </div>
-              <div class="message-panel-body"></div>
-              <div class="message-panel-footer">
-                <el-button link>查看全部消息</el-button>
-              </div>
-            </template>
-          </el-popover>
-        </div>
-        <el-divider direction="vertical" />
-        <div class="header-right-message">
-          <el-popover popper-class="message-panel" :width="300" trigger="click">
-            <template #reference>
-              <el-badge :value="3">
-                <el-icon size="larger">
-                  <Bell />
-                </el-icon>
-              </el-badge>
-            </template>
-            <template #default>
-              <div class="message-panel-header">
-                <div class="message-panel-header-title">
-                  <el-text size="large" tag="b" type="primary">通知</el-text>
-                </div>
-                <div class="message-panel-header-opt">
-                  <el-button link>全部已读</el-button>
-                </div>
-              </div>
-              <div class="message-panel-body"></div>
-              <div class="message-panel-footer">
-                <el-button link>查看全部通知</el-button>
-              </div>
-            </template>
-          </el-popover>
-        </div>
+                <el-divider direction="vertical" />
+                <div class="header-right-message">
+                  <el-popover popper-class="message-panel" :width="300" trigger="click">
+                    <template #reference>
+                      <el-badge :value="3">
+                        <el-icon size="larger">
+                          <Bell />
+                        </el-icon>
+                      </el-badge>
+                    </template>
+                    <template #default>
+                      <div class="message-panel-header">
+                        <div class="message-panel-header-title">
+                          <el-text size="large" tag="b" type="primary">通知</el-text>
+                        </div>
+                        <div class="message-panel-header-opt">
+                          <el-button link>全部已读</el-button>
+                        </div>
+                      </div>
+                      <div class="message-panel-body"></div>
+                      <div class="message-panel-footer">
+                        <el-button link>查看全部通知</el-button>
+                      </div>
+                    </template>
+                  </el-popover>
+                </div>-->
         <el-divider direction="vertical" />
         <el-dropdown trigger="click">
           <div class="header-right-userinfo">
@@ -161,7 +195,7 @@ onMounted(() => {
           :unique-opened="true"
           :router="true"
         >
-          <template v-for="menu in menuList" :key="menu.id">
+          <template v-for="menu in menuList">
             <el-menu-item
               v-if="
                 menu.children !== undefined &&

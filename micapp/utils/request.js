@@ -1,4 +1,4 @@
-// const baseUrl = "http://192.168.0.4:10000";
+// const baseUrl = "http://localhost:10000";
 const baseUrl = "https://api.connectsir.com";
 const authHeader = {};
 

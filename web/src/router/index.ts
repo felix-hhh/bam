@@ -94,7 +94,7 @@ const getComponent = (component?: "MainFrame" | "TableView"|"MainTable" | RouteC
       return MainFrame;
     default:
       if (typeof component === "string") {
-        return () => import(`/src/${component}.vue`);
+        return () => import(`../views/medical/${component}.vue`);
       } else {
         return component;
       }
@@ -107,40 +107,37 @@ const getComponent = (component?: "MainFrame" | "TableView"|"MainTable" | RouteC
 const initRouter = async () => {
   const store = useStore();
   const menuList: SysMenu[] = await sendGet<SysMenu[]>("/system/manage/menu/list")
-    .then((req: SysMenu[]) => {
-      constantRoutes.forEach(menu => {
-        if (menu.name !== undefined) {
-          const children: RouteRecordRaw[] = menu.children;
-          if ((children !== undefined && children.length > 0) && (menu.meta !== undefined && !menu.meta.hidden)) {
-            const newMenu: SysMenu = {
-              name: typeof menu.meta.title !== "string" ? "" : menu.meta.title,
-              path: menu.path,
-              type: "S_M_T_FIRST",
-              component: menu.component,
-              children: [],
+  constantRoutes.forEach(menu => {
+    if (menu.name !== undefined) {
+      const children: RouteRecordRaw[] = menu.children;
+      if ((children !== undefined && children.length > 0) && (menu.meta !== undefined && !menu.meta.hidden)) {
+        const newMenu: SysMenu = {
+          name: typeof menu.meta.title !== "string" ? "" : menu.meta.title,
+          path: menu.path,
+          type: "S_M_T_FIRST",
+          component: menu.component,
+          children: [],
+        };
+
+
+        children.forEach(childMenu => {
+          if (childMenu.meta !== undefined && !childMenu.meta.hidden) {
+            const newChildrenMenu: SysMenu = {
+              name: typeof childMenu.meta.title !== "string" ? "" : childMenu.meta.title,
+              path: childMenu.path,
+              component: childMenu.component,
+              type: "S_M_T_CHILD",
             };
-
-
-            children.forEach(childMenu => {
-              if (childMenu.meta !== undefined && !childMenu.meta.hidden) {
-                const newChildrenMenu: SysMenu = {
-                  name: typeof childMenu.meta.title !== "string" ? "" : childMenu.meta.title,
-                  path: childMenu.path,
-                  component: childMenu.component,
-                  type: "S_M_T_CHILD",
-                };
-                newMenu.children.push(newChildrenMenu);
-              }
-            });
-
-            req.push(newMenu);
+            newMenu.children.push(newChildrenMenu);
           }
-        }
-      });
-      store.setMenuList(req);
-      return req;
-    });
+        });
 
+        menuList.push(newMenu);
+
+      }
+    }
+  });
+  store.setMenuList(menuList);
 
   menuList?.map((menu) => {
     const newRouter: RouteRecordRaw = {

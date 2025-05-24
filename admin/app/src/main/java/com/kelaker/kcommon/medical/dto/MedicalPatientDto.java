@@ -32,7 +32,7 @@ public class MedicalPatientDto {
     /**
      * 性别
      */
-    private Boolean gender;
+    private int gender;
 
     @NotBlank(message = "手机号不能为空")
     /**

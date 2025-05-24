@@ -184,6 +184,14 @@ export interface SysMenu {
   typeStr?: string;
 
   component?: "MainFrame" | "TableView" | RouteComponent;
+
+  actionCode?: string;
+}
+
+export interface SysAction {
+  actionCode: string;
+  actionName: string;
+  moduleCode: string;
 }
 
 

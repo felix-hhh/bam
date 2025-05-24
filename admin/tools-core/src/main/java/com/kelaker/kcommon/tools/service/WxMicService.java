@@ -56,6 +56,7 @@ public class WxMicService {
         param.put("grant_type", "client_credential");
         param.put("appid", appId);
         param.put("secret", secret);
+        log.debug("appid:{},secret:{}",appId,secret);
         String rep = NetUtil.sendGet(ACCESS_TOKEN_URL, param);
         WxAccessTokenVo wxPhoneVo = JsonUtil.jsonToObj(rep, WxAccessTokenVo.class);
         String accessToken = wxPhoneVo.getAccessToken();
@@ -73,14 +74,16 @@ public class WxMicService {
         String url = String.format(PHONE_NUMBER_URL, access_token);
         Map<String, Object> param = new HashMap<>();
         param.put("code", code);
+
         try {
             String rep = NetUtil.sendPost(url, param, null, NetUtil.PostType.JSON);
             WxPhoneVo wxPhoneVo = JsonUtil.jsonToObj(rep, WxPhoneVo.class);
             if (wxPhoneVo.getErrcode()!=0) {
+                log.error("wxPhoneVo:{}",wxPhoneVo);
                 throw new BusinessException("获取手机号码异常");
             }
             return wxPhoneVo.getPhoneInfo().getPhoneNumber();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new BusinessException("获取手机号码异常");
         }
     }

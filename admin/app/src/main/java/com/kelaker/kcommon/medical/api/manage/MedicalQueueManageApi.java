@@ -13,7 +13,6 @@ import com.kelaker.ktools.web.base.api.BaseApi;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/medical/manage/queue")
 @InModule(moduleCode = "MEDICAL")
-@Validated
 public class MedicalQueueManageApi extends BaseApi {
 
     /**
@@ -46,12 +44,13 @@ public class MedicalQueueManageApi extends BaseApi {
         return this.medicalQueueService.queryPage(searchDto);
     }
 
+    @HasAction(actionCode = "MEDICAL_QUEUE:MY_PAGE", actionName = "主治医生列表")
     @PostMapping("/page/my")
     public IPage<MedicalQueueVo> pageMyMedicalQueue(@RequestBody RequestPage<MedicalQueueSearchDto> searchDto) {
-return this.medicalQueueService.queryMyPage(searchDto);
+        return this.medicalQueueService.queryMyPage(searchDto);
     }
 
-    @HasAction(actionCode = "MEDICAL_QUEUE:PAGE",actionName = "队列信息列表")
+    @HasAction(actionCode = "MEDICAL_QUEUE:PATIENT_PAGE", actionName = "患者队列信息列表")
     @PostMapping("/patient/page")
     public IPage<MedicalQueueVo> pageMedicalPatientQueue(@RequestBody RequestPage<MedicalPatientSearchDto> searchDto) {
         return this.medicalQueueService.queryPatientPage(searchDto);
@@ -92,8 +91,10 @@ return this.medicalQueueService.queryMyPage(searchDto);
 
     /**
      * 取消订单
+     *
      * @param id 订单ID
      */
+    @HasAction(actionCode = "MEDICAL_QUEUE:CANCEL", actionName = "取消队列")
     @PutMapping("/cancel/{id}")
     public void cancelMedicalQueue(@PathVariable("id") String id) {
         this.medicalQueueService.cancelMedicalQueue(id);
