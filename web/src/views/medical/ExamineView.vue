@@ -13,11 +13,13 @@ const displayControl = reactive({
   viewDialog: false,
   checkDialog: false,
 });
-const currentView = ref({});
+const currentView = ref({
+  id:0
+});
 
 const formSetting = ref([
   {
-    title: "基本情况",
+    label: "基本情况",
     value: "",
     children: [
       {
@@ -187,7 +189,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "损伤相关",
+    label: "损伤相关",
     value: "",
     children: [
       {
@@ -263,7 +265,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "关节活动度ROM",
+    label: "关节活动度ROM",
     value: "",
     children: [
       {
@@ -695,7 +697,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "关节稳定性测试",
+    label: "关节稳定性测试",
     value: "",
     children: [
       {
@@ -947,7 +949,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "静态姿势（背面）",
+    label: "静态姿势（背面）",
     value: "",
     children: [
       {
@@ -1167,7 +1169,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "静态姿势（侧面）",
+    label: "静态姿势（侧面）",
     value: "",
     children: [
       {
@@ -1209,7 +1211,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "呼吸方式",
+    label: "呼吸方式",
     value: "",
     children: [
       {
@@ -1239,7 +1241,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "动态评估（站立体前屈）",
+    label: "动态评估（站立体前屈）",
     value: "",
     children: [
       {
@@ -1393,7 +1395,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "动态评估（正面）",
+    label: "动态评估（正面）",
     value: "",
     children: [
       {
@@ -1467,7 +1469,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "动态评估（侧面）",
+    label: "动态评估（侧面）",
     value: "",
     children: [
       {
@@ -1517,7 +1519,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "动态评估（背面）",
+    label: "动态评估（背面）",
     value: "",
     children: [
       {
@@ -1587,7 +1589,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "下肢",
+    label: "下肢",
     value: "",
     children: [
       {
@@ -1691,7 +1693,7 @@ const formSetting = ref([
     ],
   },
   {
-    title: "上肢",
+    label: "上肢",
     value: "",
     children: [
       {
@@ -1882,9 +1884,6 @@ const formSetting = ref([
   },
 ]);
 
-const doctorOptions = ref<SelectItem[]>([]);
-
-
 /**
  * 显示添加窗口哦
  */
@@ -1901,6 +1900,14 @@ const hideDialog = () => {
 const addReport = () => {
 
   console.log("report",formSetting.value);
+  sendPut("/medical/manage/queue/check/add", {
+    id: currentView.value.id,
+    checkData: formSetting.value,
+  })
+    .then((res)=>{
+      ElMessage.success("提交成功")
+      hideDialog();
+    })
 
   /*sendPost("/medical/manage/report/add", addReportForm.value)
     .then((res) => {
@@ -1948,13 +1955,17 @@ onMounted(() => {
     size="800"
   >
     <el-descriptions
-      :column="4"
+      :column="2"
+      label-width="80"
       class="queue_info_desc"
     >
       <el-descriptions-item label="姓名">{{ currentView["patientName"] }}</el-descriptions-item>
       <el-descriptions-item label="性别">{{ currentView["patientGenderStr"] }}</el-descriptions-item>
       <el-descriptions-item label="年龄">{{ currentView["patientAge"] }}</el-descriptions-item>
       <el-descriptions-item label="手机号">{{ currentView["patientPhone"] }}</el-descriptions-item>
+<!--      <el-descriptions-item label="手术史">{{ currentView["patientInfo"]["surgicalHistory"] }}</el-descriptions-item>-->
+<!--      <el-descriptions-item label="既往史">{{ currentView["patientInfo"]["previousHistory"] }}</el-descriptions-item>-->
+      <el-descriptions-item label="康复项目">{{ currentView["checkItemStr"] }}</el-descriptions-item>
     </el-descriptions>
     <el-form
       ref="formRef"
@@ -1963,7 +1974,7 @@ onMounted(() => {
       class="examine-form"
     >
       <template v-for="group in formSetting" key="id">
-        <el-divider>{{ group.title }}</el-divider>
+        <el-divider>{{ group.label }}</el-divider>
         <el-form-item :label="item['label']" v-for="item in group.children" key="id">
           <div class="joint-movement" v-for="detail in item.children">
             <div class="movement-label">{{ detail['label'] }}</div>

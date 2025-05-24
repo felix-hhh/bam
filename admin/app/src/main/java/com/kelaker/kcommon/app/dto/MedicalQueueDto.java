@@ -40,7 +40,7 @@ public class MedicalQueueDto {
     /**
      * 患者信息
      */
-    private Map<String,String> patientInfo;
+    private Map<String, Object> patientInfo;
 
     /**
      * 检查项目

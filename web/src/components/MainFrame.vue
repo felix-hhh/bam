@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChatLineRound, Bell, Expand, Fold, FullScreen, HomeFilled } from "@element-plus/icons-vue";
+import { Expand, Fold, FullScreen, HomeFilled } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { onMounted, reactive, ref } from "vue";
 import useStore from "@/stores";
@@ -39,23 +39,18 @@ const logout = () => {
  */
 const getMenuList = () => {
   const menus = store.getMenuList();
-  console.log("menus", menus);
-  const menuCache: SysMenu[] = menus.map(item => {
+  menuList.value = menus.map(item => {
     const children = item.children;
-    if(children) {
-      const newChildren = children.filter(childrenItem =>{
+    if (children) {
+      item.children = children.filter(childrenItem => {
         if (!childrenItem.actionCode) {
           return false;
         }
         return hasAction(childrenItem.actionCode);
-      })
-      console.log(newChildren)
-      item.children = newChildren;
+      });
     }
     return item;
   });
-  console.log("menu",menuCache);
-  menuList.value = menuCache;
 };
 
 const showChangePwdDialog = () => {
@@ -63,7 +58,6 @@ const showChangePwdDialog = () => {
 };
 
 const hasAction = (actionCode: string): boolean => {
-  console.log("actionCode",actionCode);
   return actionList.value.some(item => item.actionCode === actionCode);
 };
 

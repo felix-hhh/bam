@@ -68,3 +68,5 @@ bam:
   user:
     max-token: 1
     username-prefix: wx
+  app:
+    mini-program-state: DEVELOPER

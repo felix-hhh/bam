@@ -1,9 +1,7 @@
 package com.kelaker.kcommon.app.api.manage;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.kelaker.kcommon.app.dto.MedicalPatientSearchDto;
-import com.kelaker.kcommon.app.dto.MedicalQueueDto;
-import com.kelaker.kcommon.app.dto.MedicalQueueSearchDto;
+import com.kelaker.kcommon.app.dto.*;
 import com.kelaker.kcommon.app.service.MedicalQueueService;
 import com.kelaker.kcommon.app.vo.MedicalQueueVo;
 import com.kelaker.ktools.common.vo.RequestPage;
@@ -42,6 +40,11 @@ public class MedicalQueueManageApi extends BaseApi {
     @PostMapping("/page")
     public IPage<MedicalQueueVo> pageMedicalQueue(@RequestBody RequestPage<MedicalQueueSearchDto> searchDto) {
         return this.medicalQueueService.queryPage(searchDto);
+    }
+
+    @PutMapping("/check/add")
+    public void addCheckData(@RequestBody MedicalQueueCheckDataDto dto) {
+        this.medicalQueueService.addCheckData(dto);
     }
 
     @HasAction(actionCode = "MEDICAL_QUEUE:MY_PAGE", actionName = "主治医生列表")

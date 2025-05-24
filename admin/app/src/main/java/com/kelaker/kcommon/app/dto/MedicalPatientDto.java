@@ -17,16 +17,16 @@ public class MedicalPatientDto {
      */
     private Long id;
 
-    @NotBlank(message ="姓名不能为空")
     /**
      * 姓名
      */
+    @NotBlank(message = "姓名不能为空")
     private String name;
 
-    @NotBlank(message = "身份证号不能为空")
     /**
      * 身份证
      */
+    @NotBlank(message = "身份证号不能为空")
     private String idCard;
 
     /**
@@ -34,10 +34,10 @@ public class MedicalPatientDto {
      */
     private int gender;
 
-    @NotBlank(message = "手机号不能为空")
     /**
      * 手机号码
      */
+    @NotBlank(message = "手机号不能为空")
     private String phone;
 
     /**

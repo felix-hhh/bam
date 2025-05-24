@@ -2,12 +2,15 @@ package com.kelaker.kcommon.app.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.kelaker.ktools.common.utils.ValidateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 队列(MedicalQueue)表实体类
@@ -16,7 +19,7 @@ import java.util.Date;
  * @since 2025-04-09 10:39:07
  */
 @Data
-@TableName("medical_queue")
+@TableName(value = "medical_queue", autoResultMap = true)
 public class MedicalQueue extends Model<MedicalQueue> {
 
     /**
@@ -44,11 +47,6 @@ public class MedicalQueue extends Model<MedicalQueue> {
      * 患者ID
      */
     private Long patientId;
-
-    /**
-     * 患者信息
-     */
-    private Object patientInfo;
 
     /**
      * 检查项目
@@ -96,6 +94,18 @@ public class MedicalQueue extends Model<MedicalQueue> {
      */
     private Boolean video;
 
+    /**
+     * 患者信息
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private Map<String, Object> patientInfo;
+
+    /**
+     * 检查数据
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<Map<String, Object>> checkData;
+
     @Getter
     @AllArgsConstructor
     public enum CheckItem implements IEnum<String> {
@@ -103,6 +113,7 @@ public class MedicalQueue extends Model<MedicalQueue> {
         CHRONIC_PAIN_ASSESSMENT("M_Q_C_CHRONIC_PAIN_ASSESSMENT", "慢性疼痛评估");
 
         private final String value;
+
         private final String remark;
 
         public static CheckItem toEnum(String value) {

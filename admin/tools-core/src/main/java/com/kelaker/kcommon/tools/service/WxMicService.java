@@ -3,6 +3,7 @@ package com.kelaker.kcommon.tools.service;
 import com.kelaker.kcommon.tools.configs.ToolsConfigProperties;
 import com.kelaker.kcommon.tools.dto.ToolsSubscribeMessageDto;
 import com.kelaker.kcommon.tools.vo.WxAccessTokenVo;
+import com.kelaker.kcommon.tools.vo.WxMessageVo;
 import com.kelaker.kcommon.tools.vo.WxPhoneVo;
 import com.kelaker.kcommon.tools.vo.WxTokenVo;
 import com.kelaker.ktools.cache.manager.CacheManager;
@@ -89,7 +90,10 @@ public class WxMicService {
         param.put("miniprogram_state", dto.getMiniProgramState().toString().toLowerCase());
         try {
             String rep = NetUtil.sendPost(url, param, null, NetUtil.PostType.JSON);
-            log.debug(rep);
+            WxMessageVo wxMessageVo = JsonUtil.jsonToObj(rep, WxMessageVo.class);
+            if (wxMessageVo.getErrCode() != 0) {
+                log.error("wxMessageVo:{}", wxMessageVo);
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

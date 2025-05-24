@@ -29,8 +29,6 @@ public class MedicalQueueVo {
      */
     private Long hospitalId;
 
-
-
     /**
      * 医院名字
      */
@@ -99,7 +97,7 @@ public class MedicalQueueVo {
     /**
      * 患者信息
      */
-    private Map<String, String> patientInfo;
+    private Map<String, Object> patientInfo;
 
     /**
      * 检查项目
@@ -127,11 +125,6 @@ public class MedicalQueueVo {
     private String statusStr;
 
     /**
-     * 队列号码
-     */
-    private String medicalNum;
-
-    /**
      * 当前号码
      */
     private Long currentNum;
@@ -155,4 +148,5 @@ public class MedicalQueueVo {
      * 是否有运动视频
      */
     private boolean video;
+
 }

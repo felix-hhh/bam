@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kelaker.kcommon.app.configs.AppConfigProperties;
 import com.kelaker.kcommon.app.dao.MedicalQueueDao;
 import com.kelaker.kcommon.app.dto.MedicalPatientSearchDto;
+import com.kelaker.kcommon.app.dto.MedicalQueueCheckDataDto;
 import com.kelaker.kcommon.app.dto.MedicalQueueDto;
 import com.kelaker.kcommon.app.dto.MedicalQueueSearchDto;
 import com.kelaker.kcommon.app.entity.MedicalDoctor;
@@ -197,6 +198,7 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         MedicalPatient medicalPatient = this.medicalPatientService.getOptById(patientId).orElseThrow(() -> new BusinessException("患者信息异常"));
         Long userId = medicalPatient.getUserId();
         medicalQueue.setUserId(userId);
+        medicalQueue.setPatientInfo(dto.getPatientInfo());
         //检查医生
         Long doctorId = dto.getDoctorId();
         MedicalDoctor medicalDoctor = this.medicalDoctorService.getOptById(doctorId).orElseThrow(() -> new BusinessException("医生信息异常"));
@@ -217,7 +219,6 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
             data.put("time5", new ToolsSubscribeMessageDto.SubscribeMessageData(StringUtil.convertDateToStr(medicalQueue.getCreateDatetime(), "yyyy-MM-dd HH:mm:ss")));
             data.put("thing2", new ToolsSubscribeMessageDto.SubscribeMessageData(medicalQueue.getCurrentNum().toString()));
             String thing6 = String.format("您预约的%s项目已取号成功！", checkItemStr);
-            log.debug("thing6:{}",thing6);
             data.put("thing6", new ToolsSubscribeMessageDto.SubscribeMessageData(thing6));
             data.put("thing4", new ToolsSubscribeMessageDto.SubscribeMessageData(checkItemStr));
 
@@ -302,31 +303,57 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
      * 对象转换
      */
     private MedicalQueueVo convertToVo(MedicalQueue medicalQueue) {
-        MedicalQueueVo vo = super.objectConvert(medicalQueue, MedicalQueueVo.class);
+        MedicalQueueVo vo = new MedicalQueueVo();
         vo.setStatusStr(medicalQueue.getStatus().getRemark());
-        if (medicalQueue.getCheckItem() != null) {
-            vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
-        }
-        MedicalPatientVo medicalPatient = medicalPatientService.getMedicalPatient(medicalQueue.getPatientId());
-        vo.setPatientMedicalNum(medicalPatient.getMedicalNum());
-        vo.setPatientName(medicalPatient.getName());
-        vo.setPatientGender(medicalPatient.getGender());
-        vo.setPatientGenderStr(medicalPatient.getGender() == 1 ? "男" : "女");
-        vo.setPatientPhone(medicalPatient.getPhone());
-        vo.setPatientRelation(medicalPatient.getRelation());
-        vo.setPatientRelationStr(medicalPatient.getRelationStr());
-        MedicalHospitalVo medicalHospitalVo = this.medicalHospitalService
-                .getMedicalHospital(medicalQueue.getHospitalId());
-        vo.setHospitalName(medicalHospitalVo.getName());
-        vo.setHospitalPhone(medicalHospitalVo.getPhone());
-        MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
-        vo.setDoctorName(medicalDoctorVo.getName());
+
+        MedicalPatientVo medicalPatientVo = medicalPatientService.getMedicalPatient(medicalQueue.getPatientId());
+        this.fillPatient(vo, medicalPatientVo);
+
+        this.fillQueue(vo, medicalQueue);
+
+
         return vo;
     }
 
     private MedicalQueueVo convertToVo(MedicalPatientVo medicalPatientVo) {
         Long queueNum = medicalPatientVo.getQueueNum();
         MedicalQueueVo vo = new MedicalQueueVo();
+        this.fillPatient(vo, medicalPatientVo);
+
+        if (ValidateUtil.isBlank(queueNum)) {
+            vo.setStatus(MedicalQueue.Status.WAIT.getValue());
+            vo.setStatusStr(MedicalQueue.Status.WAIT.getRemark());
+        } else {
+            MedicalQueue medicalQueue = this.getById(queueNum);
+            this.fillQueue(vo, medicalQueue);
+            MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
+            vo.setDoctorName(medicalDoctorVo.getName());
+        }
+
+        return vo;
+    }
+
+    private void fillQueue(MedicalQueueVo vo, MedicalQueue medicalQueue) {
+        vo.setId(medicalQueue.getId());
+        vo.setStatus(medicalQueue.getStatus().getValue());
+        vo.setStatusStr(medicalQueue.getStatus().getRemark());
+        vo.setCreateDatetime(medicalQueue.getCreateDatetime());
+        vo.setCheckItem(medicalQueue.getCheckItem().getValue());
+        vo.setPatientInfo(medicalQueue.getPatientInfo());
+        if (ValidateUtil.isNotBlank(medicalQueue.getCheckItem())) {
+            vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
+        }
+
+        MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
+        vo.setDoctorName(medicalDoctorVo.getName());
+
+        MedicalHospitalVo medicalHospitalVo = this.medicalHospitalService
+                .getMedicalHospital(medicalQueue.getHospitalId());
+        vo.setHospitalName(medicalHospitalVo.getName());
+        vo.setHospitalPhone(medicalHospitalVo.getPhone());
+    }
+
+    private void fillPatient(MedicalQueueVo vo, MedicalPatientVo medicalPatientVo) {
         vo.setPatientId(medicalPatientVo.getId());
         vo.setPatientName(medicalPatientVo.getName());
         vo.setPatientPhone(medicalPatientVo.getPhone());
@@ -335,24 +362,7 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
         vo.setPatientAge(medicalPatientVo.getAge());
         vo.setPatientRelation(medicalPatientVo.getRelation());
         vo.setPatientRelationStr(medicalPatientVo.getRelationStr());
-
-        vo.setMedicalNum(medicalPatientVo.getMedicalNum());
-        if (ValidateUtil.isBlank(queueNum)) {
-            vo.setStatus(MedicalQueue.Status.WAIT.getValue());
-            vo.setStatusStr(MedicalQueue.Status.WAIT.getRemark());
-            return vo;
-        } else {
-            MedicalQueue medicalQueue = this.getById(queueNum);
-            vo.setId(medicalQueue.getId());
-            vo.setStatus(medicalQueue.getStatus().getValue());
-            vo.setStatusStr(medicalQueue.getStatus().getRemark());
-            vo.setCreateDatetime(medicalQueue.getCreateDatetime());
-            vo.setCheckItem(medicalQueue.getCheckItem().getValue());
-            vo.setCheckItemStr(medicalQueue.getCheckItem().getRemark());
-            MedicalDoctorVo medicalDoctorVo = this.medicalDoctorService.getMedicalDoctor(medicalQueue.getDoctorId());
-            vo.setDoctorName(medicalDoctorVo.getName());
-            return vo;
-        }
+        vo.setPatientMedicalNum(medicalPatientVo.getMedicalNum());
     }
 
 
@@ -364,6 +374,24 @@ public class MedicalQueueService extends BaseService<MedicalQueueDao, MedicalQue
     public void cancelMedicalQueue(String id) {
         MedicalQueue medicalQueue = super.getOptById(id).orElseThrow(() -> new BusinessException("订单ID不存在"));
         medicalQueue.setStatus(MedicalQueue.Status.CANCELLED);
+        super.updateById(medicalQueue);
+    }
+
+    /**
+     * 添加检查结果
+     *
+     * @param dto 检查结果dto
+     */
+    public void addCheckData(MedicalQueueCheckDataDto dto) {
+        MedicalQueue medicalQueue = super.getById(dto.getId());
+        if (ValidateUtil.isBlank(medicalQueue)) {
+            throw new BusinessException("订单数据异常");
+        }
+        if (!MedicalQueue.Status.QUEUING.equals(medicalQueue.getStatus())) {
+            throw new BusinessException("订单状态异常");
+        }
+        medicalQueue.setCheckData(dto.getCheckData());
+        medicalQueue.setStatus(MedicalQueue.Status.IN_PROGRESS);
         super.updateById(medicalQueue);
     }
 }
